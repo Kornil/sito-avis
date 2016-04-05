@@ -84,6 +84,11 @@ footer{
 /* /footer */
 
 /* main */
+#anchor{
+  position:relative;
+  top:-20px;
+
+}
 .blog-post {
   display:none;
   margin-bottom: 100px;
