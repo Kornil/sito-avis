@@ -2361,3 +2361,27 @@ if (typeof jQuery === 'undefined') {
   })
 
 }(jQuery);
+
+$(document).ready(function(){
+  $('a[href^="#"]').on('click',function (e) {
+      e.preventDefault();
+
+      var target = this.hash;
+      var $target = $(target);
+
+      $('html, body').stop().animate({
+          'scrollTop': $target.offset().top-50
+      }, 900, 'swing', function () {
+          window.location.hash = target;
+      });
+  });
+  
+  $(window).resize(function(){location.reload();});
+
+  $(".navbtn").click(function(){
+    var idnum = $(this).attr('id');
+    var content_id = "#collapse".concat(idnum);
+    $(".blog-post").not($(content_id)).hide("slow");
+    $(content_id).show("slow");
+  });
+});
