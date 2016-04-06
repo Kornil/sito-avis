@@ -15,12 +15,12 @@
 .actioncall{
 	background-color:rgba(0,0,0,0.2);	
 	display: inline-block;
-	padding:20px 100px;
+	padding:20px;
 	margin-top: 150px;
 	max-width: 100%;
 }
 .actioncall hr{
-  width:200px;
+  max-width:200px;
   border-top: 4px solid #ecf0f1;
   margin-bottom:10px;
   margin-top:0;
@@ -87,7 +87,6 @@ footer{
 #anchor{
   position:relative;
   top:-20px;
-
 }
 .blog-post {
   display:none;
@@ -107,4 +106,9 @@ footer{
 }
 .blog-post ul li{
 	margin-bottom: 8px;
+}
+@media (max-width: 768px){
+  #anchor{
+    top:22px;
+  }
 }
