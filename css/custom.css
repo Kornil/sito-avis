@@ -92,10 +92,8 @@ footer{
   max-width: 100%;
   margin:0;
 }
-.hid{
-  display:none;
-}
 .blog-post{
+  display:none;
   font-family: 'Open Sans', sans-serif;
   padding: 50px 0;
 }
