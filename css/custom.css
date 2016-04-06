@@ -51,6 +51,9 @@ nav ul li a{
 .nav-tabs>li.active>a:focus, .nav-tabs>li>a:hover{
 	color:#006eb6;
 }
+#collapse1{
+  display: block;
+}
 /* footer */
 footer{
   background-color: #333;
