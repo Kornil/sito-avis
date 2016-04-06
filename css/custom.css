@@ -91,16 +91,30 @@ footer{
 .blog-post {
   display:none;
   margin-bottom: 100px;
+  padding-top: 50px;
+  font-family: 'Open Sans', sans-serif;
 }
 .blog-post h4{
   margin: 20px;
+  font-size: 16px;
+}
+.blog-post h2{
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #232323;
+}
+.blog-post p{
+  font-size: 14px;
+  padding: 0 0 1em;
+  text-align: justify;
 }
 #storia_img{
   max-width: 100%;
   box-shadow: 2px 2px 1px #888;
 }
 .blog-post ul{
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 15px;
   list-style-type: none;
 }
