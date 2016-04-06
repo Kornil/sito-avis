@@ -46,8 +46,9 @@ nav ul li{
 nav ul li a{
 	color:#ecf0f1;
 	font-weight: 700;
+  max-height: 40px;
 }
-nav ul li a:hover,nav ul li a:focus{
+.nav-tabs>li.active>a:focus, .nav-tabs>li>a:hover{
 	color:#006eb6;
 }
 /* footer */
