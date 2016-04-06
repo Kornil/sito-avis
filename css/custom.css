@@ -92,10 +92,12 @@ footer{
   max-width: 100%;
   margin:0;
 }
-.blog-post {
+.hid{
   display:none;
+}
+.blog-post{
   font-family: 'Open Sans', sans-serif;
-  padding: 50px 0 100px 0;
+  padding: 50px 0;
 }
 .blog-post h4{
   margin: 20px;
@@ -128,4 +130,31 @@ footer{
   #anchor{
     top:22px;
   }
+}
+/* contatti */
+.Flexible-container{  
+  box-shadow: 2px 2px 1px #888;
+  margin-bottom: 50px;
+}
+.contacts{
+  padding: 0;
+}
+.contacts p{
+  margin:0;
+}
+.fa-facebook-square, .fa-youtube-play, .fa-twitter-square, .fa-instagram{
+  color: #2e2e2e;  
+  margin-top: 5px;
+}
+.fa-facebook-square:hover{
+  color: #3b5998;
+}
+.fa-youtube-play:hover{
+  color: #bb0000;
+}
+.fa-twitter-square:hover{
+  color: #00aced;
+}
+.fa-instagram:hover{
+  color: #125688;
 }
