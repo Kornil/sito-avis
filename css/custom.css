@@ -88,11 +88,14 @@ footer{
   position:relative;
   top:-20px;
 }
+.row{
+  max-width: 100%;
+  margin:0;
+}
 .blog-post {
   display:none;
-  margin-bottom: 100px;
-  padding-top: 50px;
   font-family: 'Open Sans', sans-serif;
+  padding: 50px 0 100px 0;
 }
 .blog-post h4{
   margin: 20px;
