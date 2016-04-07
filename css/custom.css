@@ -49,7 +49,7 @@ nav ul li a{
 	font-weight: 700;
   max-height: 40px;
 }
-.nav-tabs>li.active>a:focus, .nav-tabs>li>a:hover{
+.nav-tabs>li.active>a:focus, .nav-tabs>li>a:hover,.nav-tabs>li.active>a:visited{
 	color:#006eb6;
 }
 #collapse1{
@@ -86,9 +86,9 @@ footer{
 .social{
 	padding-top: 6px;
 }
-/* /footer */
+/* /footer
 
-/* main */
+   main */
 #anchor{
   position:relative;
   top:-20px;
@@ -134,6 +134,9 @@ footer{
     top:22px;
   }
 }
+.backtop{
+  margin-top:25px;
+}
 /* contatti */
 .Flexible-container{  
   box-shadow: 2px 2px 1px #888;
@@ -149,15 +152,17 @@ footer{
   color: #2e2e2e;  
   margin-top: 5px;
 }
-.fa-facebook-square:hover{
-  color: #3b5998;
+.fa-facebook-square:hover{color: #3b5998;}
+.fa-youtube-play:hover{color: #bb0000;}
+.fa-twitter-square:hover{color: #00aced;}
+.fa-instagram:hover{color: #125688;}
+
+/* sospensioni */
+.sospensioni_btn{
+  text-align: center;
+  margin:50px 0 150px;
 }
-.fa-youtube-play:hover{
-  color: #bb0000;
-}
-.fa-twitter-square:hover{
-  color: #00aced;
-}
-.fa-instagram:hover{
-  color: #125688;
+#motivi_principali,#malaria,#malattie_tropicali,#farmaci{
+  margin-top: 75px;
+  font-weight: 700;
 }
