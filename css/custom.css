@@ -1,56 +1,19 @@
 .main{
-	text-align: center;
-	padding:0;
-	height:100%;
-  min-height: 100vh;
-	width: 100%;
-	background: url("../images/torri_rovigo.jpg") no-repeat center center;
-	background-size: cover;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
+    padding: 0;
+    border: none;
+    border-top: medium double #888;
+    color: #888;
+    text-align: center;
 }
-.logo{
-	margin-top:50px;
-}
-.actioncall{
-	background-color:rgba(0,0,0,0.2);	
-	display: inline-block;
-	padding:20px;
-	margin-top: 150px;
-	max-width: 100%;
-}
-.actioncall hr{
-  max-width:200px;
-  border-top: 4px solid #ecf0f1;
-  margin-bottom:10px;
-  margin-top:0;
-}
-.actioncall p{
-  font-size: 26px;
-  letter-spacing: 1px;
-  margin-bottom: 0;
-  color:#ecf0f1;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-.actioncall .btn{
-	margin: 15px 0 0;
-	border-radius:15px;
-}
-.navbar{
-	border:0;
-}
-nav ul li{
-	background-color:#006eb6;
-	border-radius: 0;
-}
-nav ul li a{
-	color:#ecf0f1;
-	font-weight: 700;
-  max-height: 40px;
-}
-.nav-tabs>li.active>a:focus, .nav-tabs>li>a:hover,.nav-tabs>li.active>a:visited{
-	color:#006eb6;
+.main:after{
+    content: "";
+    display: inline-block;
+    position: relative;
+    background: url('../images/logo-small.bmp') center center no-repeat;
+    background-size: 25px;
+    height: 30px; width: 30px;
+    top: -1.1em;
+    padding: 0;
 }
 #collapse1{
   display: block;
@@ -91,16 +54,12 @@ footer{
    main */
 #anchor{
   position:relative;
-  top:-20px;
-}
-.row{
-  max-width: 100%;
-  margin:0;
+  top:-200px;
 }
 .blog-post{
   display:none;
   font-family: 'Open Sans', sans-serif;
-  padding: 50px 0;
+  padding: 20px 0 50px;
 }
 .blog-post h4{
   margin: 20px;
@@ -116,6 +75,7 @@ footer{
   font-size: 14px;
   padding: 0 0 1em;
   text-align: justify;
+  margin-bottom: 0;
 }
 #storia_img{
   max-width: 100%;
@@ -126,10 +86,7 @@ footer{
   margin-bottom: 15px;
   list-style-type: none;
 }
-.blog-post ul li{
-	margin-bottom: 8px;
-}
-@media (max-width: 768px){
+@media (max-width: 767px){
   #anchor{
     top:22px;
   }
@@ -141,9 +98,7 @@ footer{
 .Flexible-container{  
   box-shadow: 2px 2px 1px #888;
   margin-bottom: 50px;
-}
-.contacts{
-  padding: 0;
+  width: 100%;
 }
 .contacts p{
   margin:0;
@@ -165,4 +120,16 @@ footer{
 #motivi_principali,#malaria,#malattie_tropicali,#farmaci{
   margin-top: 75px;
   font-weight: 700;
+}
+.sidebar{
+  margin-top: 50px;
+}
+.become_donor{
+  background: url('../images/sunset-hands-love-woman.jpg') center center no-repeat;
+  max-width: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 250px;
 }
