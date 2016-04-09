@@ -22,9 +22,16 @@
   background-color: #006eb6;
   color:white;
 }
-#collapse1{
+/*.blog-post { display: none; }
+.blog-post:target { display: block; }*/
+
+.blog-post, .blog-post:target ~ #a  {
+  display: none;
+}
+#a, .blog-post:target {
   display: block;
 }
+
 .navbtn{
   cursor: pointer;
 }
@@ -63,7 +70,6 @@ footer{
 
    main */
 .blog-post{
-  display:none;
   font-family: 'Open Sans', sans-serif;
   padding: 20px 0 50px;
 }
@@ -124,9 +130,6 @@ footer{
 }
 .sidebar{
   margin-top: 50px;
-}
-.commercial{
-  
 }
 .become_donor{
   background: url('../images/sunset-hands-love-woman.jpg') center center no-repeat;  
