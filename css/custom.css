@@ -25,15 +25,11 @@
 /*.blog-post { display: none; }
 .blog-post:target { display: block; }*/
 
-.blog-post, .blog-post:target ~ #a  {
+.blog-post, .blog-post:target ~ #avis{
   display: none;
 }
-#a, .blog-post:target {
+#avis, .blog-post:target {
   display: block;
-}
-
-.navbtn{
-  cursor: pointer;
 }
 /* footer */
 footer{
@@ -130,13 +126,71 @@ footer{
 }
 .sidebar{
   margin-top: 50px;
+  text-align: center;
 }
 .become_donor{
-  background: url('../images/sunset-hands-love-woman.jpg') center center no-repeat;  
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  max-width: 100%;  
-  min-height: 250px;
+  background: rgb(0, 0, 0);
+  position: relative;
+  width: 100%;
+}
+.become_donor img{
+  width: 100%;
+  opacity: 0.8;
+    -webkit-transition: all 0.5s ease;
+     -moz-transition: all 0.5s ease;
+       -o-transition: all 0.5s ease;
+      -ms-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+}
+.become_donor img:hover{
+  opacity: 1;
+}
+.become_donor h3{
+  text-align: left;
+  position: absolute; 
+  top: 100px; 
+  left: 5px; 
+  width: 100%;
+  color: #ecf0f1;
+  text-shadow: 0.1em 0.1em 0.05em #333;
+  pointer-events:none;
+}
+.cinquexmille{
+  margin: 10px 0;
+  border: dashed 4px #006eb6;
+  opacity: 0.8;
+  -webkit-transition: all 0.5s ease;
+     -moz-transition: all 0.5s ease;
+       -o-transition: all 0.5s ease;
+      -ms-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+}
+.cinquexmille:hover{
+  opacity: 1;
+}
+#statistiche, #statistiche p{
+  text-align: center;
+}
+#statistiche p{
+  padding-top: 25px;
+}
+.serviziociv{
+  width: 75%;
+}
+.cinquemille{
+  padding: 0;
+  border: none;
+  border-top: medium double #333;
+  color: #333;
+  text-align: center;
+  margin:35px 0;
+}
+.cinquemille:after {
+  content: "80006450292";
+  display: inline-block;
+  position: relative;
+  top: -0.7em;
+  font-size: 1.5em;
+  padding: 0 0.25em;
+  background: white;
 }
