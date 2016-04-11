@@ -195,10 +195,11 @@ footer{
   background: white;
 }
 /* faq */
-#faq .btn{
-  width:100%;
-  padding: 10px 0;
-  margin:15px 0;
+.question{
+  width: 100%;
+  padding: 10px;
+  margin:25px 0;
   background:#006eb6;
   color: white;
+  border-radius: 4px;
 }
