@@ -136,11 +136,11 @@ footer{
 .become_donor img{
   width: 100%;
   opacity: 0.8;
-    -webkit-transition: all 0.5s ease;
-     -moz-transition: all 0.5s ease;
-       -o-transition: all 0.5s ease;
-      -ms-transition: all 0.5s ease;
-          transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+   -moz-transition: all 0.5s ease;
+     -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+        transition: all 0.5s ease;
 }
 .become_donor img:hover{
   opacity: 1;
@@ -193,4 +193,12 @@ footer{
   font-size: 1.5em;
   padding: 0 0.25em;
   background: white;
+}
+/* faq */
+#faq .btn{
+  width:100%;
+  padding: 10px 0;
+  margin:15px 0;
+  background:#006eb6;
+  color: white;
 }
