@@ -209,10 +209,10 @@ footer{
   background: #ff3333;
 }
 .question.collapsed:before{
-  content:"\f0da \20";
+  content:"\f138 \20";
   font-family: FontAwesome;
 }
 .question:before{
-  content:"\f0d7 \20";
+  content:"\f13a \20";
   font-family: FontAwesome;
 }
