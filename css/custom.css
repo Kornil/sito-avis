@@ -198,8 +198,21 @@ footer{
 .question{
   width: 100%;
   padding: 10px;
-  margin:25px 0;
   background:#006eb6;
   color: white;
   border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  border:1px solid white;
+}
+.question:hover,.question:not(.collapsed){
+  background: #ff3333;
+}
+.question.collapsed:before{
+  content:"\f0da \20";
+  font-family: FontAwesome;
+}
+.question:before{
+  content:"\f0d7 \20";
+  font-family: FontAwesome;
 }
