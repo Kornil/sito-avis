@@ -22,15 +22,7 @@
   background-color: #006eb6;
   color:white;
 }
-/*.blog-post { display: none; }
-.blog-post:target { display: block; }*/
 
-.blog-post, .blog-post:target ~ #avis{
-  display: none;
-}
-#avis, .blog-post:target {
-  display: block;
-}
 /* footer */
 footer{
   background-color: #333;
@@ -95,7 +87,15 @@ footer{
   list-style-type: none;
 }
 .backtop{
-  margin-top:25px;
+  margin-top: 25px;
+}
+.btn-primary{
+  background: #006eb6;
+  border-color: #006eb6;
+}
+.btn-primary:hover{
+  background: #ff3333;
+  border-color: #ff3333;
 }
 /* contatti */
 .Flexible-container{  
