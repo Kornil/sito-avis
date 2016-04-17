@@ -243,7 +243,10 @@ footer{
   font-size: 13px;
 }
 .mainrow{
-  background:url('../images/concrete_seamless.png');
+  background:url('../images/arches.png');
+}
+body{
+  background:#006eb6;
 }
 .maincol{
   background: white;
