@@ -161,10 +161,6 @@ footer{
 }
 .sidebar{
   text-align: center;
-  position: relative;
-}
-.sidebar_container{
-  position: static;
 }
 .side{
   height: 100%;
