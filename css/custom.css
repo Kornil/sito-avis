@@ -41,6 +41,7 @@ body{
   border-top: medium double #888;
   color: #888;
   text-align: center;
+  margin:15px 0;
 }
 .main:after{
   content: "";
@@ -101,6 +102,7 @@ footer{
 .blog-post h4{
   margin: 20px;
   font-size: 16px;
+  font-weight: 600;
 }
 .blog-post h2{
   font-weight: 700;
@@ -121,6 +123,9 @@ footer{
   font-size: 14px;
   margin-bottom: 15px;
   list-style-type: none;
+}
+.blog-post li{
+  margin:5px 0;
 }
 .backtop{
   margin: 25px;
@@ -240,4 +245,22 @@ footer{
 }
 #cookie ul{
   font-size: 13px;
+}
+.share_btn{
+  float: right;
+}
+.share_btn a{
+  text-decoration: none;
+}
+.share_btn img {
+  width: 25px;
+  margin: 5px;
+  box-shadow: 0;
+  display: inline;
+}
+.share_btn p{
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 0;
+  font-family: 'Amatic SC', cursive;
 }
