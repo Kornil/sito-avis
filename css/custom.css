@@ -264,3 +264,13 @@ footer{
   margin-bottom: 0;
   font-family: 'Amatic SC', cursive;
 }
+/* me footer */
+.fa-heart-o{
+  color:#ff3333;
+}
+.fa-twitter{
+  color:white;
+}
+.fa-twitter:hover{
+  color:#00aced;;
+}
