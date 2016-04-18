@@ -161,11 +161,10 @@ footer{
 }
 .sidebar{
   text-align: center;
-}
-.side{
-  height: 100%;
+  padding-top: 20px;
 }
 .cinquexmille{
+  margin-bottom: 20px;
   border: dashed 4px #006eb6;
   opacity: 0.8;
   -webkit-transition: all 0.5s ease;
