@@ -15,9 +15,6 @@ border-radius:4px;
 font-size:12px;
 font-weight:bold;}
 #cookieChoiceInfo > a:nth-child(2):hover, a#cookieChoiceDismiss:hover {
-color:white;
-text-decoration:none;
-position: relative;
 top:1px;left:1px;}
 /* fine cookie */
 body{
@@ -64,20 +61,24 @@ body{
 /* footer */
 footer{
   background-color: #333;
-  padding: 15px 0 35px;
   color: white;
   text-align: center;
 }
-.footer_link, .footer_link:hover{
+footer .col-md-2{  
+  padding: 30px 0 25px;
+}
+footer img{
+  padding-top: 20px;
+}
+.menu{
+  padding:0;
+}
+.footer a, .footer a:hover{
   color: white;
 }
 .footer p{
   margin: 0;
-  font-size: 13px;
-}
-.footer hr{
-  border-color: #333;
-  margin: 15px 0;
+  font-size: 12px;
 }
 /* fb button */
 .fa-lg{
@@ -119,7 +120,7 @@ footer{
   max-width: 100%;
   box-shadow: 2px 2px 1px #888;
 }
-.blog-post ul{
+.blog-post ul, footer ul{
   font-size: 14px;
   margin-bottom: 15px;
   list-style-type: none;
@@ -191,23 +192,6 @@ footer{
 .serviziociv{
   max-width: 180px;
 }
-.cinquemille{
-  padding: 0;
-  border: none;
-  border-top: medium double #333;
-  color: #333;
-  text-align: center;
-  margin:35px 0;
-}
-.cinquemille:after {
-  content: "CF 80006450292";
-  display: inline-block;
-  position: relative;
-  top: -0.7em;
-  font-size: 1.5em;
-  padding: 0 0.25em;
-  background: white;
-}
 /* faq */
 .question{
   width: 100%;
@@ -254,15 +238,16 @@ footer{
 }
 .share_btn img {
   width: 25px;
-  margin: 5px;
+  margin: 5px 5px 10px 5px;
   box-shadow: 0;
   display: inline;
 }
 .share_btn p{
-  font-weight: 700;
   font-size: 28px;
   margin-bottom: 0;
-  font-family: 'Amatic SC', cursive;
+  /*font-family: 'Amatic SC', cursive;*/
+  font-family: 'Indie Flower', cursive;
+  color: #555;
 }
 /* me footer */
 .fa-heart-o{
@@ -273,4 +258,22 @@ footer{
 }
 .fa-twitter:hover{
   color:#00aced;;
+}
+.hr_5x hr{
+  border-top: medium double #888;
+}
+.hr_5x h3{
+  text-align: center;
+  font-size: 1.5em;
+}
+.hr_5x{
+  margin: 25px 0;
+}
+.me_footer{
+  padding-bottom:55px;
+}
+@media (min-width : 992px) {
+  .me_footer{
+    padding-top: 50px;
+  }
 }
