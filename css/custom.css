@@ -105,7 +105,8 @@ footer img{
 }
 .blog-post h4{
   margin: 20px;
-  font-size: 16px;
+  margin-left: 0;
+  font-size: 15px;
   font-weight: 600;
 }
 .blog-post h2{
@@ -168,7 +169,7 @@ footer img{
   font-weight: 700;
   margin:2px;
 }
-.sidebar{
+.sidebar, .sidebar-no-effect{
   text-align: center;
   padding-top: 20px;
 }
@@ -220,6 +221,11 @@ footer img{
 .stat_img{
   display: block;
   margin:50px auto;
+}
+.index_img{
+  display:block;
+  float:left;
+  margin:10px;
 }
 .faquestion{
   margin:50px 0;
@@ -278,6 +284,9 @@ footer img{
 @media (min-width : 992px) {
   .me_footer{
     padding-top: 50px;
+  }
+  .sidebar-no-effect{
+    margin-top:130px;
   }
 }
 #contatti .row .col-sm-4 p{
