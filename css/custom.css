@@ -182,7 +182,7 @@ footer img{
        -o-transition: all 0.5s ease;
       -ms-transition: all 0.5s ease;
           transition: all 0.5s ease;
-          max-width: 180px;
+          max-width: 150px;
 }
 .cinquexmille:hover{
   opacity: 1;
@@ -194,7 +194,7 @@ footer img{
   padding-top: 25px;
 }
 .serviziociv{
-  max-width: 180px;
+  max-width: 150px;
 }
 /* faq */
 .question{
@@ -224,7 +224,7 @@ footer img{
 }
 .index_img{
   display:block;
-  float:left;
+  float:right;
   margin:10px;
 }
 .faquestion{
@@ -285,13 +285,23 @@ footer img{
   .me_footer{
     padding-top: 50px;
   }
-  .sidebar-no-effect{
-    margin-top:130px;
-  }
+  /*.sidebar-no-effect{
+    margin-top:25px;
+  }*/
 }
 #contatti .row .col-sm-4 p{
   font-size: 12px;
 }
 #contatti .row .col-sm-4 h3{
   font-size: 18px;
+}
+.sidebar-no-effect img{
+  margin:25px;
+}
+.sidebar-no-effect{
+  padding-top: 0;
+}
+.second_hr{
+  width:75%;
+  margin:0 auto;
 }
