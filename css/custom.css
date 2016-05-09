@@ -35,7 +35,7 @@ p{
 .container-fluid{
   padding:0;
 }
-.main{
+/*.main{
   padding: 0;
   border: none;
   border-top: medium double #888;
@@ -52,7 +52,7 @@ p{
   height: 30px; width: 30px;
   top: -1.1em;
   padding: 0;
-}
+}*/
 .navbar-default{
   border-color: white; background-color: white;
 }
@@ -182,7 +182,7 @@ footer img{
        -o-transition: all 0.5s ease;
       -ms-transition: all 0.5s ease;
           transition: all 0.5s ease;
-          max-width: 150px;
+          max-width: 125px;
 }
 .cinquexmille:hover{
   opacity: 1;
@@ -194,7 +194,7 @@ footer img{
   padding-top: 25px;
 }
 .serviziociv{
-  max-width: 150px;
+  max-width: 125px;
 }
 /* faq */
 .question{
@@ -224,8 +224,8 @@ footer img{
 }
 .index_img{
   display:block;
-  float:right;
-  margin:10px;
+  /*float:right;
+  margin:10px;*/
 }
 .faquestion{
   margin:50px 0;
@@ -304,4 +304,44 @@ footer img{
 .second_hr{
   width:75%;
   margin:0 auto;
+}
+.logo{
+  width:300px;height: auto;
+}
+.sidebar img{
+  margin:35px;
+}
+.share_btn p .fa{
+  margin-right:25px;
+}
+.share_btn p .fa:hover{
+  color:#3b5998;
+}
+.share_btn p a .fa{
+  color:#555;
+}
+#avis{
+  padding-top:0;
+  padding-bottom:25px;
+}
+.sidebar-no-effect a img{
+  margin:0;
+}
+.sidebar-no-effect a .cinquexmille{
+  margin-right:50px;
+}
+#orari-index p{
+      font-size: 14px;
+    padding: 0 0 1em;
+    text-align: justify;
+    margin-bottom: 0;
+}
+#orari-index{
+  padding-top:25px;
+}
+#nd-row{
+  margin-bottom: 30px;
+}
+.sidebar-no-effect{
+  margin-top: 20px;
 }
