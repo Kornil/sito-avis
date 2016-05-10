@@ -327,9 +327,6 @@ footer img{
 .sidebar-no-effect a img{
   margin:0;
 }
-.sidebar-no-effect a .cinquexmille{
-  margin-right:50px;
-}
 #orari-index p{
       font-size: 14px;
     padding: 0 0 1em;
@@ -344,4 +341,13 @@ footer img{
 }
 .sidebar-no-effect{
   margin-top: 20px;
+}
+
+@media (max-width : 992px) {
+  .sidebar-no-effect a img{
+    text-align: left;
+  }
+  #orari-index p{
+    text-align: center;
+  }
 }
