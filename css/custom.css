@@ -1,3 +1,9 @@
+@import url("https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css");
+@import url("https://fonts.googleapis.com/css?family=Indie+Flower");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+@import url("https://fonts.googleapis.com/css?family=Amatic+SC:400,700");
+@import url("fonts/font-awesome/css/font-awesome.min.css");
+
 /* CSS Accettazione Cookie */
 div#cookieChoiceInfo {
 background-color: #006eb6 !important;
