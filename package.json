@@ -1,0 +1,44 @@
+{
+  "name": "sito-avis",
+  "version": "1.0.0",
+  "description": "Avis Site",
+  "scripts": {
+    "start": "node src/server/index.js",
+    "test": "eslint src --ext .jsx,.js --fix",
+    "build": "webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kornil/sito-avis.git"
+  },
+  "keywords": [
+    "react",
+    "express",
+    "firebase",
+    "redux"
+  ],
+  "author": "Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kornil/sito-avis/issues"
+  },
+  "homepage": "https://github.com/Kornil/sito-avis#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.2",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
+    "webpack": "^2.4.1"
+  }
+}
