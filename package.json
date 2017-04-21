@@ -4,6 +4,7 @@
   "description": "Avis Site",
   "scripts": {
     "start": "node src/server/index.js",
+    "dev": "nodemon src/server/index.js",
     "test": "eslint src --ext .jsx,.js --fix",
     "build": "webpack -p"
   },
@@ -39,6 +40,8 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
+    "nodemon": "^1.11.0",
+    "pre-commit": "^1.2.2",
     "webpack": "^2.4.1"
   }
 }
