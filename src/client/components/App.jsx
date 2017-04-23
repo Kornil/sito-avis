@@ -1,17 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { increment } from '../actions';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      header: 'Hello from React',
+      title: 'Hello from React',
     };
   }
   render() {
     return (
-      <h1>{this.state.header}</h1>
+      <div>
+        <h1>{this.state.title}</h1>
+        <p>Count: {this.props.count}</p>
+        <button onClick={() => this.props.increment(1)}>Click me</button>
+      </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  count: state.count,
+});
+
+const mapDispatchToProps = dispatch => ({
+  increment: value => dispatch(increment(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -2,8 +2,10 @@
   "parser": "babel-eslint",
   "extends": "airbnb",
   "rules": {
-    "linebreak-style": ["error", "windows"],
-    "no-console": 0
+    "react/prop-types": 0,
+    "linebreak-style": 0,
+    "no-console": 0,
+    "no-underscore-dangle": 0
   },
   "env": {
     "browser": true

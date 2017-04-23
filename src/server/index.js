@@ -3,12 +3,12 @@ const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const build = path.join(__dirname, '../../build');
+const dist = path.join(__dirname, '../../dist');
 
-app.use(express.static(path.join(__dirname, '../../build')));
+app.use(express.static(path.join(__dirname, '../../dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(build, 'index.html'));
+  res.sendFile(path.join(dist, 'index.html'));
 });
 
 app.listen(port, () => {

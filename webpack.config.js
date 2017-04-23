@@ -2,12 +2,12 @@ const webpack = require('webpack');
 const path = require('path');
 
 const APP_DIR = path.resolve(__dirname, 'src/client');
-const BUILD_DIR = path.resolve(__dirname, 'build');
+const DIST_DIR = path.resolve(__dirname, 'dist');
 
 const config = {
   entry: APP_DIR + '/index.jsx',
   output: {
-    path: BUILD_DIR,
+    path: DIST_DIR,
     filename: 'bundle.js'
   },
   resolve: {
