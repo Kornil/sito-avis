@@ -11055,7 +11055,14 @@ var App = function (_Component) {
           { onClick: function onClick() {
               return _this2.props.increment(1);
             } },
-          'Click me'
+          'Increment'
+        ),
+        _react2.default.createElement(
+          'button',
+          { onClick: function onClick() {
+              return _this2.props.decrement(1);
+            } },
+          'Decrement'
         )
       );
     }
@@ -11074,6 +11081,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     increment: function increment(value) {
       return dispatch((0, _actions.increment)(value));
+    },
+    decrement: function decrement(value) {
+      return dispatch((0, _actions.decrement)(value));
     }
   };
 };
@@ -11139,7 +11149,11 @@ var increment = exports.increment = function increment(value) {
   };
 };
 
-exports.default = increment;
+var decrement = exports.decrement = function decrement(value) {
+  return function (dispatch) {
+    dispatch({ type: 'DECREMENT', payload: value });
+  };
+};
 
 /***/ }),
 /* 101 */
@@ -11196,6 +11210,12 @@ var reducer = function reducer() {
         var updatedState = Object.assign({}, state);
         updatedState.count += action.payload;
         return updatedState;
+      }
+    case 'DECREMENT':
+      {
+        var _updatedState = Object.assign({}, state);
+        _updatedState.count -= action.payload;
+        return _updatedState;
       }
     default:
       return state;
