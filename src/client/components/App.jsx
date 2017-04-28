@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { Route, Link } from 'react-router-dom';
 
-import { increment, decrement } from '../actions';
+import About from './About';
+import Counter from './Counter';
 
 class App extends Component {
   constructor() {
@@ -14,21 +15,16 @@ class App extends Component {
     return (
       <div>
         <h1>{this.state.title}</h1>
-        <p>Count: {this.props.count}</p>
-        <button onClick={() => this.props.increment(1)}>Increment</button>
-        <button onClick={() => this.props.decrement(1)}>Decrement</button>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/counter">Counter</Link></li>
+        </ul>
+        <Route path="/about" component={About} />
+        <Route path="/counter" component={Counter} />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  count: state.count,
-});
-
-const mapDispatchToProps = dispatch => ({
-  increment: value => dispatch(increment(value)),
-  decrement: value => dispatch(decrement(value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

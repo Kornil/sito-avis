@@ -19,7 +19,7 @@
     "firebase",
     "redux"
   ],
-  "author": "Team",
+  "author": "Robert Pemberton, Mahaveer Sharma",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Kornil/sito-avis/issues"
@@ -30,6 +30,8 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
     "redux-promise-middleware": "^4.2.0",
