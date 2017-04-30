@@ -1,18 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { increment, decrement } from '../actions';
 
-class ReduxCounter extends Component {
-  render() {
-    return (
-      <div>
-        <p>Count: {this.props.count}</p>
-        <button onClick={() => this.props.increment(1)}>Increment</button>
-        <button onClick={() => this.props.decrement(1)}>Decrement</button>
-      </div>
-    );
-  }
-}
+const ReduxCounter = props => (
+  <div>
+    <p>Count: {props.count}</p>
+    <button onClick={() => props.increment(1)}>Increment</button>
+    <button onClick={() => props.decrement(1)}>Decrement</button>
+  </div>
+  );
 
 const mapStateToProps = state => ({
   count: state.count,

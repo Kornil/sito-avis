@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
-import * as firebase from 'firebase';
 
 import About from './About';
 import ReduxCounter from './ReduxCounter';
@@ -11,18 +10,7 @@ class App extends Component {
     super();
     this.state = {
       title: 'Hello from React',
-      speed: null,
     };
-  }
-
-  componentDidMount() {
-    const rootRef = firebase.database().ref().child('react');
-    const speedRef = rootRef.child('speed');
-    speedRef.on('value', (snap) => {
-      this.setState({
-        speed: snap.val(),
-      });
-    });
   }
 
   render() {

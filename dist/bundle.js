@@ -12119,10 +12119,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(66);
 
-var _firebase = __webpack_require__(64);
-
-var firebase = _interopRequireWildcard(_firebase);
-
 var _About = __webpack_require__(117);
 
 var _About2 = _interopRequireDefault(_About);
@@ -12134,8 +12130,6 @@ var _ReduxCounter2 = _interopRequireDefault(_ReduxCounter);
 var _Firebase = __webpack_require__(282);
 
 var _Firebase2 = _interopRequireDefault(_Firebase);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12154,26 +12148,12 @@ var App = function (_Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
     _this.state = {
-      title: 'Hello from React',
-      speed: null
+      title: 'Hello from React'
     };
     return _this;
   }
 
   _createClass(App, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      var rootRef = firebase.database().ref().child('react');
-      var speedRef = rootRef.child('speed');
-      speedRef.on('value', function (snap) {
-        _this2.setState({
-          speed: snap.val()
-        });
-      });
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -12364,12 +12344,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var config = {
-  apiKey: "AIzaSyDdJNiz5dZrKqsDmIgi87Caf9QuiRSH4fc",
-  authDomain: "avis-29772.firebaseapp.com",
-  databaseURL: "https://avis-29772.firebaseio.com",
-  projectId: "avis-29772",
-  storageBucket: "avis-29772.appspot.com",
-  messagingSenderId: "692861695276"
+  apiKey: 'AIzaSyDdJNiz5dZrKqsDmIgi87Caf9QuiRSH4fc',
+  authDomain: 'avis-29772.firebaseapp.com',
+  databaseURL: 'https://avis-29772.firebaseio.com',
+  projectId: 'avis-29772',
+  storageBucket: 'avis-29772.appspot.com',
+  messagingSenderId: '692861695276'
 };
 firebase.initializeApp(config);
 
@@ -29822,8 +29802,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
@@ -29834,55 +29812,32 @@ var _actions = __webpack_require__(116);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ReduxCounter = function (_Component) {
-  _inherits(ReduxCounter, _Component);
-
-  function ReduxCounter() {
-    _classCallCheck(this, ReduxCounter);
-
-    return _possibleConstructorReturn(this, (ReduxCounter.__proto__ || Object.getPrototypeOf(ReduxCounter)).apply(this, arguments));
-  }
-
-  _createClass(ReduxCounter, [{
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'p',
-          null,
-          'Count: ',
-          this.props.count
-        ),
-        _react2.default.createElement(
-          'button',
-          { onClick: function onClick() {
-              return _this2.props.increment(1);
-            } },
-          'Increment'
-        ),
-        _react2.default.createElement(
-          'button',
-          { onClick: function onClick() {
-              return _this2.props.decrement(1);
-            } },
-          'Decrement'
-        )
-      );
-    }
-  }]);
-
-  return ReduxCounter;
-}(_react.Component);
+var ReduxCounter = function ReduxCounter(props) {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'p',
+      null,
+      'Count: ',
+      props.count
+    ),
+    _react2.default.createElement(
+      'button',
+      { onClick: function onClick() {
+          return props.increment(1);
+        } },
+      'Increment'
+    ),
+    _react2.default.createElement(
+      'button',
+      { onClick: function onClick() {
+          return props.decrement(1);
+        } },
+      'Decrement'
+    )
+  );
+};
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
