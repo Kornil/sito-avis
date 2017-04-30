@@ -27,6 +27,7 @@
   "homepage": "https://github.com/Kornil/sito-avis#readme",
   "dependencies": {
     "express": "^4.15.2",
+    "firebase": "^3.9.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
