@@ -12127,9 +12127,13 @@ var _About = __webpack_require__(117);
 
 var _About2 = _interopRequireDefault(_About);
 
-var _Counter = __webpack_require__(118);
+var _ReduxCounter = __webpack_require__(283);
 
-var _Counter2 = _interopRequireDefault(_Counter);
+var _ReduxCounter2 = _interopRequireDefault(_ReduxCounter);
+
+var _Firebase = __webpack_require__(282);
+
+var _Firebase2 = _interopRequireDefault(_Firebase);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -12206,19 +12210,24 @@ var App = function (_Component) {
             null,
             _react2.default.createElement(
               _reactRouterDom.Link,
-              { to: '/counter' },
-              'Counter'
+              { to: '/reduxcounter' },
+              'ReduxCounter'
+            )
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              _reactRouterDom.Link,
+              { to: '/firebase' },
+              'Firebase'
             )
           )
         ),
-        _react2.default.createElement(
-          'h2',
-          null,
-          'Speed: ',
-          this.state.speed
-        ),
+        _react2.default.createElement('hr', null),
         _react2.default.createElement(_reactRouterDom.Route, { path: '/about', component: _About2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: '/counter', component: _Counter2.default })
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/reduxcounter', component: _ReduxCounter2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/firebase', component: _Firebase2.default })
       );
     }
   }]);
@@ -12321,98 +12330,7 @@ var About = function About() {
 exports.default = About;
 
 /***/ }),
-/* 118 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(65);
-
-var _actions = __webpack_require__(116);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Counter = function (_Component) {
-  _inherits(Counter, _Component);
-
-  function Counter() {
-    _classCallCheck(this, Counter);
-
-    return _possibleConstructorReturn(this, (Counter.__proto__ || Object.getPrototypeOf(Counter)).apply(this, arguments));
-  }
-
-  _createClass(Counter, [{
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'p',
-          null,
-          'Count: ',
-          this.props.count
-        ),
-        _react2.default.createElement(
-          'button',
-          { onClick: function onClick() {
-              return _this2.props.increment(1);
-            } },
-          'Increment'
-        ),
-        _react2.default.createElement(
-          'button',
-          { onClick: function onClick() {
-              return _this2.props.decrement(1);
-            } },
-          'Decrement'
-        )
-      );
-    }
-  }]);
-
-  return Counter;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    count: state.count
-  };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    increment: function increment(value) {
-      return dispatch((0, _actions.increment)(value));
-    },
-    decrement: function decrement(value) {
-      return dispatch((0, _actions.decrement)(value));
-    }
-  };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Counter);
-
-/***/ }),
+/* 118 */,
 /* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12429,6 +12347,10 @@ var _reactRedux = __webpack_require__(65);
 
 var _reactRouterDom = __webpack_require__(66);
 
+var _firebase = __webpack_require__(64);
+
+var firebase = _interopRequireWildcard(_firebase);
+
 var _store = __webpack_require__(114);
 
 var _store2 = _interopRequireDefault(_store);
@@ -12437,7 +12359,19 @@ var _App = __webpack_require__(113);
 
 var _App2 = _interopRequireDefault(_App);
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var config = {
+  apiKey: "AIzaSyDdJNiz5dZrKqsDmIgi87Caf9QuiRSH4fc",
+  authDomain: "avis-29772.firebaseapp.com",
+  databaseURL: "https://avis-29772.firebaseio.com",
+  projectId: "avis-29772",
+  storageBucket: "avis-29772.appspot.com",
+  messagingSenderId: "692861695276"
+};
+firebase.initializeApp(config);
 
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
@@ -29801,6 +29735,173 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _firebase = __webpack_require__(64);
+
+var firebase = _interopRequireWildcard(_firebase);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Firebase = function (_Component) {
+  _inherits(Firebase, _Component);
+
+  function Firebase() {
+    _classCallCheck(this, Firebase);
+
+    var _this = _possibleConstructorReturn(this, (Firebase.__proto__ || Object.getPrototypeOf(Firebase)).call(this));
+
+    _this.state = {
+      data: null
+    };
+    return _this;
+  }
+
+  _createClass(Firebase, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var rootRef = firebase.database().ref().child('react');
+      var speedRef = rootRef.child('data');
+      speedRef.on('value', function (snap) {
+        _this2.setState({
+          data: snap.val()
+        });
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'h2',
+        null,
+        'Data from Firebase: ',
+        this.state.data
+      );
+    }
+  }]);
+
+  return Firebase;
+}(_react.Component);
+
+exports.default = Firebase;
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(65);
+
+var _actions = __webpack_require__(116);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ReduxCounter = function (_Component) {
+  _inherits(ReduxCounter, _Component);
+
+  function ReduxCounter() {
+    _classCallCheck(this, ReduxCounter);
+
+    return _possibleConstructorReturn(this, (ReduxCounter.__proto__ || Object.getPrototypeOf(ReduxCounter)).apply(this, arguments));
+  }
+
+  _createClass(ReduxCounter, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'p',
+          null,
+          'Count: ',
+          this.props.count
+        ),
+        _react2.default.createElement(
+          'button',
+          { onClick: function onClick() {
+              return _this2.props.increment(1);
+            } },
+          'Increment'
+        ),
+        _react2.default.createElement(
+          'button',
+          { onClick: function onClick() {
+              return _this2.props.decrement(1);
+            } },
+          'Decrement'
+        )
+      );
+    }
+  }]);
+
+  return ReduxCounter;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    count: state.count
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    increment: function increment(value) {
+      return dispatch((0, _actions.increment)(value));
+    },
+    decrement: function decrement(value) {
+      return dispatch((0, _actions.decrement)(value));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ReduxCounter);
 
 /***/ })
 /******/ ]);

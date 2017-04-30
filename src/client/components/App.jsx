@@ -3,7 +3,8 @@ import { Route, Link } from 'react-router-dom';
 import * as firebase from 'firebase';
 
 import About from './About';
-import Counter from './Counter';
+import ReduxCounter from './ReduxCounter';
+import Firebase from './Firebase';
 
 class App extends Component {
   constructor() {
@@ -31,11 +32,13 @@ class App extends Component {
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About</Link></li>
-          <li><Link to="/counter">Counter</Link></li>
+          <li><Link to="/reduxcounter">ReduxCounter</Link></li>
+          <li><Link to="/firebase">Firebase</Link></li>
         </ul>
-        <h2>Speed: {this.state.speed}</h2>
+        <hr />
         <Route path="/about" component={About} />
-        <Route path="/counter" component={Counter} />
+        <Route path="/reduxcounter" component={ReduxCounter} />
+        <Route path="/firebase" component={Firebase} />
       </div>
     );
   }

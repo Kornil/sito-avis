@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { increment, decrement } from '../actions';
 
-class Counter extends Component {
+class ReduxCounter extends Component {
   render() {
     return (
       <div>
@@ -23,4 +23,4 @@ const mapDispatchToProps = dispatch => ({
   decrement: value => dispatch(decrement(value)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxCounter);
