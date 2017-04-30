@@ -17,9 +17,9 @@ class App extends Component {
   componentDidMount() {
     const rootRef = firebase.database().ref().child('react');
     const speedRef = rootRef.child('speed');
-    speedRef.on('value', snap => {
+    speedRef.on('value', (snap) => {
       this.setState({
-        speed: snap.val()
+        speed: snap.val(),
       });
     });
   }
