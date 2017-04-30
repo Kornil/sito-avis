@@ -12429,10 +12429,6 @@ var _reactRedux = __webpack_require__(65);
 
 var _reactRouterDom = __webpack_require__(66);
 
-var _firebase = __webpack_require__(64);
-
-var firebase = _interopRequireWildcard(_firebase);
-
 var _store = __webpack_require__(114);
 
 var _store2 = _interopRequireDefault(_store);
@@ -12441,19 +12437,7 @@ var _App = __webpack_require__(113);
 
 var _App2 = _interopRequireDefault(_App);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var config = {
-  apiKey: 'AIzaSyDdJNiz5dZrKqsDmIgi87Caf9QuiRSH4fc',
-  authDomain: 'avis-29772.firebaseapp.com',
-  databaseURL: 'https://avis-29772.firebaseio.com',
-  projectId: 'avis-29772',
-  storageBucket: 'avis-29772.appspot.com',
-  messagingSenderId: '692861695276'
-};
-firebase.initializeApp(config);
 
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
