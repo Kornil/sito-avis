@@ -6,7 +6,7 @@ Run `npm install`
 
 ## Develop
 1. Run `npm run all`
-[localhost:3000/dist/](http://localhost:3000/dist/)
+2. Navigate to [localhost:3000/dist/](http://localhost:3000/dist/)
 
 ## Test
 Run `npm run test`
