@@ -21,7 +21,8 @@ const config = {
         loader: 'babel-loader'
       }
     ]
-  }
+  },
+  devtool: 'cheap-module-eval-source-map'
 }
 
 module.exports = config;

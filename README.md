@@ -5,8 +5,8 @@ Currently in development
 Run `npm install`
 
 ## Develop
-1. Run `weback -watch`
-2. Run `npm run dev` then open a browser to [localhost:3000](http://localhost:3000)
+1. Run `npm run all`
+[localhost:3000/dist/](http://localhost:3000/dist/)
 
 ## Test
 Run `npm run test`
