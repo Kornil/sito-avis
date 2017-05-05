@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import * as firebase from 'firebase';
 
+import './styles/main.scss';
+
 import store from './store';
 import App from './components/App';
 
