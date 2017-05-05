@@ -4,12 +4,13 @@ import { Route, Link } from 'react-router-dom';
 import About from './About';
 import ReduxCounter from './ReduxCounter';
 import Firebase from './Firebase';
+import Login from './Login';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      title: 'Hello from React',
+      title: 'Hello from Test',
     };
   }
 
@@ -22,11 +23,13 @@ class App extends Component {
           <li><Link to="/about">About</Link></li>
           <li><Link to="/reduxcounter">ReduxCounter</Link></li>
           <li><Link to="/firebase">Firebase</Link></li>
+          <li><Link to="/login">Login</Link></li>
         </ul>
         <hr />
         <Route path="/about" component={About} />
         <Route path="/reduxcounter" component={ReduxCounter} />
         <Route path="/firebase" component={Firebase} />
+        <Route path="/login" component={Login} />
       </div>
     );
   }

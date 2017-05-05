@@ -7,10 +7,10 @@
     "start": "node src/server/index.js",
     "dev": "nodemon src/server/index.js",
     "build": "webpack -p",
-    "all":"npm-run-all --parallel watch sync",
+    "all": "npm-run-all --parallel watch sync",
     "test": "eslint src --ext .jsx,.js --fix",
     "watch": "webpack -w",
-    "sync": "browser-sync start --server --files \"dist/bundle.js, dist/index,html\""
+    "sync": "browser-sync start --server --files dist \"dist/bundle.js, dist/index.html\""
   },
   "repository": {
     "type": "git",

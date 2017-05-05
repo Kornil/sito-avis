@@ -1,4 +1,4 @@
-# Avis Rovigo website
+# AVIS Rovigo website
 Currently in development
 
 ## Installation

@@ -8,7 +8,7 @@ const ReduxCounter = props => (
     <button onClick={() => props.increment(1)}>Increment</button>
     <button onClick={() => props.decrement(1)}>Decrement</button>
   </div>
-  );
+);
 
 const mapStateToProps = state => ({
   count: state.count,
