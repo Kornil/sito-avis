@@ -27,7 +27,7 @@ const config = {
       },
       {
         test:/\.(jpg|png|gif|bmp)$/,
-        loader: 'file-loader'
+        loader: require.resolve("file-loader")
       }
     ]
   },

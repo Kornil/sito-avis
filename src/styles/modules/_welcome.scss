@@ -49,6 +49,11 @@
 }
 
 .welcome {
+   color: #FFFFFF;
+    text-align: center;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+
   &__image {
     height: calc(100vh - 100px);
     /* temporary fix to accommodate fake nav */
@@ -90,10 +95,6 @@
   }
   &__text {
     width: 100%;
-    color: #FFFFFF;
-    text-align: center;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 300;
     position: absolute;
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.63);
     @include for-phone-only {
@@ -110,10 +111,7 @@
     }
   }
   &__button {
-    color: #FFFFFF;
-    text-align: center;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 300;
+      color: #FFFFFF;
     text-transform: uppercase;
     letter-spacing: 1px;
     background: $color_red;

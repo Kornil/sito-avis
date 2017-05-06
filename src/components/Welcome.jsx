@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Welcome = () => (
-  <div>
+  <div className="welcome">
     <div className="welcome__image" />
     <h1 className="welcome__text">Diventa donatore</h1>
     <button className="welcome__button">Scopri Come</button>
