@@ -9,7 +9,7 @@ const config = {
   entry: APP_DIR + '/index.jsx',
   output: {
     path: DIST_DIR,
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   resolve: {
     extensions: ['.js', '.jsx']
@@ -33,7 +33,10 @@ const config = {
       allChunks: true,
     }),
   ],
-  devtool: 'cheap-module-eval-source-map'
+  devtool: 'cheap-module-eval-source-map',
+  devServer: {
+    historyApiFallback: true
+  }
 }
 
 module.exports = config;
