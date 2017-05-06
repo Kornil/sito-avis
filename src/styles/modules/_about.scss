@@ -1,3 +1,114 @@
-.about__title {
-  color: $color_blue;
+/* MEDIA QUERIES */
+
+@mixin for-phone-only {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-portrait-up {
+  @media (min-width: 600px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-portait-only {
+  @media (min-width: 600px) and (max-width: 899px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-landscape-up {
+  @media (min-width: 900px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-landscape-only {
+  @media (min-width: 900px) and (max-width: 1199px) {
+    @content;
+  }
+}
+
+@mixin for-desktop-up {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin for-desktop-only {
+  @media (min-width: 1200px) and (max-width: 1799px) {
+    @content;
+  }
+}
+
+@mixin for-big-desktop-up {
+  @media (min-width: 1800px) {
+    @content;
+  }
+}
+
+.about {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    display: flex;
+    @include for-phone-only {
+             flex-wrap: wrap;
+        }
+    &__text {
+        color: $color_gray_text;
+        line-height: 1.5em;
+        flex-basis: 100%;
+         @include for-phone-only {
+             display: block;
+             font-size: 18px;
+        }
+    @include for-tablet-portrait-up {
+        font-size: 18px;
+        padding: 20px;
+        }
+        @include for-tablet-landscape-up {
+        font-size: 20px;
+        }
+    @include for-desktop-up {
+      font-size: 24px;
+        padding-right: 40px;
+
+    }
+
+    }
+    &__image {
+        margin-left: -14%;
+    width: 122%;
+    }
+    &__ctacontainer {
+        flex-basis: 100%;
+    }
+    &__cta {
+        &-red {
+            color: $color_red;
+            font-weight: 700;
+            font-size: 46px;
+            margin: -.5em 0 .2em;
+            @include for-phone-only {
+             font-size: 32px;
+        }
+             @include for-tablet-portrait-up {
+        font-size: 36px;
+        }
+    @include for-desktop-up {
+    }
+        }
+        &-blue {
+            color: $color_blue;
+            font-size: 43px;
+            margin-top: 0;
+            @include for-phone-only {
+             font-size: 24px;
+        }
+                        @include for-tablet-portrait-up {
+        font-size: 32px;
+        }
+        }
+    }
 }

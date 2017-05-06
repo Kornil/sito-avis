@@ -26,7 +26,7 @@ const config = {
         loaders: ['style-loader?sourceMap', 'css-loader', 'sass-loader']
       },
       {
-        test:/\.(jpg|png|gif|bmp)$/,
+        test:/\.(jpg|png|gif|bmp|svg)$/,
         loader: require.resolve("file-loader")
       }
     ]
