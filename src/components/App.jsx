@@ -18,8 +18,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1 className='temptitle'>{this.state.title}</h1>
-        <ul className='tempnav'>
+        <h1 className="temptitle">{this.state.title}</h1>
+        <ul className="tempnav">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/welcome">Welcome</Link></li>
           <li><Link to="/about">About</Link></li>
