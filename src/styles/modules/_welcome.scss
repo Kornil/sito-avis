@@ -1,71 +1,94 @@
 /* MEDIA QUERIES */
 
 @mixin for-phone-only {
-  @media (max-width: 599px) { @content; }
+  @media (max-width: 599px) {
+    @content;
+  }
 }
+
 @mixin for-tablet-portrait-up {
-  @media (min-width: 600px) { @content; }
+  @media (min-width: 600px) {
+    @content;
+  }
 }
+
 @mixin for-tablet-portait-only {
-  @media (min-width: 600px) and (max-width: 899px) { @content; }
+  @media (min-width: 600px) and (max-width: 899px) {
+    @content;
+  }
 }
+
 @mixin for-tablet-landscape-up {
-  @media (min-width: 900px) { @content; }
+  @media (min-width: 900px) {
+    @content;
+  }
 }
+
 @mixin for-tablet-landscape-only {
-  @media (min-width: 900px) and (max-width: 1199px) { @content; }
+  @media (min-width: 900px) and (max-width: 1199px) {
+    @content;
+  }
 }
+
 @mixin for-desktop-up {
-  @media (min-width: 1200px) { @content; }
+  @media (min-width: 1200px) {
+    @content;
+  }
 }
+
 @mixin for-desktop-only {
-  @media (min-width: 1200px) and (max-width: 1799px) { @content; }
+  @media (min-width: 1200px) and (max-width: 1799px) {
+    @content;
+  }
 }
+
 @mixin for-big-desktop-up {
-  @media (min-width: 1800px) { @content; }
+  @media (min-width: 1800px) {
+    @content;
+  }
 }
-
-
 
 .welcome {
-
-    &__image {
-        height: calc(100vh - 100px); /* temporary fix to accommodate fake nav */
-
-
-  @include for-phone-only { background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1018136/BloodDonorServices2_600.jpg) no-repeat top center fixed;
-        -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;}
-
-  @include for-tablet-portrait-up { background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1018136/BloodDonorServices2_900.jpg) no-repeat top center fixed;
-        -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;}
-
-  @include for-tablet-landscape-up { background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1018136/BloodDonorServices2_1200.jpg) no-repeat top center fixed;
-        -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;}
-
-  @include for-desktop-up { background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1018136/BloodDonorServices2_1800.jpg) no-repeat top center fixed;
-        -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;}
-
-  @include for-big-desktop-up { background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1018136/BloodDonorServices2_1920.jpg) no-repeat top center fixed;
-        -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; }
-
-}
-
-&__text {
+  &__image {
+    height: calc(100vh - 100px);
+    /* temporary fix to accommodate fake nav */
+    @include for-phone-only {
+      background: url(../../images/BloodDonorServices2_600.jpg) no-repeat top center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    @include for-tablet-portrait-up {
+      background: url(../../images/BloodDonorServices2_900.jpg) no-repeat top center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    @include for-tablet-landscape-up {
+      background: url(../../images/BloodDonorServices2_1200.jpg) no-repeat top center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    @include for-desktop-up {
+      background: url(../../images/BloodDonorServices2_1800.jpg) no-repeat top center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    @include for-big-desktop-up {
+      background: url(../../images/BloodDonorServices2_1920.jpg) no-repeat top center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+  }
+  &__text {
     width: 100%;
     color: #FFFFFF;
     text-align: center;
@@ -73,22 +96,20 @@
     font-weight: 300;
     position: absolute;
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.63);
-
     @include for-phone-only {
-    top: 34%;
-    font-size: 36px;
+      top: 34%;
+      font-size: 36px;
     }
     @include for-tablet-portrait-up {
-        top: 27%;
-        font-size: 72px;
+      top: 27%;
+      font-size: 72px;
     }
     @include for-desktop-up {
-        top: 34%;
-    font-size: 95px;
+      top: 34%;
+      font-size: 95px;
     }
-}
-
-&__button {
+  }
+  &__button {
     color: #FFFFFF;
     text-align: center;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -104,14 +125,13 @@
     top: 50%;
     left: 50%;
     margin: 0 0 0 -108px;
-
     @include for-phone-only {}
     @include for-tablet-portrait-up {}
     @include for-desktop-up {
-        top: 65%;
+      top: 65%;
     }
     &:hover {
-        background: $color_red-lighter;
+      background: $color_red-lighter;
     }
-}
+  }
 }

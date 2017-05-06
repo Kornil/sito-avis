@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const APP_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
+const IMG_DIR = path.resolve(__dirname, 'src/images');
 
 const config = {
   entry: APP_DIR + '/index.jsx',
@@ -23,7 +24,12 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+        loaders: ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap']
+      },
+      {
+        include: IMG_DIR,
+        test:/\.jpg$/,
+        loader: 'file-loader'
       }
     ]
   },
@@ -33,7 +39,7 @@ const config = {
       allChunks: true,
     }),
   ],
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
   devServer: {
     historyApiFallback: true
   }
