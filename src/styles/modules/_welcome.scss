@@ -33,7 +33,7 @@
         height: calc(100vh - 100px); /* temporary fix to accommodate fake nav */
 
 
-  @include for-phone-only { background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1018136/BloodDonorServices2_600.jpg) no-repeat center center fixed;
+  @include for-phone-only { background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1018136/BloodDonorServices2_600.jpg) no-repeat top center fixed;
         -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -104,15 +104,14 @@
     top: 50%;
     left: 50%;
     margin: 0 0 0 -108px;
+
     @include for-phone-only {}
     @include for-tablet-portrait-up {}
-    @include for-desktop-up {}
+    @include for-desktop-up {
+        top: 65%;
+    }
     &:hover {
         background: $color_red-lighter;
-    }
-
-     @include for-desktop-up {
-        top: 65%;
     }
 }
 }
