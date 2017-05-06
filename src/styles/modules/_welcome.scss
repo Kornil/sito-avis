@@ -53,35 +53,35 @@
     height: calc(100vh - 100px);
     /* temporary fix to accommodate fake nav */
     @include for-phone-only {
-      background: url(../../images/BloodDonorServices2_600.jpg) no-repeat top center fixed;
+      background: url(../images/BloodDonorServices2_600.jpg) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
     }
     @include for-tablet-portrait-up {
-      background: url(../../images/BloodDonorServices2_900.jpg) no-repeat top center fixed;
+      background: url(../images/BloodDonorServices2_900.jpg) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
     }
     @include for-tablet-landscape-up {
-      background: url(../../images/BloodDonorServices2_1200.jpg) no-repeat top center fixed;
+      background: url(../images/BloodDonorServices2_1200.jpg) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
     }
     @include for-desktop-up {
-      background: url(../../images/BloodDonorServices2_1800.jpg) no-repeat top center fixed;
+      background: url(../images/BloodDonorServices2_1800.jpg) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
     }
     @include for-big-desktop-up {
-      background: url(../../images/BloodDonorServices2_1920.jpg) no-repeat top center fixed;
+      background: url(../images/BloodDonorServices2_1920.jpg) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
