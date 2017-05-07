@@ -1,0 +1,66 @@
+@import 'media-queries';
+.navbar {
+    position: fixed;
+    top: 0;
+    padding-top: 10px;
+    z-index: 999;
+    background: white;
+    width: 100%;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    letter-spacing: 2px;
+    display: flex;
+    justify-content: space-between;
+    &__image {
+        width: 380px;
+        height: auto;
+        padding: 10px;
+    }
+    &__menu {
+        list-style: none;
+        padding: 50px 30px 0 0;
+        display: flex;
+        justify-content: flex-end;
+    }
+    &__link {
+        display: inline-block;
+        padding: 0 5px;
+        text-transform: uppercase;
+
+        & a {
+            color: $color_blue;
+            font-size: 16px;
+            text-decoration: none;
+            padding: 10px 15px;
+            &:hover {
+            background: $color_blue;
+            color: white;
+        }
+
+
+        }
+
+        &-red {
+            & a {
+                color: $color_red;
+                text-decoration: none;
+                padding: 10px 15px;
+                margin-left: 15px;
+                border: 1px solid $color_red;
+                &:hover {
+                background: $color_red;
+                color: white;
+            }
+            }
+
+        }
+
+        &-icon {
+
+                width: 35px;
+                margin-left: 15px;
+
+            }
+
+        }
+    }

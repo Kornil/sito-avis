@@ -1,4 +1,21 @@
 @import 'modules/colors';
 @import 'modules/about';
 @import 'modules/welcome';
-@import 'modules/temp';
+@import 'modules/navbar';
+@import 'modules/media-queries';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+    overflow-x: hidden;
+}
+
+.main {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    padding-top: 120px;
+}
