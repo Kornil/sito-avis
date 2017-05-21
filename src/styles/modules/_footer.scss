@@ -1,0 +1,63 @@
+@import 'media-queries';
+.footer {
+    padding: 20px 0;
+    background: $color_blue;
+    width: 100%;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    display: flex;
+    @include for-phone-only {
+             flex-wrap: wrap;
+        }
+    justify-content: flex-start;
+    color: white;
+    &__image {
+            height: 55px;
+    margin: 0 10px;
+    }
+
+    &__text {
+        font-size: .75em;
+        @include for-phone-only {
+            padding: 10px 0 0 12px;
+        }
+    }
+
+    &__link {
+        display: inline-block;
+        padding-bottom: 3px;
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+            color: $color_blue-lightest;
+            border-bottom: 1px dotted $color_blue-lightest;
+        }
+
+
+
+        }
+    &__icon-container {
+            display: flex;
+
+
+
+        }
+    &__icon {
+        padding: 14px 15px 0 18px;
+    margin-right: 10px;
+    opacity: .6;
+        &:hover {
+            opacity: 1;
+        }
+        &-env {
+                padding: 0;
+    height: 33px;
+    margin: 14px 15px;
+        }
+
+    }
+
+
+
+    }
