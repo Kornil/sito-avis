@@ -45,19 +45,23 @@
         }
     &__icon {
         padding: 14px 15px 0 18px;
-    margin-right: 10px;
-    opacity: .6;
+        margin-right: 10px;
+        opacity: .6;
+
         &:hover {
             opacity: 1;
         }
         &-env {
-                padding: 0;
-    height: 33px;
-    margin: 14px 15px;
+            padding: 0;
+            height: 33px;
+            margin: 14px 15px;
         }
 
     }
 
-
-
+    &__icon-user {
+        @extend .fa;
+        @extend .fa-user;
     }
+
+}

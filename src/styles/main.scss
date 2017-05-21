@@ -1,9 +1,14 @@
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
+
 @import 'modules/colors';
+
 @import 'modules/about';
 @import 'modules/welcome';
 @import 'modules/navbar';
 @import 'modules/footer';
 @import 'modules/media-queries';
+
 
 * {
   box-sizing: border-box;

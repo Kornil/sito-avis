@@ -14,6 +14,7 @@ Tel. 0425 412925 | <a href="mailto:info@avisrovigo.it" className="footer__link">
       <a href="https://www.facebook.com/aviscomunalerovigo/" target="_blank" rel="noopener noreferrer"><img className="footer__icon" src={fb} alt="facebook" /></a>
       <a href="mailto:info@avisrovigo.it"><img className="footer__icon footer__icon-env" src={mail} alt="email" /></a>
     </div>
+    <div className="footer__icon-user"></div>
   </div>
 );
 
