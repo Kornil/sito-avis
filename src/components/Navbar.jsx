@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/AvisRovigoLogo.svg';
-import searchicon from '../images/search.svg';
 
 const Navbar = () => (
   <header>
@@ -12,7 +11,7 @@ const Navbar = () => (
         <li className="navbar__link"><Link to="/faq">FAQ</Link></li>
         <li className="navbar__link"><Link to="/contatti">Contatti</Link></li>
         <li className="navbar__link navbar__link-red"><Link to="/donazione">Donazione</Link></li>
-        <li className="navbar__link navbar__link-icon"><img src={searchicon} alt="search" /></li>
+        <li className="navbar__link navbar__link-icon" aria-label="search" />
       </ul>
     </nav>
   </header>

@@ -56,9 +56,10 @@
         }
 
         &-icon {
-
                 width: 35px;
                 margin-left: 15px;
+            @extend .fa;
+            @extend .fa-search;
 
             }
 
