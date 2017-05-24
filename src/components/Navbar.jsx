@@ -4,13 +4,13 @@ import logo from '../images/AvisRovigoLogo.svg';
 
 class Navbar extends React.Component {
 
-constructor(props) {
+  constructor(props) {
     super(props);
     this.navToggle = this.navToggle.bind(this);
     this.navClose = this.navClose.bind(this);
-    }
+  }
 
-navToggle() {
+  navToggle() {
     this.bar1 = document.querySelector('.header__icon__bar-1');
     this.bar2 = document.querySelector('.header__icon__bar-2');
     this.bar3 = document.querySelector('.header__icon__bar-3');
@@ -32,7 +32,7 @@ navToggle() {
     }
   }
 
-navClose() {
+  navClose() {
     this.bar1 = document.querySelector('.header__icon__bar-1');
     this.bar2 = document.querySelector('.header__icon__bar-2');
     this.bar3 = document.querySelector('.header__icon__bar-3');
@@ -51,7 +51,7 @@ navClose() {
     }
   }
 
-render() {
+  render() {
     return (
 
       <header className="header">
