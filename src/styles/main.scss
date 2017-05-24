@@ -1,13 +1,14 @@
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
+@import 'modules/media-queries';
 @import 'modules/colors';
 
 @import 'modules/about';
 @import 'modules/welcome';
 @import 'modules/navbar';
 @import 'modules/footer';
-@import 'modules/media-queries';
+
 
 
 * {
@@ -24,4 +25,15 @@ $fa-font-path: "~font-awesome/fonts";
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
     padding-top: 120px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
 }
