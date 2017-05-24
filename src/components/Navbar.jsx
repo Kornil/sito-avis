@@ -4,37 +4,37 @@ import logo from '../images/AvisRovigoLogo.svg';
 
 class Navbar extends React.Component {
 
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.navToggle = this.navToggle.bind(this);
     this.homePage = this.homePage.bind(this);
-}
+  }
 
-    homePage() {
-        if (this.bar1.classList.contains('header__icon__bar-1-active')) {
-        this.navToggle();
+  homePage() {
+    if (this.bar1.classList.contains('header__icon__bar-1-active')) {
+      this.navToggle();
     }
-}
+  }
 
-    navToggle() {
-        this.bar1 = document.querySelector('.header__icon__bar-1');
-        this.bar2 = document.querySelector('.header__icon__bar-2');
-        this.bar3 = document.querySelector('.header__icon__bar-3');
-        this.nav = document.querySelector('.header__nav');
-          if (window.innerWidth < 910) {
-           this.bar1.classList.toggle('header__icon__bar-1-active');
-           this.bar2.classList.toggle('header__icon__bar-2-active');
-           this.bar3.classList.toggle('header__icon__bar-3-active');
-           if (!this.nav.classList.contains('header__nav-side')) {
-             this.nav.classList.add('header__nav-side');
-           } else {
-             this.nav.classList.add('header__nav-hidden');
-             setTimeout(() => {
-               this.nav.classList.remove('header__nav-hidden');
-             }, 300);
-             this.nav.classList.remove('header__nav-side');
-           }
-        }
+  navToggle() {
+    this.bar1 = document.querySelector('.header__icon__bar-1');
+    this.bar2 = document.querySelector('.header__icon__bar-2');
+    this.bar3 = document.querySelector('.header__icon__bar-3');
+    this.nav = document.querySelector('.header__nav');
+    if (window.innerWidth < 910) {
+      this.bar1.classList.toggle('header__icon__bar-1-active');
+      this.bar2.classList.toggle('header__icon__bar-2-active');
+      this.bar3.classList.toggle('header__icon__bar-3-active');
+      if (!this.nav.classList.contains('header__nav-side')) {
+        this.nav.classList.add('header__nav-side');
+      } else {
+        this.nav.classList.add('header__nav-hidden');
+        setTimeout(() => {
+          this.nav.classList.remove('header__nav-hidden');
+        }, 300);
+        this.nav.classList.remove('header__nav-side');
+      }
+    }
   }
 
   render() {
