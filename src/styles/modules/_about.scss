@@ -3,26 +3,20 @@
     font-weight: 300;
     padding-bottom: 20px;
     display: flex;
-    @include for-phone-only {
-             flex-wrap: wrap;
-        }
+    flex-wrap: wrap;
     &__text {
         color: $color_gray_text;
         line-height: 1.5em;
         flex-basis: 100%;
-         @include for-phone-only {
-             display: block;
-             font-size: 18px;
-        }
-    @include for-tablet-portrait-up {
+        display: block;
         font-size: 18px;
         padding: 20px;
-        }
-        @include for-tablet-landscape-up {
+        @include for-tablet-portrait-up {
+        flex-basis: 50%;
         font-size: 20px;
         }
     @include for-desktop-up {
-      font-size: 24px;
+        font-size: 24px;
         padding-right: 40px;
 
     }
@@ -30,34 +24,34 @@
     }
     &__image {
         margin-left: -14%;
-    width: 122%;
+        width: 122%;
     }
     &__ctacontainer {
         flex-basis: 100%;
+        padding: 20px;
+        @include for-tablet-portrait-up {
+        flex-basis: 50%;
+        }
     }
     &__cta {
-        &-red {
+        &--red {
             color: $color_red;
             font-weight: 700;
-            font-size: 46px;
+            font-size: 32px;
             margin: -.5em 0 .2em;
-            @include for-phone-only {
-             font-size: 32px;
-        }
              @include for-tablet-portrait-up {
         font-size: 36px;
         }
     @include for-desktop-up {
+        font-size: 46px;
     }
         }
-        &-blue {
+        &--blue {
             color: $color_blue;
             font-size: 43px;
             margin-top: 0;
-            @include for-phone-only {
-             font-size: 24px;
-        }
-                        @include for-tablet-portrait-up {
+            font-size: 24px;
+         @include for-tablet-portrait-up {
         font-size: 32px;
         }
         }

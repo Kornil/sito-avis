@@ -7,13 +7,11 @@
   &__image {
     height: calc(100vh - 100px);
     /* temporary fix to accommodate fake nav */
-    @include for-phone-only {
       background: url(../images/BloodDonorServices2_600.jpg) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
-    }
     @include for-tablet-portrait-up {
       background: url(../images/BloodDonorServices2_900.jpg) no-repeat top center fixed;
       -webkit-background-size: cover;
@@ -48,10 +46,8 @@
     position: absolute;
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.63);
       font-weight: 300;
-    @include for-phone-only {
       top: 34%;
       font-size: 36px;
-    }
     @include for-tablet-portrait-up {
       top: 27%;
       font-size: 72px;
@@ -74,7 +70,6 @@
     top: 50%;
     left: 50%;
     margin: 0 0 0 -108px;
-    @include for-phone-only {}
     @include for-tablet-portrait-up {}
     @include for-desktop-up {
       top: 65%;

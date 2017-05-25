@@ -5,9 +5,7 @@
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
     display: flex;
-    @include for-phone-only {
-        flex-wrap: wrap;
-    }
+    flex-wrap: wrap;
     justify-content: flex-start;
     color: white;
     &__image {
@@ -16,8 +14,9 @@
     }
     &__text {
         font-size: .75em;
-        @include for-phone-only {
-            padding: 10px 0 0 12px;
+        padding: 10px 0 0 12px;
+        @include for-tablet-portrait-up {
+        padding: 0 0;
         }
     }
     &__link {

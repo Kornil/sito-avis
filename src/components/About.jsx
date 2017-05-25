@@ -7,8 +7,8 @@ const About = () => (
     <div className="about__ctacontainer">
       <img className="about__image" src={mySvg} alt="" />
       <div className="about__cta">
-        <p className="about__cta-red">Diventa donatore anche tu!</p>
-        <p className="about__cta-blue">Scarica il modulo oppure vieni a trovarci nella nostra sede.</p>
+        <p className="about__cta--red">Diventa donatore anche tu!</p>
+        <p className="about__cta--blue">Scarica il modulo oppure vieni a trovarci nella nostra sede.</p>
       </div>
     </div>
   </div>

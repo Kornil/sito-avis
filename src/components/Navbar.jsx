@@ -58,23 +58,23 @@ class Navbar extends React.Component {
     const classObj = {
       closed: {
         nav: 'header__nav',
-        bar1: 'header__icon__bar header__icon__bar-1',
-        bar2: 'header__icon__bar header__icon__bar-2',
-        bar3: 'header__icon__bar header__icon__bar-3',
+        bar1: 'header__bar header__bar--top',
+        bar2: 'header__bar header__bar--mid',
+        bar3: 'header__bar header__bar--bot',
       },
 
       open: {
-        nav: 'header__nav header__nav-side',
-        bar1: 'header__icon__bar header__icon__bar-1 header__icon__bar-1-active',
-        bar2: 'header__icon__bar header__icon__bar-2 header__icon__bar-2-active',
-        bar3: 'header__icon__bar header__icon__bar-3 header__icon__bar-3-active',
+        nav: 'header__nav header__nav--side',
+        bar1: 'header__bar header__bar--top header__bar--top-active',
+        bar2: 'header__bar header__bar--mid header__bar--mid-active',
+        bar3: 'header__bar header__bar--bot header__bar--bot-active',
       },
 
       closing: {
-        nav: 'header__nav header__nav-side header__nav-hidden',
-        bar1: 'header__icon__bar header__icon__bar-1',
-        bar2: 'header__icon__bar header__icon__bar-2',
-        bar3: 'header__icon__bar header__icon__bar-3',
+        nav: 'header__nav header__nav--side header__nav--hidden',
+        bar1: 'header__bar header__bar--top',
+        bar2: 'header__bar header__bar--mid',
+        bar3: 'header__bar header__bar--bot',
       },
     };
 
@@ -82,18 +82,18 @@ class Navbar extends React.Component {
     return (
       <header className="header">
         <Link to="/" onClick={this.homePage} role="link" ><img className="header__image" src={logo} alt="Avis Comunale Rovigo" /></Link>
-        <button className="header__icon" aria-expanded="false" aria-controls="navbar" onClick={this.navToggle} >
+        <button className="header__icon" aria-expanded="false" aria-controls="nav" onClick={this.navToggle} >
           <span className="sr-only">Toggle navigation</span>
           <div className={classObj[this.state.menu].bar1} />
           <div className={classObj[this.state.menu].bar2} />
           <div className={classObj[this.state.menu].bar3} />
         </button>
         <nav className={classObj[this.state.menu].nav}>
-          <ul className="header__nav__list">
-            <li className="header__nav__item" ><Link to="/associazione" onClick={this.navToggle} role="link">L&rsquo;associazione </Link></li>
-            <li className="header__nav__item"><Link to="/faq" onClick={this.navToggle} role="link">FAQ</Link></li>
-            <li className="header__nav__item"><Link to="/contatti" onClick={this.navToggle} role="link">Contatti</Link></li>
-            <li className="header__nav__item header__nav__item-red"><Link to="/donazione" onClick={this.navToggle} role="link">Donazione</Link></li>
+          <ul className="nav">
+            <li className="nav__item" ><Link to="/associazione" onClick={this.navToggle} className="nav__item-link">L&rsquo;associazione </Link></li>
+            <li className="nav__item"><Link to="/faq" onClick={this.navToggle} className="nav__item-link">FAQ</Link></li>
+            <li className="nav__item"><Link to="/contatti" onClick={this.navToggle} className="nav__item-link">Contatti</Link></li>
+            <li className="nav__item"><Link to="/donazione" onClick={this.navToggle} className="nav__item-link nav__item-link--red">Donazione</Link></li>
           </ul>
         </nav>
       </header>
