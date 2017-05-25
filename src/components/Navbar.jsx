@@ -30,14 +30,14 @@ class Navbar extends React.Component {
 
   updateDimensions() {
     this.setState({ width: window.innerWidth });
-    if (this.state.width > 910) {
+    if (this.state.width > 910 && this.state.menu === 'open') {
       this.setState({ menu: 'closed' });
     }
   }
 
   homePage() {
     if (this.state.menu === 'open') {
-      this.navToggle();
+      this.setState({ menu: 'closed' });
     }
   }
 
@@ -51,8 +51,6 @@ class Navbar extends React.Component {
           this.setState({ menu: 'closed' });
         }, 300);
       }
-    } else {
-      this.setState({ menu: 'closed' });
     }
   }
 
@@ -73,7 +71,7 @@ class Navbar extends React.Component {
       },
 
       closing: {
-        nav: 'header__nav header__nav-hidden',
+        nav: 'header__nav header__nav-side header__nav-hidden',
         bar1: 'header__icon__bar header__icon__bar-1',
         bar2: 'header__icon__bar header__icon__bar-2',
         bar3: 'header__icon__bar header__icon__bar-3',
