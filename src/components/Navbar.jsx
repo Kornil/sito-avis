@@ -30,6 +30,9 @@ class Navbar extends React.Component {
 
   updateDimensions() {
     this.setState({ width: window.innerWidth });
+      if (this.state.width > 910) {
+      this.setState({ menu: 'closed' });
+      }
   }
 
   homePage() {
