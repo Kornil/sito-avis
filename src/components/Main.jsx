@@ -6,6 +6,8 @@ import Associazione from './Associazione';
 import FAQ from './FAQ';
 import Contatti from './Contatti';
 import Donazione from './Donazione';
+import Login from './Login';
+import CreateBlog from './CreateBlog';
 
 const Main = () => (
   <div className="main">
@@ -15,6 +17,8 @@ const Main = () => (
       <Route path="/faq" component={FAQ} />
       <Route path="/contatti" component={Contatti} />
       <Route path="/donazione" component={Donazione} />
+      <Route path="/login" component={Login} />
+      <Route path="/createblog" component={CreateBlog} />
     </Switch>
   </div>
 );
