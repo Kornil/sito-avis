@@ -36,10 +36,6 @@ class CreateBlog extends Component {
     console.log('handleCreate');
     const blogs = Object.assign([], this.state.blogs);
     blogs.push(this.state.newBlog);
-    console.log(blogs);
-    // this.setState({
-    //   blogs,
-    // });
 
     firebase.database().ref('react').set({
       blogs,
@@ -61,11 +57,11 @@ class CreateBlog extends Component {
     return (
       <div>
         <form>
-          <input type="text" name="inputTitle" onChange={e => this.handleChange(e)} />
-          <input name="inputBody" onChange={e => this.handleChange(e)} />
+          <input type="text" name="inputTitle" onChange={e => this.handleChange(e)} placeholder="Blog Title"/><br/>
+          <textarea name="inputBody" onChange={e => this.handleChange(e)} placeholder="Blog Content"/><br/>
           <button type="submit" onClick={e => this.handleCreate(e)}>Create</button>
         </form>
-        {this.state.blogs.length && blogs}
+        {blogs}
       </div>
     );
   }
