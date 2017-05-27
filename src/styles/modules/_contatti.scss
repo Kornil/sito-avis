@@ -1,0 +1,92 @@
+.contatti {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  padding: 20px 25px 0 25px; // info section styles--------
+  &__info {
+    &-text {
+      color: $color_blue;
+      font-size: 39px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+    &-address {
+      padding-top: 10px;
+      color: $color_blue;
+      font-size: 30px;
+    }
+    &-contact ul {
+      padding-top: 40px;
+      color: $color_gray_text;
+      list-style-type: none;
+      line-height: 39px;
+      font-size: 22px;
+      li a {
+        text-decoration: none;
+        color: $color_gray_text;
+      }
+    }
+    &-map {
+      margin: 40px 0;
+      border: 2px solid $color_blue;
+      iframe {
+        height: 300px;
+        width: 100%;
+        border: none;
+      }
+    }
+  } // cards styles-------
+  &__cards-container {
+    color: $color_gray_text;
+  }
+  &__card {
+    padding: 10px 0 40px 0;
+    &-heading {
+      color: $color_blue;
+      font-weight: 600;
+      font-size: 30px;
+    }
+    &-address {
+      color: $color_blue;
+      padding-top: 15px;
+      font-size: 25px;
+    }
+    &-info {
+      padding-top: 30px;
+      font-size: 22px;
+      list-style-type: none;
+      line-height: 39px;
+      li a {
+        text-decoration: none;
+        color: $color_gray_text
+      }
+    }
+    &-icon-container {
+      margin-top: 29px;
+      display: flex;
+      justify-content: space-between;    
+    }
+    &-icon {
+      opacity: .8;
+      color: $color_gray_text;
+      font-size: 2em;
+      &-yt {
+        @extend .fa;
+        @extend .fa-youtube-play;
+      }
+      &-fb {
+        @extend .fa;
+        @extend .fa-facebook-official;
+      }
+      &-tw {
+        @extend .fa;
+        @extend .fa-twitter-square;
+      }
+      &-it {
+        @extend .fa;
+        @extend .fa-instagram;
+      }
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
