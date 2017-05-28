@@ -1,17 +1,27 @@
 .contatti {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  padding: 20px 25px 0 25px; // info section styles--------
+  padding: 20px 35px 0 35px; // info section styles--------
   &__info {
+    @include for-tablet-landscape-only {
+      display: flex;
+      justify-content: space-between;
+    }
     &-text {
       color: $color_blue;
-      font-size: 39px;
+      font-size: 38px;
       font-weight: 600;
       letter-spacing: -0.3px;
+      @include for-tablet-landscape-only {
+        font-size: 40px;
+      }
     }
     &-address {
       padding-top: 10px;
       color: $color_blue;
       font-size: 30px;
+      @include for-tablet-landscape-only {
+        font-size: 34px;
+      }
     }
     &-contact ul {
       padding-top: 40px;
@@ -19,6 +29,10 @@
       list-style-type: none;
       line-height: 39px;
       font-size: 22px;
+      @include for-tablet-landscape-only {
+        font-size: 26px;
+        line-height: 43px;
+      }
       li a {
         text-decoration: none;
         color: $color_gray_text;
@@ -27,11 +41,22 @@
     &-map {
       margin: 40px 0;
       border: 2px solid $color_blue;
+      height: 300px;
+      @include for-tablet-landscape-only {
+        width: 400px;
+        height: 430px;
+        margin: 0;
+      }
       iframe {
-        height: 300px;
+        height: 100%;
         width: 100%;
         border: none;
       }
+    }
+  }
+  &__space-creator {
+    @include for-tablet-landscape-only {
+      height: 50px;
     }
   } // cards styles-------
   &__cards-container {
@@ -39,21 +64,67 @@
   }
   &__card {
     padding: 10px 0 40px 0;
+    @include for-tablet-landscape-only {
+      border: 2px solid $color_blue;
+      padding: 25px 30px;
+      margin-bottom: 50px;
+    }
     &-heading {
       color: $color_blue;
       font-weight: 600;
       font-size: 30px;
+      @include for-tablet-landscape-only{
+        font-size: 38px;
+      }
     }
     &-address {
       color: $color_blue;
       padding-top: 15px;
       font-size: 25px;
+      @include for-tablet-landscape-only {
+        padding-top: 25px;
+        font-size: 30px;
+      }
+      .split-address-tablet-mode{
+        display: block;
+        height: 5px;
+        width: 0px;
+        opacity: 0;
+        @include for-tablet-landscape-only{
+          display: inline;
+          opacity: 1;
+        }
+      }
     }
     &-info {
       padding-top: 30px;
       font-size: 22px;
       list-style-type: none;
       line-height: 39px;
+      .visible-tablet-mode {
+        display: none;
+        @include for-tablet-landscape-only {
+          display: block;
+        }
+      }
+      li {
+        @include for-tablet-landscape-only {
+          display: inline-block;
+          font-size: 26px;
+          line-height: 43px;
+        }
+      }
+      .first-child{
+        @include for-tablet-landscape-only{
+          margin-right: 90px;
+        }
+      }
+      .third-child{
+        @include for-tablet-landscape-only{
+          margin-right: 48px;
+        }
+      }
+      
       li a {
         text-decoration: none;
         color: $color_gray_text
@@ -62,12 +133,17 @@
     &-icon-container {
       margin-top: 29px;
       display: flex;
-      justify-content: space-between;    
+      justify-content: flex-start;
     }
     &-icon {
       opacity: .8;
       color: $color_gray_text;
       font-size: 2em;
+      margin-right: 30px;
+      @include for-tablet-landscape-only{
+        font-size: 2.3em;
+        margin-right: 40px;
+      }
       &-yt {
         @extend .fa;
         @extend .fa-youtube-play;
