@@ -61,6 +61,7 @@ class Navbar extends React.Component {
         bar1: 'header__bar header__bar--top',
         bar2: 'header__bar header__bar--mid',
         bar3: 'header__bar header__bar--bot',
+        ariaE: false,
       },
 
       open: {
@@ -68,6 +69,7 @@ class Navbar extends React.Component {
         bar1: 'header__bar header__bar--top header__bar--top-active',
         bar2: 'header__bar header__bar--mid header__bar--mid-active',
         bar3: 'header__bar header__bar--bot header__bar--bot-active',
+        ariaE: true,
       },
 
       closing: {
@@ -75,6 +77,7 @@ class Navbar extends React.Component {
         bar1: 'header__bar header__bar--top',
         bar2: 'header__bar header__bar--mid',
         bar3: 'header__bar header__bar--bot',
+        ariaE: false,
       },
     };
 
@@ -82,7 +85,7 @@ class Navbar extends React.Component {
     return (
       <header className="header">
         <Link to="/" onClick={this.homePage} role="link" ><img className="header__image" src={logo} alt="Avis Comunale Rovigo" /></Link>
-        <button className="header__icon" aria-expanded="false" aria-controls="nav" onClick={this.navToggle} >
+        <button className="header__icon" aria-expanded={classObj[this.state.menu].ariaE} aria-controls="nav" onClick={this.navToggle} >
           <span className="sr-only">Toggle navigation</span>
           <div className={classObj[this.state.menu].bar1} />
           <div className={classObj[this.state.menu].bar2} />

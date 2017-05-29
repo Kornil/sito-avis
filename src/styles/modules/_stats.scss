@@ -1,0 +1,118 @@
+.stats {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    padding-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    &__banner {
+        font-size: 46px;
+        font-weight: 300;
+        color: white;
+        background: $color_blue;
+        padding: 10px;
+        height: 85px;
+        width: 100%;
+
+    }
+
+    &__link-container {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+
+    }
+
+    &__link {
+        text-align: right;
+        font-size: 14px;
+        color: $color_red;
+        padding: 10px 0 2px 0;
+        margin: 0 10px 8px 0;
+        cursor: pointer;
+        border-bottom: 1px white;
+        text-decoration: none;
+
+        &:hover {
+            color: $color_red-lighter;
+            border-bottom: 1px dotted $color_red-lighter;
+        }
+    }
+
+    &__card-container {
+        width: 100%;
+        
+        @include for-tablet-portrait-up {
+        display: flex;
+        justify-content: distribute-space;
+        }
+
+    }
+
+    &__card {
+
+        text-align: center;
+        width: 100%;
+        padding: 20px 0;
+
+        @include for-tablet-portrait-up {
+        padding: 0 4vw;
+    }
+        
+
+    }
+
+     &__icon {
+
+         @include for-tablet-portrait-up {
+         height: 13vw;
+}
+        
+        &--new-member {
+            @extend .fa;
+            @extend .fa-user-plus;
+            color: $color_red;
+            font-size: 30vw;
+
+            @include for-tablet-portrait-up {
+            font-size: 11vw;
+            padding-top: 1.5vw;
+        }
+
+        }
+
+        &--members {
+            @extend .fa;
+            @extend .fa-group;  
+            color: $color_red; 
+            font-size: 30vw;
+
+            @include for-tablet-portrait-up {
+            font-size: 11vw;
+            padding-top: 1.5vw;
+        }
+        }
+
+    }
+
+    &__number {
+        width: 100%;
+        text-align: center;
+        font-size: 46px;
+        font-weight: 700;
+        color: $color_blue;
+
+    }
+
+    &__label {
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 200;
+        text-transform: uppercase;
+        letter-spacing: -0.12px;
+        color: $color_gray_text;
+
+
+    }
+
+}

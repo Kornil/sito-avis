@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import * as firebase from 'firebase';
 
 import Navbar from './Navbar';
@@ -9,6 +9,7 @@ import Footer from './Footer';
 import Home from './Home';
 import Associazione from './Associazione';
 import FAQ from './FAQ';
+import Statistiche from './Statistiche';
 import Contatti from './Contatti';
 import Donazione from './Donazione';
 import Login from './Login';
@@ -36,7 +37,7 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props.auth)
+    console.log(this.props.auth);
     return (
       <div>
         <Navbar />
@@ -48,7 +49,8 @@ class App extends Component {
             <Route path="/contatti" component={Contatti} />
             <Route path="/donazione" component={Donazione} />
             <Route path="/login" component={Login} />
-            {this.props.auth && <Route path="/createblog" component={CreateBlog}/>}
+            <Route path="/statistiche" component={Statistiche} />
+            {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
           </Switch>
         </main>
         <Footer />
@@ -59,7 +61,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   saveAuth: () => (dispatch(saveAuth())),
