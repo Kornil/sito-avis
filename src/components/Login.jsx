@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import * as firebase from 'firebase';
 
 class Login extends Component {
@@ -8,16 +10,6 @@ class Login extends Component {
       email: '',
       pass: '',
     };
-  }
-
-  componentWillMount() {
-    firebase.auth().onAuthStateChanged((fireBaseUser) => {
-      if (fireBaseUser) {
-        console.log(fireBaseUser);
-      } else {
-        console.log('not logged in');
-      }
-    });
   }
 
   handleEmailInput(event) {
@@ -50,11 +42,16 @@ class Login extends Component {
           <input onChange={e => this.handleEmailInput(e)} placeholder="Email" />
           <input onChange={e => this.handlePassInput(e)} placeholder="Password" />
           <button onClick={e => this.handleLogin(e)} type="submit">Login</button>
-          <button onClick={() => firebase.auth().signOut()} type="submit">Logout</button>
+          <button onClick={() => firebase.auth().signOut()}>Logout</button>
         </form>
+        { this.props.auth && <Link to="/createblog">Create Blog</Link> }
       </div>
     );
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(Login);
