@@ -19,7 +19,7 @@ class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((fireBaseUser) => {
       if (fireBaseUser) {
-        console.log(fireBaseUser)
+        console.log(fireBaseUser);
         this.props.saveAuth();
       } else {
         console.log('not logged in');

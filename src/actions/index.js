@@ -7,5 +7,5 @@ export const decrement = value => (dispatch) => {
 };
 
 export const saveAuth = () => (dispatch) => {
-  dispatch({ type: 'SAVE_AUTH', payload: true})
+  dispatch({ type: 'SAVE_AUTH', payload: true });
 };

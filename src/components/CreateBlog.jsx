@@ -41,8 +41,7 @@ class CreateBlog extends Component {
   }
 
   render() {
-
-    if (!this.props.auth) {return <p>Please log in</p>}
+    if (!this.props.auth) { return <p>Please log in</p>; }
 
     let blogs = [];
     if (this.state.blogs.length) {
