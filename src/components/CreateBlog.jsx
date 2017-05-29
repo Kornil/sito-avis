@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
 import * as firebase from 'firebase';
-import { connect } from 'react-redux';
 
 class CreateBlog extends Component {
   constructor() {
@@ -41,8 +40,6 @@ class CreateBlog extends Component {
   }
 
   render() {
-    if (!this.props.auth) { return <p>Please log in</p>; }
-
     let blogs = [];
     if (this.state.blogs.length) {
       blogs = this.state.blogs.map(blog => (
@@ -66,8 +63,4 @@ class CreateBlog extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps)(CreateBlog);
+export default CreateBlog;
