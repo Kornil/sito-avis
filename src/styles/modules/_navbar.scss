@@ -134,7 +134,7 @@
         padding: 8px 12px;
         display: block;
 
-        &:hover {
+        &:hover, &--active {
                 background: $color_blue;
                 color: white;
                 transition: all 180ms ease-in-out;
@@ -147,7 +147,7 @@
                 padding: 8px 12px;
                 border: 1px solid $color_red;
 
-            &:hover {
+            &:hover, &-active {
                 background: $color_red;
                 color: white;
                 transition: all 180ms ease-in-out;

@@ -49,10 +49,9 @@ class App extends Component {
             <Route path="/contatti" component={Contatti} />
             <Route path="/donazione" component={Donazione} />
             <Route path="/login" component={Login} />
-<<<<<<< HEAD
+
             <Route path="/statistiche" component={Statistiche} />
-=======
->>>>>>> 7e952b172e3c5fb3d35d8e9a07983823afc3a8c0
+
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
           </Switch>
         </main>

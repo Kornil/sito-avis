@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import logo from '../images/AvisRovigoLogo.svg';
 
 class Navbar extends React.Component {
@@ -84,7 +84,7 @@ class Navbar extends React.Component {
 
     return (
       <header className="header">
-        <Link to="/" onClick={this.homePage} role="link" ><img className="header__image" src={logo} alt="Avis Comunale Rovigo" /></Link>
+        <NavLink to="/" onClick={this.homePage} role="link" ><img className="header__image" src={logo} alt="Avis Comunale Rovigo" /></NavLink>
         <button className="header__icon" aria-expanded={classObj[this.state.menu].ariaE} aria-controls="nav" onClick={this.navToggle} >
           <span className="sr-only">Toggle navigation</span>
           <div className={classObj[this.state.menu].bar1} />
@@ -93,10 +93,10 @@ class Navbar extends React.Component {
         </button>
         <nav className={classObj[this.state.menu].nav}>
           <ul className="nav">
-            <li className="nav__item" ><Link to="/associazione" onClick={this.navToggle} className="nav__item-link">L&rsquo;associazione </Link></li>
-            <li className="nav__item"><Link to="/faq" onClick={this.navToggle} className="nav__item-link">FAQ</Link></li>
-            <li className="nav__item"><Link to="/contatti" onClick={this.navToggle} className="nav__item-link">Contatti</Link></li>
-            <li className="nav__item"><Link to="/donazione" onClick={this.navToggle} className="nav__item-link nav__item-link--red">Donazione</Link></li>
+            <li className="nav__item" ><NavLink to="/associazione" onClick={this.navToggle} className="nav__item-link" activeClassName="nav__item-link--active">L&rsquo;associazione </NavLink></li>
+            <li className="nav__item"><NavLink to="/faq" onClick={this.navToggle} className="nav__item-link" activeClassName="nav__item-link--active">FAQ</NavLink></li>
+            <li className="nav__item"><NavLink to="/contatti" onClick={this.navToggle} className="nav__item-link" activeClassName="nav__item-link--active">Contatti</NavLink></li>
+            <li className="nav__item"><NavLink to="/donazione" onClick={this.navToggle} className="nav__item-link nav__item-link--red" activeClassName="nav__item-link--red-active">Donazione</NavLink></li>
           </ul>
         </nav>
       </header>
