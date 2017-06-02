@@ -26,7 +26,6 @@ class Login extends Component {
 
   handleLogin(event) {
     event.preventDefault();
-    console.log(`${this.state.email} ${this.state.pass}`);
     const email = this.state.email;
     const pass = this.state.pass;
     const auth = firebase.auth();

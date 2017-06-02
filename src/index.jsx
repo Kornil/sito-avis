@@ -10,12 +10,12 @@ import store from './store';
 import App from './components/App';
 
 const config = {
-  apiKey: 'AIzaSyDdJNiz5dZrKqsDmIgi87Caf9QuiRSH4fc',
-  authDomain: 'avis-29772.firebaseapp.com',
-  databaseURL: 'https://avis-29772.firebaseio.com',
-  projectId: 'avis-29772',
-  storageBucket: 'avis-29772.appspot.com',
-  messagingSenderId: '692861695276',
+  apiKey: 'AIzaSyDorzqQG5pgETcGGmQ58DrQhQUHYnVERHU',
+  authDomain: 'avis-website-dac6e.firebaseapp.com',
+  databaseURL: 'https://avis-website-dac6e.firebaseio.com',
+  projectId: 'avis-website-dac6e',
+  storageBucket: 'avis-website-dac6e.appspot.com',
+  messagingSenderId: '115042660818',
 };
 firebase.initializeApp(config);
 

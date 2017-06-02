@@ -12,11 +12,11 @@ class CreateBlog extends Component {
   }
 
   componentDidMount() {
-    const rootRef = firebase.database().ref().child('react');
+    const rootRef = firebase.database().ref().child('avis');
     const blogsRef = rootRef.child('blogs');
     blogsRef.on('value', (snap) => {
       this.setState({
-        blogs: snap.val(),
+        blogs: snap.val() || [],
       });
     });
   }
@@ -34,18 +34,20 @@ class CreateBlog extends Component {
     const blogs = Object.assign([], this.state.blogs);
     blogs.push(this.state.newBlog);
 
-    firebase.database().ref('react').set({
+    firebase.database().ref('avis').set({
       blogs,
     });
   }
 
   render() {
-    let blogs = [];
-    if (this.state.blogs.length) {
-      blogs = this.state.blogs.map(blog => (
+    const { blogs } = this.state;
+
+    let blogsArr = [];
+    if (blogs.length) {
+      blogsArr = blogs.map(blog => (
         <div key={shortid.generate()}>
-          <h3>{blog.inputTitle}</h3>
-          <p>{blog.inputBody}</p>
+          <h3>{blog.title}</h3>
+          <p>{blog.body}</p>
         </div>
       ));
     }
@@ -53,11 +55,11 @@ class CreateBlog extends Component {
     return (
       <div>
         <form>
-          <input type="text" name="inputTitle" onChange={e => this.handleChange(e)} placeholder="Blog Title" /><br />
-          <textarea name="inputBody" onChange={e => this.handleChange(e)} placeholder="Blog Content" /><br />
+          <input type="text" name="title" onChange={e => this.handleChange(e)} placeholder="Blog Title" /><br />
+          <textarea name="body" onChange={e => this.handleChange(e)} placeholder="Blog Content" /><br />
           <button type="submit" onClick={e => this.handleCreate(e)}>Create</button>
         </form>
-        {blogs}
+        { blogsArr }
       </div>
     );
   }
