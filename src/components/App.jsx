@@ -14,6 +14,7 @@ import Contatti from './Contatti';
 import Donazione from './Donazione';
 import Login from './Login';
 import CreateBlog from './CreateBlog';
+import UpdateStats from './UpdateStats';
 
 import { saveAuth } from '../actions';
 
@@ -52,6 +53,7 @@ class App extends Component {
             <Route path="/statistiche" component={Statistiche} />
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
+            {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
           </Switch>
         </main>
         <Footer />

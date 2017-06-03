@@ -21,9 +21,12 @@ class CreateBlog extends Component {
     });
   }
 
+
+
   handleChange(event) {
     const newBlog = Object.assign({}, this.state.newBlog);
     newBlog[event.target.name] = event.target.value;
+    newBlog.timestamp = firebase.database.ServerValue.TIMESTAMP;
     this.setState({
       newBlog,
     });
@@ -48,6 +51,7 @@ class CreateBlog extends Component {
         <div key={shortid.generate()}>
           <h3>{blog.title}</h3>
           <p>{blog.body}</p>
+          <p>{new Date(blog.timestamp).toString()}</p>
         </div>
       ));
     }
