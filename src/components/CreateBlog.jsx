@@ -22,7 +22,6 @@ class CreateBlog extends Component {
   }
 
 
-
   handleChange(event) {
     const newBlog = Object.assign({}, this.state.newBlog);
     newBlog[event.target.name] = event.target.value;

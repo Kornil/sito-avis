@@ -52,33 +52,33 @@ class UpdateStats extends Component {
         <div key={shortid.generate()}>
           <h3>Stats updated: {new Date(entry.timestamp).toString()}</h3>
           <div className="stats">
-    <h2 className="stats__banner">Statistiche</h2>
-    <div className="stats__link-container">
-      <Link to="/donazione" className="stats__link">tutte statistiche 2016 &raquo; </Link>
-    </div>
-    <div className="stats__card-container">
-      <div className="stats__card">
-        <img className="stats__icon" src={handsHeart} alt="" />
-        <div className="stats__number">{entry.donatori}</div>
-        <div className="stats__label">Donatori</div>
-      </div>
-      <div className="stats__card">
-        <img className="stats__icon" src={bloodBag} alt="" />
-        <div className="stats__number">{entry.donazTotali}</div>
-        <div className="stats__label">Donazioni totali</div>
-      </div>
-      <div className="stats__card">
-        <div className="stats__icon stats__icon--new-member" />
-        <div className="stats__number">{entry.nuoviMembri}</div>
-        <div className="stats__label">nuovi membri</div>
-      </div>
-      <div className="stats__card">
-        <div className="stats__icon stats__icon--members" />
-        <div className="stats__number">{entry.membriTotali}</div>
-        <div className="stats__label">membri totali</div>
-      </div>
-    </div>
-  </div>   
+            <h2 className="stats__banner">Statistiche</h2>
+            <div className="stats__link-container">
+              <Link to="/donazione" className="stats__link">tutte statistiche 2016 &raquo; </Link>
+            </div>
+            <div className="stats__card-container">
+              <div className="stats__card">
+                <img className="stats__icon" src={handsHeart} alt="" />
+                <div className="stats__number">{entry.donatori}</div>
+                <div className="stats__label">Donatori</div>
+              </div>
+              <div className="stats__card">
+                <img className="stats__icon" src={bloodBag} alt="" />
+                <div className="stats__number">{entry.donazTotali}</div>
+                <div className="stats__label">Donazioni totali</div>
+              </div>
+              <div className="stats__card">
+                <div className="stats__icon stats__icon--new-member" />
+                <div className="stats__number">{entry.nuoviMembri}</div>
+                <div className="stats__label">nuovi membri</div>
+              </div>
+              <div className="stats__card">
+                <div className="stats__icon stats__icon--members" />
+                <div className="stats__number">{entry.membriTotali}</div>
+                <div className="stats__label">membri totali</div>
+              </div>
+            </div>
+          </div>
         </div>
       ));
     }
@@ -92,7 +92,7 @@ class UpdateStats extends Component {
           <input type="text" name="membriTotali" onChange={e => this.handleChange(e)} placeholder="Membri Totali" /><br />
           <button type="submit" onClick={e => this.handleCreate(e)}>Update</button>
         </form>
-        { statsArr[statsArr.length-1] }
+        { statsArr[statsArr.length - 1] }
       </div>
     );
   }
