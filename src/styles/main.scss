@@ -10,10 +10,12 @@ $fa-font-path: "~font-awesome/fonts";
 @import 'modules/stats';
 @import 'modules/footer';
 @import 'modules/contatti';
+@import 'modules/update-stats';
 
 
 
 * {
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -38,4 +40,27 @@ $fa-font-path: "~font-awesome/fonts";
     overflow: hidden;
     clip: rect(0,0,0,0);
     border: 0;
+}
+
+input[type=text],
+input[type=email],
+input[type=number],
+textarea,
+fieldset {
+  -webkit-appearance: none;
+  border: 1px solid #ccc;
+  margin: 5px;
+  padding: 3px;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 90%;
+
+}
+
+input:invalid {
+  box-shadow: 0 0 5px 1px red;
+}
+
+input:focus:invalid {
+  outline: none;
 }

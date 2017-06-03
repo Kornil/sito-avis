@@ -29,7 +29,7 @@ class UpdateStats extends Component {
     newStats[event.target.name] = event.target.value;
     newStats.timestamp = firebase.database.ServerValue.TIMESTAMP;
     this.setState({
-      newStats,
+      newStats
     });
   }
 
@@ -38,7 +38,7 @@ class UpdateStats extends Component {
     const stats = Object.assign([], this.state.stats);
     stats.push(this.state.newStats);
 
-    firebase.database().ref('avis').set({
+    firebase.database().ref('avis').update({
       stats,
     });
   }
@@ -86,10 +86,10 @@ class UpdateStats extends Component {
     return (
       <div>
         <form>
-          <input type="text" name="donatori" onChange={e => this.handleChange(e)} placeholder="Donatori" /><br />
-          <input type="text" name="donazTotali" onChange={e => this.handleChange(e)} placeholder="Donazione Totali" /><br />
-          <input type="text" name="nuoviMembri" onChange={e => this.handleChange(e)} placeholder="Nuovi Membri" /><br />
-          <input type="text" name="membriTotali" onChange={e => this.handleChange(e)} placeholder="Membri Totali" /><br />
+          <input type="text" pattern="\d+" title="donatori" name="donatori" id="donatori" onChange={e => this.handleChange(e)} placeholder="Donatori" /><br />
+          <input type="text" pattern="\d+" title="donazione totali" name="donazTotali" id="donazTotali" onChange={e => this.handleChange(e)} placeholder="Donazione Totali" /><br />
+          <input type="text" pattern="\d+" title="nuovi membri" name="nuoviMembri" id="nuoviMembri" onChange={e => this.handleChange(e)} placeholder="Nuovi Membri" /><br />
+          <input type="text" pattern="\d+" title="membri totali" name="membriTotali" id="membriTotali" onChange={e => this.handleChange(e)} placeholder="Membri Totali" /><br />
           <button type="submit" onClick={e => this.handleCreate(e)}>Update</button>
         </form>
         { statsArr[statsArr.length - 1] }

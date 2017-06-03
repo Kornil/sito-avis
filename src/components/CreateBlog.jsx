@@ -36,7 +36,7 @@ class CreateBlog extends Component {
     const blogs = Object.assign([], this.state.blogs);
     blogs.push(this.state.newBlog);
 
-    firebase.database().ref('avis').set({
+    firebase.database().ref('avis').update({
       blogs,
     });
   }
