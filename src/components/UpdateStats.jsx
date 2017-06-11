@@ -86,10 +86,10 @@ class UpdateStats extends Component {
     return (
       <div>
         <form>
-          <input type="text" pattern="\d+" title="donatori" name="donatori" id="donatori" onChange={e => this.handleChange(e)} placeholder="Donatori" /><br />
-          <input type="text" pattern="\d+" title="donazione totali" name="donazTotali" id="donazTotali" onChange={e => this.handleChange(e)} placeholder="Donazione Totali" /><br />
-          <input type="text" pattern="\d+" title="nuovi membri" name="nuoviMembri" id="nuoviMembri" onChange={e => this.handleChange(e)} placeholder="Nuovi Membri" /><br />
-          <input type="text" pattern="\d+" title="membri totali" name="membriTotali" id="membriTotali" onChange={e => this.handleChange(e)} placeholder="Membri Totali" /><br />
+          <input type="number" title="donatori" name="donatori" id="donatori" onChange={e => this.handleChange(e)} placeholder="Donatori" /><br />
+          <input type="number" title="donazione totali" name="donazTotali" id="donazTotali" onChange={e => this.handleChange(e)} placeholder="Donazione Totali" /><br />
+          <input type="number" title="nuovi membri" name="nuoviMembri" id="nuoviMembri" onChange={e => this.handleChange(e)} placeholder="Nuovi Membri" /><br />
+          <input type="number" title="membri totali" name="membriTotali" id="membriTotali" onChange={e => this.handleChange(e)} placeholder="Membri Totali" /><br />
           <button type="submit" onClick={e => this.handleCreate(e)}>Update</button>
         </form>
         { statsArr[statsArr.length - 1] }

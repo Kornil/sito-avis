@@ -1,0 +1,14 @@
+.blog {
+
+	&__img {
+		max-width: 100%;
+		height: auto;
+
+		&--thumb {
+			width: 100px;
+			height: auto;
+		}
+
+	}
+
+}

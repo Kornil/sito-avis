@@ -44,7 +44,8 @@ class Login extends Component {
           <button onClick={() => firebase.auth().signOut()}>Logout</button>
         </form>
         { this.props.auth && <Link to="/createblog">Create Blog</Link> }&nbsp;
-        { this.props.auth && <Link to="/updatestats">Update Stats</Link> }
+        { this.props.auth && <Link to="/updatestats">Update Stats</Link> }&nbsp;
+        { this.props.auth && <Link to="/upload">Upload image</Link> }
       </div>
     );
   }

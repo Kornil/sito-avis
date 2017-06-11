@@ -11,6 +11,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import 'modules/footer';
 @import 'modules/contatti';
 @import 'modules/update-stats';
+@import 'modules/create-blog';
 
 
 
@@ -57,10 +58,32 @@ fieldset {
 
 }
 
-input:invalid {
-  box-shadow: 0 0 5px 1px red;
+.note {
+  color: gray;
+  margin: 8px 0;
 }
 
-input:focus:invalid {
-  outline: none;
+input.active:valid {
+  border: 1px solid green;
 }
+
+input.active:invalid {
+  border: 1px solid red;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.uploader {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+
+
+
