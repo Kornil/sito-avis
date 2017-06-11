@@ -26,6 +26,18 @@ class CreateBlog extends Component {
     return title.split(/\s|_|(?=[A-Z])/).join('-').toLowerCase();
   }
 
+  formatDate(date) {
+  let monthNames = [
+    "genn","febbr","mar","apr","magg","giugno","luglio","ag","sett","ott","nov","dic"
+  ];
+
+  let day = date.getDate();
+  let monthIndex = date.getMonth();
+  let year = date.getFullYear();
+
+  return day + ' ' + monthNames[monthIndex] + ' ' + year;
+}
+
 
   handleChange(event) {
     const newBlog = Object.assign({}, this.state.newBlog);
@@ -47,7 +59,6 @@ class CreateBlog extends Component {
     task.on('state_changed',
       function progress(snapshot) {
         let percentage = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        console.log('upload progress: ' + percentage);
         newBlog.imgProgress = percentage;
         this.setState({
           newBlog
@@ -80,6 +91,15 @@ class CreateBlog extends Component {
     firebase.database().ref('avis').update({
       blogs,
     });
+
+    const newBlog = Object.assign({}, this.state.newBlog);
+    newBlog.body = "";
+    newBlog.imgAlt = "";
+    newBlog.title = "";
+    this.setState({
+          newBlog
+        });
+    console.log('body data cleared? ' + this.state.newBlog.body);
   }
 
   render() {
@@ -88,12 +108,14 @@ class CreateBlog extends Component {
     let blogsArr = [];
     if (blogs.length) {
       blogsArr = blogs.map(blog => (
-        <div key={shortid.generate()}>
-          <h3>{blog.title}</h3>
-          <img className='blog__img' src={blog.imgUrl} alt={blog.imgAlt} />
-          <p>{blog.slug}</p>
-          <p>{blog.body}</p>
-          <p>{new Date(blog.timestamp).toString()}</p>
+        <div className="blog__card" key={shortid.generate()}>
+          <h3 className="blog__title">{blog.title}</h3>
+          <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
+          <div className="blog__meta">{this.formatDate(new Date(blog.timestamp))}</div>
+          <div className="blog__body">{blog.body}</div>
+          <Link to={`/blog/${blog.slug}`} className="blog__button">
+          Leggi l&rsquo;articolo
+          </Link>
         </div>
       ));
     }
@@ -126,7 +148,9 @@ class CreateBlog extends Component {
           <input type="text" name="imgAlt" onChange={e => this.handleChange(e)} placeholder="Alt text for image" /><br />
           <button type="submit" onClick={e => this.handleCreate(e)}>Create Post</button>
         </form>
+        <div className='blog__container'>
         { blogsArr }
+        </div>
       </div>
     );
   }

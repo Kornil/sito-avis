@@ -16,6 +16,7 @@ import Login from './Login';
 import CreateBlog from './CreateBlog';
 import UpdateStats from './UpdateStats';
 import ImgUpload from './FileUploadTest';
+import SinglePostDisplay from './SinglePostDisplay';
 
 import { saveAuth } from '../actions';
 
@@ -52,6 +53,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
 
             <Route path="/statistiche" component={Statistiche} />
+            <Route path="/blog/:slug" component={SinglePostDisplay} />
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}

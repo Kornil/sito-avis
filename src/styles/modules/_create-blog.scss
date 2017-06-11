@@ -1,8 +1,29 @@
 .blog {
+	    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+			color: $color_gray_text;
+
+	&__container {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	&__card {
+		padding: 10px;
+    width: 33%;
+	}
+
+	&__title {
+		font-size: 26px;
+		color: $color_blue;
+		line-height: .9;
+		font-weight: 300;
+	}
 
 	&__img {
 		max-width: 100%;
 		height: auto;
+		margin: 20px 0;
+		border: 1px solid $color_gray_text;
 
 		&--thumb {
 			width: 100px;
@@ -10,5 +31,36 @@
 		}
 
 	}
+
+	&__meta {
+		padding: 0 0 20px 0;
+		text-transform: uppercase;
+		font-size: .75em;
+		letter-spacing: 1px;
+	}
+
+	&__body {
+		margin-bottom: 20px;
+	}
+
+	&__button {
+      background: $color_red;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+			font-weight: 300;
+			font-size: .75em;
+			text-align: center;
+      text-decoration: none !important;
+      padding: 8px 12px;
+      margin-top: 20px;
+
+	    &:hover, &-active {
+	        background: $color_red-lighter;
+	        transition: all 180ms ease-in-out;
+	    }
+    }
+
+
 
 }

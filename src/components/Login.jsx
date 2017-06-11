@@ -45,7 +45,6 @@ class Login extends Component {
         </form>
         { this.props.auth && <Link to="/createblog">Create Blog</Link> }&nbsp;
         { this.props.auth && <Link to="/updatestats">Update Stats</Link> }&nbsp;
-        { this.props.auth && <Link to="/upload">Upload image</Link> }
       </div>
     );
   }
