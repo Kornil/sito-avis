@@ -29,7 +29,7 @@ class UpdateStats extends Component {
     newStats[event.target.name] = event.target.value;
     newStats.timestamp = firebase.database.ServerValue.TIMESTAMP;
     this.setState({
-      newStats
+      newStats,
     });
   }
 
