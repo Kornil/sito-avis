@@ -15,8 +15,8 @@ import Donazione from './Donazione';
 import Login from './Login';
 import CreateBlog from './CreateBlog';
 import UpdateStats from './UpdateStats';
-import ImgUpload from './FileUploadTest';
 import SinglePostDisplay from './SinglePostDisplay';
+import Notizie from './Notizie';
 
 import { saveAuth } from '../actions';
 
@@ -54,10 +54,11 @@ class App extends Component {
 
             <Route path="/statistiche" component={Statistiche} />
             <Route path="/blog/:slug" component={SinglePostDisplay} />
+            <Route path="/notizie" component={Notizie} />
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
-            {this.props.auth && <Route path="/upload" component={ImgUpload} />}
+
           </Switch>
         </main>
         <Footer />

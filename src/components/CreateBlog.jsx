@@ -3,6 +3,18 @@ import shortid from 'shortid';
 import * as firebase from 'firebase';
 import { Link } from 'react-router-dom';
 
+const formatDate = (date) => {
+  const monthNames = [
+    'genn', 'febbr', 'mar', 'apr', 'magg', 'giugno', 'luglio', 'ag', 'sett', 'ott', 'nov', 'dic',
+  ];
+
+  const day = date.getDate();
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+
+  return `${day} ${monthNames[monthIndex]} ${year}`;
+};
+
 class CreateBlog extends Component {
   constructor() {
     super();
@@ -26,28 +38,12 @@ class CreateBlog extends Component {
     });
   }
 
-  generateSlug(title) {
-    return title.split(/\s|_|(?=[A-Z])/).join('-').toLowerCase();
-  }
-
-  formatDate(date) {
-    const monthNames = [
-      'genn', 'febbr', 'mar', 'apr', 'magg', 'giugno', 'luglio', 'ag', 'sett', 'ott', 'nov', 'dic',
-    ];
-
-    const day = date.getDate();
-    const monthIndex = date.getMonth();
-    const year = date.getFullYear();
-
-    return `${day} ${monthNames[monthIndex]} ${year}`;
-  }
-
 
   handleChange(event) {
     const newBlog = Object.assign({}, this.state.newBlog);
     newBlog[event.target.name] = event.target.value;
     newBlog.timestamp = firebase.database.ServerValue.TIMESTAMP;
-    newBlog.slug = this.generateSlug(newBlog.title);
+    newBlog.slug = (newBlog.title).split(/\s|_|(?=[A-Z])/).join('-').toLowerCase();
     this.setState({
       newBlog,
     });
@@ -74,7 +70,7 @@ class CreateBlog extends Component {
           newBlog,
         });
       },
-      (snapshot) => {
+      () => {
         const url = task.snapshot.downloadURL;
         newBlog.imgUrl = url;
         newBlog.imgSuccess = true;
@@ -101,7 +97,6 @@ class CreateBlog extends Component {
     this.setState({
       newBlog,
     });
-    console.log(`body data cleared? ${this.state.newBlog}`);
   }
 
   render() {
@@ -113,7 +108,7 @@ class CreateBlog extends Component {
         <div className="blog__card" key={shortid.generate()}>
           <h3 className="blog__title">{blog.title}</h3>
           <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
-          <div className="blog__meta">{this.formatDate(new Date(blog.timestamp))}</div>
+          <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
           <div className="blog__body">{blog.body}</div>
           <Link to={`/blog/${blog.slug}`} className="blog__button">
           Leggi l&rsquo;articolo
