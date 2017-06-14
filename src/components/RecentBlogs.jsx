@@ -29,9 +29,9 @@ class RecentBlogs extends Component {
 
     // fetch 3 most recent posts only
     blogsRef.on('value', (snap) => {
-			this.setState({
-			blogs: snap.val(),
-    });
+      this.setState({
+        blogs: snap.val(),
+      });
     });
   }
 
