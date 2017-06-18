@@ -44,6 +44,8 @@ class CreateBlog extends Component {
     newBlog[event.target.name] = event.target.value;
     newBlog.timestamp = firebase.database.ServerValue.TIMESTAMP;
     newBlog.slug = (newBlog.title).split(/\s|_|(?=[A-Z])/).join('-').toLowerCase();
+    newBlog.key = firebase.database().ref().child('avis').child('blogs')
+      .push().key;
     this.setState({
       newBlog,
     });
@@ -109,7 +111,7 @@ class CreateBlog extends Component {
           <h3 className="blog__title">{blog.title}</h3>
           <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
           <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
-          <div className="blog__body">{blog.body}</div>
+          <div className="blog__body blog__excerpt">{blog.body}</div>
           <Link to={`/blog/${blog.slug}`} className="blog__button">
           Leggi l&rsquo;articolo
           </Link>

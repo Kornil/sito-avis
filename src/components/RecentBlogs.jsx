@@ -28,9 +28,9 @@ class RecentBlogs extends Component {
     const blogsRef = rootRef.child('blogs');
 
     // fetch 3 most recent posts only
-    blogsRef.on('value', (snap) => {
+    blogsRef.orderByChild('id').limitToLast(3).on('value', (snap) => {
       this.setState({
-        blogs: snap.val(),
+        blogs: snap.val().reverse(),
       });
     });
   }
@@ -44,7 +44,7 @@ class RecentBlogs extends Component {
         <h3 className="blog__title">{blog.title}</h3>
         <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
         <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
-        <div className="blog__body">{blog.body}</div>
+        <div className="blog__body blog__excerpt">{blog.body}</div>
         <Link to={`/blog/${blog.slug}`} className="blog__button">
           Leggi l&rsquo;articolo
           </Link>

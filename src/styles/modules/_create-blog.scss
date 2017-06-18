@@ -9,7 +9,17 @@
 
 	&__card {
 		padding: 10px;
-    width: 33%;
+		width: 100%;
+		margin-bottom: 20px;
+
+		@include for-phone-landscape-up {
+        width: 50%;
+        }
+
+		@include for-tablet-portrait-up {
+        width: 33%;
+        }
+
 	}
 
 	&__title {
@@ -17,7 +27,10 @@
 		color: $color_blue;
 		line-height: .9;
 		font-weight: 300;
-		height: 2.5em;
+		@include for-tablet-landscape-up {
+        height: 2.5em;
+        }
+
 	}
 
 	&__img {
@@ -43,6 +56,18 @@
 	&__body {
 		margin-bottom: 20px;
 	}
+
+	&__excerpt {
+		display: block;
+	  display: -webkit-box;
+	  height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
+	  font-size: $font-size;
+	  line-height: $line-height;
+	  -webkit-line-clamp: $lines-to-show;
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+		}
 
 	&__button {
       background: $color_red;
