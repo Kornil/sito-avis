@@ -1,90 +1,134 @@
-.blog {
-	    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-			color: $color_gray_text;
+.newBlog {
 
 	&__container {
-		display: flex;
-		flex-wrap: wrap;
+	width: 100%;
+	padding: 20px;
+	display: flex;
 	}
 
-	&__card {
+	&__form {
+	width: 50%;
+	padding: 20px;
+	}
+	&__preview {
+	width: 50%;
+	padding: 20px;
+	}
+
+	&__banner {
+		font-size: 46px;
+		font-weight: 300;
+		color: white;
+		background: $color_blue;
 		padding: 10px;
 		width: 100%;
-		margin-bottom: 20px;
+		}
 
-		@include for-phone-landscape-up {
-        width: 50%;
-        }
-
-		@include for-tablet-portrait-up {
-        width: 33%;
-        }
-
+	&__subhead {
+		font-size: 30px;
+		font-weight: 300;
+		color: $color_blue;
+		margin: 0 0 20px 5px;
 	}
 
 	&__title {
-		font-size: 26px;
-		color: $color_blue;
-		line-height: .9;
-		font-weight: 300;
-		@include for-tablet-landscape-up {
-        height: 2.5em;
-        }
+    font-size: 26px;
+    color: $color_blue;
+    line-height: .9;
+    font-weight: 300;
+    margin-bottom: 20px;
+    padding-left: 0px;
+   }
 
-	}
+  &__img {
+	  max-width: 100%;
+	  height: auto;
+	  margin: 0 0 20px 0;
+	  border: 1px solid $color_gray_text;
+      }
 
-	&__img {
-		max-width: 100%;
-		height: auto;
-		margin: 20px 0;
-		border: 1px solid $color_gray_text;
-
-		&--thumb {
-			width: 100px;
-			height: auto;
-		}
-
-	}
-
-	&__meta {
-		padding: 0 0 20px 0;
-		text-transform: uppercase;
-		font-size: .75em;
-		letter-spacing: 1px;
-	}
-
-	&__body {
-		margin-bottom: 20px;
-	}
-
-	&__excerpt {
+	&__input {
 		display: block;
-	  display: -webkit-box;
-	  height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
-	  font-size: $font-size;
-	  line-height: $line-height;
-	  -webkit-line-clamp: $lines-to-show;
-	  -webkit-box-orient: vertical;
-	  overflow: hidden;
-	  text-overflow: ellipsis;
-		}
+		width: 100%;
+		padding: .5rem .75rem !important;
+		font-size: 1rem !important;
+		line-height: 1.25;
+		color: #464a4c;
+		background-color: #fff;
+		background-image: none;
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		border: 1px solid rgba(0,0,0,.15) !important;
+		border-radius: .25rem !important;
+		-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+		transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+		-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	}
+
+	&__fileUploadWrap {
+		position: relative;
+		overflow: hidden;
+		display: inline-block;
+		white-space: nowrap;
+		vertical-align: middle;
+		-ms-touch-action: manipulation;
+		touch-action: manipulation;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		margin: 0 20px 0 0;
+	}
+
+	&__uploadBtn {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin: 0;
+		padding: 0;
+		font-size: 20px;
+		cursor: pointer;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+
+	&__img-upload-progress {
+		margin-left: 20px;
+		transition: all 180ms ease-in-out;
+	}
 
 	&__button {
-      background: $color_red;
-      color: white;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+			background: $color_blue;
+			color: white;
+			text-transform: uppercase;
+			letter-spacing: 2px;
 			font-weight: 300;
 			font-size: .75em;
 			text-align: center;
-      text-decoration: none !important;
-      padding: 8px 12px;
-      margin-top: 20px;
+			text-decoration: none !important;
+			padding: 8px 12px;
+			margin: 0 0 20px 5px;
+			appearance: none;
+			-webkit-appearance: none;
+			border: none;
 
-	    &:hover, &-active {
-	        background: $color_red-lighter;
-	        transition: all 180ms ease-in-out;
-	    }
-    }
+			&:hover, &-active, &:focus {
+					background: $color_blue-lighter;
+					transition: all 180ms ease-in-out;
+					outline: none;
+					border: none;
+			}
+		}
 
+		&__cancel {
+			margin-left: 20px;
+			background: $color_red;
+			&:hover, &-active, &:focus {
+					background: $color_red-lighter;
+			}
+		}
 }
+

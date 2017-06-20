@@ -43,8 +43,7 @@ class Login extends Component {
           <button onClick={e => this.handleLogin(e)} type="submit">Login</button>
           <button onClick={() => firebase.auth().signOut()}>Logout</button>
         </form>
-        { this.props.auth && <Link to="/createblog">Create Blog</Link> }&nbsp;
-        { this.props.auth && <Link to="/updatestats">Update Stats</Link> }&nbsp;
+        { this.props.auth && <Link to="/dashboard">Admin Dashboard</Link> }&nbsp;
       </div>
     );
   }

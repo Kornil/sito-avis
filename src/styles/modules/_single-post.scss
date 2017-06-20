@@ -1,0 +1,63 @@
+.sp {
+	    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+			color: $color_gray_text;
+
+	&__container {
+		width: 100%;
+		max-width: 900px;
+		margin: auto;
+		padding: 20px;
+	}
+
+	&__card {
+		padding: 10px;
+		width: 100%;
+		margin-bottom: 20px;
+
+		@include for-phone-landscape-up {
+        width: 50%;
+        }
+
+		@include for-tablet-portrait-up {
+        width: 33%;
+        }
+
+	}
+
+	&__title {
+		font-size: 48px;
+		color: $color_blue;
+		line-height: .9;
+		font-weight: 300;
+		@include for-tablet-landscape-up {
+
+        }
+
+	}
+
+	&__img-cont {
+		width: 100%;
+		text-align: center;
+
+	}
+
+	&__img {
+		max-width: 100%;
+		height: auto;
+		margin: 20px auto;
+		border: 1px solid $color_gray_text;
+
+	}
+
+	&__meta {
+		padding: 0 0 20px 0;
+		text-transform: uppercase;
+		font-size: .75em;
+		letter-spacing: 1px;
+	}
+
+	&__body {
+		margin-bottom: 20px;
+	}
+
+}

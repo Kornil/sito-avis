@@ -1,19 +1,8 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
-import * as firebase from 'firebase';
 import { Link } from 'react-router-dom';
 
-const formatDate = (date) => {
-  const monthNames = [
-    'genn', 'febbr', 'mar', 'apr', 'magg', 'giugno', 'luglio', 'ag', 'sett', 'ott', 'nov', 'dic',
-  ];
-
-  const day = date.getDate();
-  const monthIndex = date.getMonth();
-  const year = date.getFullYear();
-
-  return `${day} ${monthNames[monthIndex]} ${year}`;
-};
+import { formatDate, blogsRef } from '../utils/';
 
 class RecentBlogs extends Component {
   constructor() {
@@ -24,9 +13,6 @@ class RecentBlogs extends Component {
   }
 
   componentDidMount() {
-    const rootRef = firebase.database().ref().child('avis');
-    const blogsRef = rootRef.child('blogs');
-
     // fetch 3 most recent posts only
     blogsRef.orderByChild('id').limitToLast(3).on('value', (snap) => {
       this.setState({
@@ -45,7 +31,7 @@ class RecentBlogs extends Component {
         <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
         <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
         <div className="blog__body blog__excerpt">{blog.body}</div>
-        <Link to={`/blog/${blog.slug}`} className="blog__button">
+        <Link to={`/${blog.slug}`} className="blog__button">
           Leggi l&rsquo;articolo
           </Link>
       </div>

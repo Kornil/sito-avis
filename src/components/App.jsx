@@ -17,6 +17,8 @@ import CreateBlog from './CreateBlog';
 import UpdateStats from './UpdateStats';
 import SinglePostDisplay from './SinglePostDisplay';
 import Notizie from './Notizie';
+import Dashboard from './Dashboard';
+
 
 import { saveAuth } from '../actions';
 
@@ -51,13 +53,15 @@ class App extends Component {
             <Route path="/contatti" component={Contatti} />
             <Route path="/donazione" component={Donazione} />
             <Route path="/login" component={Login} />
-
             <Route path="/statistiche" component={Statistiche} />
-            <Route path="/blog/:slug" component={SinglePostDisplay} />
             <Route path="/notizie" component={Notizie} />
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
+            {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
+
+            <Route path="/:slug" component={SinglePostDisplay} />
+            <Route path="/:slug/edit" render={() => <CreateBlog edit="true" />} />
 
           </Switch>
         </main>

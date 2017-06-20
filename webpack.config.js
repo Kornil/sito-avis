@@ -10,9 +10,10 @@ const config = {
   output: {
     path: DIST_DIR,
     filename: 'bundle.js',
+    publicPath: '/',
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   module: {
     loaders: [

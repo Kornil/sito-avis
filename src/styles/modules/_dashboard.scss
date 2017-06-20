@@ -1,0 +1,37 @@
+.dash {
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+		font-weight: 300;
+		padding-bottom: 20px;
+
+		&__banner {
+			font-size: 46px;
+			font-weight: 300;
+			color: white;
+			background: $color_blue;
+			padding: 10px;
+			width: 100%;
+		}
+
+		&__buttons-cont {
+			display: flex;
+			justify-content: center;
+		}
+
+		&__button {
+			background: $color_red;
+			color: white;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			font-weight: 300;
+			font-size: .75em;
+			text-align: center;
+			text-decoration: none !important;
+			padding: 8px 12px;
+			margin: 20px;
+
+			&:hover, &-active {
+					background: $color_red-lighter;
+					transition: all 180ms ease-in-out;
+			}
+		}
+}

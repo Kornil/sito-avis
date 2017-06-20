@@ -1,0 +1,79 @@
+.blogInd {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+
+
+	&__container {
+		width: 100%;
+		max-width: 900px;
+		margin: 20px auto;
+	}
+
+	&__grid {
+		border-collapse: collapse;
+	}
+
+	&__tableHead {
+		font-weight: 300;
+		font-size: 1.2em;
+		color: $color_blue;
+		border: 1px solid $color_gray_lighter;
+		padding: 15px;
+	}
+
+	&__row {
+		border: 1px solid $color_gray_lighter;
+
+	}
+
+	&__row:nth-of-type(odd) {
+	  background-color: rgba(0,0,0,.05);
+	}
+
+	&__cell {
+		padding: 15px;
+		min-height: 3em;
+		border: 1px solid $color_gray_lighter;
+	}
+
+	&__thumb {
+		width: 50px;
+		height: auto;
+	}
+
+	&__meta {
+		padding: 15px 30px;
+	}
+
+	&__icon-container {
+				padding: 15px 30px;
+			}
+			&__icon {
+				opacity: .5;
+				font-size: 1.5em;
+				color: $color_gray_text;
+				border: none;
+				background: none;
+
+				&--edit {
+					@extend .fa;
+					@extend .fa-pencil;
+
+					&:hover {
+					opacity: 1;
+					color: $color_blue;
+					}
+
+				}
+				&--delete {
+					@extend .fa;
+					@extend .fa-trash;
+
+					&:hover {
+					opacity: 1;
+					color: $color_red;
+					}
+				}
+
+			}
+
+	}
