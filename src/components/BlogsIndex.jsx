@@ -8,7 +8,7 @@ class BlogsIndex extends Component {
     super();
     this.state = {
       blogs: [],
-      msg: '',
+      msg: false,
     };
     this.handleDelete = this.handleDelete.bind(this);
   }
@@ -28,15 +28,21 @@ class BlogsIndex extends Component {
     });
   }
 
-  handleDelete(key, title) {
+  handleDelete(key) {
 // clean this up and make it a modal popup later
     if (confirm('Are you sure you want to delete this post?')) {
+      let msg = true;
+      this.setState({
+        msg,
+      });
+      setTimeout(() => {
+        msg = false;
+        this.setState({
+          msg,
+        });
+      }, 2000);
       blogsRef.child(key).remove();
     }
-    const msg = title;
-    this.setState({
-      msg,
-    });
   }
 
   render() {
@@ -70,7 +76,7 @@ class BlogsIndex extends Component {
           <td className="blogInd__cell blogInd__icon-container">
             <button
               className="blogInd__icon blogInd__icon--delete"
-              onClick={() => this.handleDelete(blog['.key'], blog.title)}
+              onClick={() => this.handleDelete(blog['.key'])}
             />
           </td>
         </tr>
@@ -79,9 +85,9 @@ class BlogsIndex extends Component {
 
     return (
       <div className="blogInd__container">
-        <div className="blogInd__message">
-          {this.state.msg}
-        </div>
+        {this.state.msg && <div className="blogInd__message">
+          The post was successfully deleted.
+        </div>}
         { (!blogsArr.length) ? <Loading /> :
         <table className="blogInd__grid">
           <thead>
