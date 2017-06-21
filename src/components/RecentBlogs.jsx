@@ -31,7 +31,7 @@ class RecentBlogs extends Component {
         <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
         <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
         <div className="blog__body blog__excerpt">{blog.body}</div>
-        <Link to={`/${blog.slug}`} className="blog__button">
+        <Link to={`/blog/${blog.slug}`} className="blog__button">
           Leggi l&rsquo;articolo
           </Link>
       </div>

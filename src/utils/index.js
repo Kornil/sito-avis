@@ -12,6 +12,13 @@ export const formatDate = (date) => {
   return `${day} ${monthNames[monthIndex]} ${year}`;
 };
 
+export const generateSlug = title => title.toString().toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+
 const config = {
   apiKey: 'AIzaSyDorzqQG5pgETcGGmQ58DrQhQUHYnVERHU',
   authDomain: 'avis-website-dac6e.firebaseapp.com',

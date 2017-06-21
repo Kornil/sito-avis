@@ -60,7 +60,7 @@ class App extends Component {
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
             {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
 
-            <Route path="/:slug" component={SinglePostDisplay} />
+            <Route path="/blog/:slug" component={SinglePostDisplay} />
             <Route path="/:slug/edit" render={() => <CreateBlog edit="true" />} />
 
           </Switch>

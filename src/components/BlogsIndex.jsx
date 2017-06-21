@@ -47,7 +47,7 @@ class BlogsIndex extends Component {
       blogsArr = blogs.map(blog => (
         <tr key={blog['.key']} className="blogInd__row" >
           <td className="blogInd__cell blogInd__title">
-            <Link to={`/${blog.slug}`}>
+            <Link to={`/blog/${blog.slug}`}>
               {blog.title}
             </Link>
           </td>
@@ -61,7 +61,7 @@ class BlogsIndex extends Component {
           <td className="blogInd__cell blogInd__meta">{formatDate(new Date(blog.timestamp))}</td>
           <td className="blogInd__cell blogInd__icon-container">
             <Link
-              to={`/${blog.slug}/edit`}
+              to={`/blog/${blog.slug}/edit`}
               className=""
             >
               <div className="blogInd__icon blogInd__icon--edit" />

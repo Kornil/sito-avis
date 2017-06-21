@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, rootRef } from '../utils/';
+import { blogsRef, timeRef, rootRef, generateSlug } from '../utils/';
 
 class CreateBlog extends Component {
   constructor() {
@@ -28,7 +28,7 @@ class CreateBlog extends Component {
     const newBlog = Object.assign({}, this.state.newBlog);
     newBlog[event.target.name] = event.target.value;
     newBlog.timestamp = timeRef;
-    newBlog.slug = (newBlog.title).split(/\s|_|(?=[A-Z])/).join('-').toLowerCase();
+    newBlog.slug = generateSlug(newBlog.title);
     newBlog.key = blogsRef.push().key;
     this.setState({
       newBlog,
