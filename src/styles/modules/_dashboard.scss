@@ -18,7 +18,7 @@
 		}
 
 		&__button {
-			background: $color_red;
+			background: $color_blue;
 			color: white;
 			text-transform: uppercase;
 			letter-spacing: 2px;
@@ -30,7 +30,7 @@
 			margin: 20px;
 
 			&:hover, &-active {
-					background: $color_red-lighter;
+					background: $color_blue-lighter;
 					transition: all 180ms ease-in-out;
 			}
 		}

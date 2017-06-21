@@ -31,17 +31,18 @@ class BlogsIndex extends Component {
   handleDelete(key) {
 // clean this up and make it a modal popup later
     if (confirm('Are you sure you want to delete this post?')) {
-      let msg = true;
-      this.setState({
-        msg,
-      });
-      setTimeout(() => {
-        msg = false;
+      blogsRef.child(key).remove().then(() => {
+        let msg = true;
         this.setState({
           msg,
         });
-      }, 2000);
-      blogsRef.child(key).remove();
+        setTimeout(() => {
+          msg = false;
+          this.setState({
+            msg,
+          });
+        }, 2000);
+      });
     }
   }
 
@@ -67,7 +68,7 @@ class BlogsIndex extends Component {
           <td className="blogInd__cell blogInd__meta">{formatDate(new Date(blog.timestamp))}</td>
           <td className="blogInd__cell blogInd__icon-container">
             <Link
-              to={`/blog/${blog.slug}/edit`}
+              to={`/edit/${blog.slug}`}
               className=""
             >
               <div className="blogInd__icon blogInd__icon--edit" />
@@ -79,30 +80,29 @@ class BlogsIndex extends Component {
               onClick={() => this.handleDelete(blog['.key'])}
             />
           </td>
-        </tr>
-      ));
+        </tr>));
     }
 
     return (
       <div className="blogInd__container">
-        {this.state.msg && <div className="blogInd__message">
-          The post was successfully deleted.
-        </div>}
+        {this.state.msg && <div className="blogInd__message">The post was successfully deleted.</div>}
         { (!blogsArr.length) ? <Loading /> :
-        <table className="blogInd__grid">
-          <thead>
-            <tr>
-              <th className="blogInd__tableHead">Title</th>
-              <th className="blogInd__tableHead">Image</th>
-              <th className="blogInd__tableHead">Date</th>
-              <th className="blogInd__tableHead">Edit</th>
-              <th className="blogInd__tableHead">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {blogsArr.reverse()}
-          </tbody>
-        </table> }
+        <div className="blogInd__table-cont">
+          <table className="blogInd__grid">
+            <thead>
+              <tr>
+                <th className="blogInd__tableHead">Title</th>
+                <th className="blogInd__tableHead">Image</th>
+                <th className="blogInd__tableHead">Date</th>
+                <th className="blogInd__tableHead">Edit</th>
+                <th className="blogInd__tableHead">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {blogsArr.reverse()}
+            </tbody>
+          </table>
+        </div>}
       </div>
     );
   }

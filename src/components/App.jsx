@@ -59,9 +59,10 @@ class App extends Component {
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
             {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
+            {this.props.auth && <Route path="/edit/:slug" component={CreateBlog} />}
 
             <Route path="/blog/:slug" component={SinglePostDisplay} />
-            <Route path="/:slug/edit" render={() => <CreateBlog edit="true" />} />
+
 
           </Switch>
         </main>

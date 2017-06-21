@@ -1,26 +1,51 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, rootRef, generateSlug } from '../utils/';
+import { blogsRef, timeRef, generateSlug } from '../utils/';
 
 class CreateBlog extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       newBlog: {
         title: '',
         body: '',
         imgAlt: '',
+        imgSuccess: '',
+        imgProgress: '',
       },
       blogs: [],
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
-    blogsRef.on('value', (snap) => {
-      this.setState({
-        blogs: snap.val() || [],
+    if (this.props.match.params.slug) {
+      const slug = this.props.match.params.slug;
+      blogsRef.orderByChild('slug').equalTo(slug).once('value', (snap) => {
+        const posts = snap.val();
+        const newBlog = posts[Object.keys(posts)[0]];
+        this.setState({
+          newBlog,
+          edit: true,
+        });
       });
-    });
+    } else {
+      blogsRef.on('value', (snap) => {
+        const blogs = [];
+
+        snap.forEach((childSnap) => {
+          const blog = childSnap.val();
+          blog['.key'] = childSnap.key;
+          blogs.push(blog);
+        });
+        this.setState({
+          blogs,
+        });
+      });
+    }
   }
 
 
@@ -29,7 +54,7 @@ class CreateBlog extends Component {
     newBlog[event.target.name] = event.target.value;
     newBlog.timestamp = timeRef;
     newBlog.slug = generateSlug(newBlog.title);
-    newBlog.key = blogsRef.push().key;
+
     this.setState({
       newBlog,
     });
@@ -75,24 +100,24 @@ class CreateBlog extends Component {
 
   handleCreate(event) {
     event.preventDefault();
-    const blogs = Object.assign([], this.state.blogs);
-    blogs.push(this.state.newBlog);
-
-    rootRef.update({
-      blogs,
+    const newBlog = Object.assign({}, this.state.newBlog);
+    newBlog.key = blogsRef.push().key;
+    blogsRef.push(newBlog).then(() => {
+      this.props.history.push('/dashboard');
     });
-
-    this.props.history.push('/dashboard');
   }
 
-  handleReset() {
-    const newBlog = Object.assign({}, this.state.newBlog);
-    newBlog.body = '';
-    newBlog.imgAlt = '';
-    newBlog.title = '';
-    newBlog.imgUrl = '';
-    this.setState({
-      newBlog,
+  handleUpdate(event) {
+    event.preventDefault();
+    const { key } = this.state.newBlog;
+    blogsRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
+      if (snapshot.val() === null) {
+        console.log('post not found');
+      } else {
+        snapshot.ref.child(key).update(this.state.newBlog).then(() => {
+          this.props.history.push('/dashboard');
+        });
+      }
     });
   }
 
@@ -148,16 +173,21 @@ class CreateBlog extends Component {
               value={imgAlt}
             />
             <br />
+            {!this.state.edit &&
             <button
               className="newBlog__submit newBlog__button"
               type="submit"
               onClick={e => this.handleCreate(e)}
-            >Create Post</button>
+            >Create Post</button>}
+            {this.state.edit &&
             <button
+              className="newBlog__submit newBlog__button"
+              onClick={e => this.handleUpdate(e)}
+            >Update Post</button>}
+            <Link
+              to="/dashboard"
               className="newBlog__cancel newBlog__button"
-              type="reset"
-              onClick={e => this.handleReset(e)}
-            >Reset Form</button>
+            >Cancel</Link>
           </form>
           <div className="newBlog__preview">
             <h3 className="newBlog__subhead">Preview</h3>

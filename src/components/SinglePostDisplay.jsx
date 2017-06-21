@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { formatDate, blogsRef } from '../utils/';
 
 class SinglePostDisplay extends Component {
@@ -14,7 +13,6 @@ class SinglePostDisplay extends Component {
     const slug = this.props.match.params.slug;
     blogsRef.orderByChild('slug').equalTo(slug).once('value', (snap) => {
       const posts = snap.val();
-      console.log(snap.val());
       const currentPost = posts[Object.keys(posts)[0]];
       this.setState({
         currentPost,
