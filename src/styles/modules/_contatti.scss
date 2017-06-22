@@ -6,6 +6,11 @@
       display: flex;
       justify-content: space-between;
     }
+    @include for-desktop-up {
+      display: flex;
+      justify-content: space-between;
+      height: 400px;
+    }
     &-text {
       color: $color_blue;
       font-size: 38px;
@@ -29,9 +34,24 @@
       list-style-type: none;
       line-height: 39px;
       font-size: 22px;
+      position: relative;
       @include for-tablet-landscape-only {
         font-size: 26px;
         line-height: 43px;
+      }
+      .icon-fb {
+        @extend .fa;
+        @extend .fa-facebook-official;
+        opacity: .8;
+        font-size: 2em;
+        @include for-phone-landscape-up{
+          position: absolute;
+          bottom: 5px;
+          right: 0;
+        }
+        &:hover{
+          opacity: 1;
+        }
       }
       li a {
         text-decoration: none;
@@ -47,6 +67,11 @@
         height: 430px;
         margin: 0;
       }
+      @include for-desktop-up {
+        width: 50%;
+        height: 100%;
+        margin: 0;
+      }
       iframe {
         height: 100%;
         width: 100%;
@@ -58,9 +83,16 @@
     @include for-tablet-landscape-only {
       height: 50px;
     }
+    @include for-desktop-up {
+      height: 50px;
+    }
   } // cards styles-------
   &__cards-container {
     color: $color_gray_text;
+    @include for-desktop-up {
+      display: flex;
+      justify-content: space-between;
+    }
   }
   &__card {
     padding: 10px 0 40px 0;
@@ -69,12 +101,23 @@
       padding: 25px 30px;
       margin-bottom: 50px;
     }
+    @include for-desktop-up {
+      border: 2px solid $color_blue;
+      padding: 25px 30px;
+      width: 30%;
+    }
     &-heading {
       color: $color_blue;
       font-weight: 600;
       font-size: 30px;
-      @include for-tablet-landscape-only{
+      @include for-tablet-landscape-only {
         font-size: 38px;
+      }
+      .break-desktop-only {
+        display: none;
+        @include for-desktop-up {
+          display: block;
+        }
       }
     }
     &-address {
@@ -85,12 +128,12 @@
         padding-top: 25px;
         font-size: 30px;
       }
-      .split-address-tablet-mode{
+      .split-address-tablet-mode {
         display: block;
         height: 5px;
         width: 0px;
         opacity: 0;
-        @include for-tablet-landscape-only{
+        @include for-tablet-landscape-only {
           display: inline;
           opacity: 1;
         }
@@ -114,17 +157,16 @@
           line-height: 43px;
         }
       }
-      .first-child{
-        @include for-tablet-landscape-only{
+      .first-child {
+        @include for-tablet-landscape-only {
           margin-right: 90px;
         }
       }
-      .third-child{
-        @include for-tablet-landscape-only{
+      .third-child {
+        @include for-tablet-landscape-only {
           margin-right: 48px;
         }
       }
-      
       li a {
         text-decoration: none;
         color: $color_gray_text
@@ -140,7 +182,7 @@
       color: $color_gray_text;
       font-size: 2em;
       margin-right: 30px;
-      @include for-tablet-landscape-only{
+      @include for-tablet-landscape-only {
         font-size: 2.3em;
         margin-right: 40px;
       }

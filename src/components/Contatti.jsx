@@ -15,6 +15,7 @@ const Contatti = () => (
             <li><strong>Orari dufficio: </strong> Lunedi - Venerdi</li>
             <li>9.00-12.00 e 14.00-17.00</li>
             <li>Sabato: 9.00-12.00</li>
+            <li className="icon-fb" />
           </ul>
         </div>
       </div>
@@ -29,7 +30,7 @@ const Contatti = () => (
       {/* 1st Card*/}
       <div className="contatti__card">
         <p className="contatti__card-heading">
-          Avis Sede Nazionale
+          Avis Sede <br className="break-desktop-only" />Nazionale
         </p>
         <p className="contatti__card-address">
           Via E. Forlanini, 23
@@ -67,7 +68,7 @@ const Contatti = () => (
       {/* 2nd Card*/}
       <div className="contatti__card">
         <div className="contatti__card-heading">
-          Avis Regionale Veneto
+          Avis Regionale <br className="break-desktop-only" />Veneto
         </div>
         <div className="contatti__card-address">
           Via dell Ospedale, 1
@@ -98,7 +99,7 @@ const Contatti = () => (
       {/* 3rd card*/}
       <div className="contatti__card">
         <div className="contatti__card-heading">
-          Avis Provinciale Rovigo
+          Avis Provinciale <br className="break-desktop-only" />Rovigo
         </div>
         <div className="contatti__card-address">
           Via F. Maffei, 5
@@ -124,6 +125,7 @@ const Contatti = () => (
         </ul>
       </div>
     </div>
+    <div className="contatti__space-creator" />
   </div >
 );
 
