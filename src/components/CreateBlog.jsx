@@ -15,37 +15,32 @@ class CreateBlog extends Component {
         imgProgress: '',
       },
       blogs: [],
+      _isMounted: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
-    if (this.props.match.params.slug) {
-      const slug = this.props.match.params.slug;
-      blogsRef.orderByChild('slug').equalTo(slug).once('value', (snap) => {
-        const posts = snap.val();
-        const newBlog = posts[Object.keys(posts)[0]];
-        this.setState({
-          newBlog,
-          edit: true,
-        });
-      });
-    } else {
-      blogsRef.on('value', (snap) => {
-        const blogs = [];
+    blogsRef.on('value', (snap) => {
+      const blogs = [];
 
-        snap.forEach((childSnap) => {
-          const blog = childSnap.val();
-          blog['.key'] = childSnap.key;
-          blogs.push(blog);
-        });
-        this.setState({
-          blogs,
-        });
+      snap.forEach((childSnap) => {
+        const blog = childSnap.val();
+        blog['.key'] = childSnap.key;
+        blogs.push(blog);
       });
-    }
+      this.setState({
+        blogs,
+        _isMounted: true,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.setState({
+      _isMounted: false,
+    });
   }
 
 
@@ -54,10 +49,11 @@ class CreateBlog extends Component {
     newBlog[event.target.name] = event.target.value;
     newBlog.timestamp = timeRef;
     newBlog.slug = generateSlug(newBlog.title);
-
-    this.setState({
-      newBlog,
-    });
+    if (this.state._isMounted) {
+      this.setState({
+        newBlog,
+      });
+    }
   }
 
   handleImgUpload(event) {
@@ -69,31 +65,39 @@ class CreateBlog extends Component {
     task.on('state_changed', (snap) => {
       const percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
       newBlog.imgProgress = percentage;
-      this.setState({
-        newBlog,
-      });
+      if (this.state._isMounted) {
+        this.setState({
+          newBlog,
+        });
+      }
     },
 (err) => {
   newBlog.imgError = err;
   console.log(err);
-  this.setState({
-    newBlog,
-  });
+  if (this.state._isMounted) {
+    this.setState({
+      newBlog,
+    });
+  }
 },
 () => {
   const url = task.snapshot.downloadURL;
   newBlog.imgUrl = url;
   newBlog.imgSuccess = true;
   newBlog.imgFileName = file.name;
-  this.setState({
-    newBlog,
-  });
-  setTimeout(() => {
-    newBlog.imgSuccess = '';
-    newBlog.imgProgress = 0;
+  if (this.state._isMounted) {
     this.setState({
       newBlog,
     });
+  }
+  setTimeout(() => {
+    newBlog.imgSuccess = '';
+    newBlog.imgProgress = 0;
+    if (this.state._isMounted) {
+      this.setState({
+        newBlog,
+      });
+    }
   }, 2000);
 });
   }
@@ -104,20 +108,6 @@ class CreateBlog extends Component {
     newBlog.key = blogsRef.push().key;
     blogsRef.push(newBlog).then(() => {
       this.props.history.push('/dashboard');
-    });
-  }
-
-  handleUpdate(event) {
-    event.preventDefault();
-    const { key } = this.state.newBlog;
-    blogsRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
-      if (snapshot.val() === null) {
-        console.log('post not found');
-      } else {
-        snapshot.ref.child(key).update(this.state.newBlog).then(() => {
-          this.props.history.push('/dashboard');
-        });
-      }
     });
   }
 
@@ -173,17 +163,11 @@ class CreateBlog extends Component {
               value={imgAlt}
             />
             <br />
-            {!this.state.edit &&
             <button
               className="newBlog__submit newBlog__button"
               type="submit"
               onClick={e => this.handleCreate(e)}
-            >Create Post</button>}
-            {this.state.edit &&
-            <button
-              className="newBlog__submit newBlog__button"
-              onClick={e => this.handleUpdate(e)}
-            >Update Post</button>}
+            >Create Post</button>
             <Link
               to="/dashboard"
               className="newBlog__cancel newBlog__button"

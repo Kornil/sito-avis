@@ -9,6 +9,7 @@ class BlogsIndex extends Component {
     this.state = {
       blogs: [],
       msg: false,
+      _isMounted: '',
     };
     this.handleDelete = this.handleDelete.bind(this);
   }
@@ -24,7 +25,14 @@ class BlogsIndex extends Component {
       });
       this.setState({
         blogs,
+        _isMounted: true,
       });
+    });
+  }
+
+  componentWillUnmount() {
+    this.setState({
+      _isMounted: false,
     });
   }
 
@@ -33,14 +41,18 @@ class BlogsIndex extends Component {
     if (confirm('Are you sure you want to delete this post?')) {
       blogsRef.child(key).remove().then(() => {
         let msg = true;
-        this.setState({
-          msg,
-        });
-        setTimeout(() => {
-          msg = false;
+        if (this.state._isMounted) {
           this.setState({
             msg,
           });
+        }
+        setTimeout(() => {
+          msg = false;
+          if (this.state._isMounted) {
+            this.setState({
+              msg,
+            });
+          }
         }, 2000);
       });
     }
@@ -68,7 +80,7 @@ class BlogsIndex extends Component {
           <td className="blogInd__cell blogInd__meta">{formatDate(new Date(blog.timestamp))}</td>
           <td className="blogInd__cell blogInd__icon-container">
             <Link
-              to={`/edit/${blog.slug}`}
+              to={`/edit/${blog.key}`}
               className=""
             >
               <div className="blogInd__icon blogInd__icon--edit" />

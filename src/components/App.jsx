@@ -14,6 +14,7 @@ import Contatti from './Contatti';
 import Donazione from './Donazione';
 import Login from './Login';
 import CreateBlog from './CreateBlog';
+import UpdateBlog from './UpdateBlog';
 import UpdateStats from './UpdateStats';
 import SinglePostDisplay from './SinglePostDisplay';
 import Notizie from './Notizie';
@@ -59,7 +60,7 @@ class App extends Component {
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
             {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
-            {this.props.auth && <Route path="/edit/:slug" component={CreateBlog} />}
+            {this.props.auth && <Route path="/edit/:key" component={UpdateBlog} />}
 
             <Route path="/blog/:slug" component={SinglePostDisplay} />
 
