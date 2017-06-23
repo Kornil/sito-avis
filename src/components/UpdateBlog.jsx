@@ -16,7 +16,6 @@ class UpdateBlog extends Component {
         imgProgress: '',
       },
       blogs: [],
-      _isMounted: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -28,15 +27,7 @@ class UpdateBlog extends Component {
       const newBlog = snapshot.val();
       this.setState({
         newBlog,
-        edit: true,
-        _isMounted: true,
       });
-    });
-  }
-
-  componentWillUnmount() {
-    this.setState({
-      _isMounted: false,
     });
   }
 
@@ -46,11 +37,9 @@ class UpdateBlog extends Component {
     newBlog[event.target.name] = event.target.value;
     newBlog.timestamp = timeRef;
     newBlog.slug = generateSlug(newBlog.title);
-    if (this.state._isMounted) {
-      this.setState({
-        newBlog,
-      });
-    }
+    this.setState({
+      newBlog,
+    });
   }
 
   handleImgUpload(event) {
@@ -62,39 +51,31 @@ class UpdateBlog extends Component {
     task.on('state_changed', (snap) => {
       const percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
       newBlog.imgProgress = percentage;
-      if (this.state._isMounted) {
-        this.setState({
-          newBlog,
-        });
-      }
+      this.setState({
+        newBlog,
+      });
     },
 (err) => {
   newBlog.imgError = err;
   console.log(err);
-  if (this.state._isMounted) {
-    this.setState({
-      newBlog,
-    });
-  }
+  this.setState({
+    newBlog,
+  });
 },
 () => {
   const url = task.snapshot.downloadURL;
   newBlog.imgUrl = url;
   newBlog.imgSuccess = true;
   newBlog.imgFileName = file.name;
-  if (this.state._isMounted) {
-    this.setState({
-      newBlog,
-    });
-  }
+  this.setState({
+    newBlog,
+  });
   setTimeout(() => {
     newBlog.imgSuccess = '';
     newBlog.imgProgress = 0;
-    if (this.state._isMounted) {
-      this.setState({
-        newBlog,
-      });
-    }
+    this.setState({
+      newBlog,
+    });
   }, 2000);
 });
   }

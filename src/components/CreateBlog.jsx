@@ -14,33 +14,9 @@ class CreateBlog extends Component {
         imgSuccess: '',
         imgProgress: '',
       },
-      blogs: [],
-      _isMounted: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
-  }
-
-  componentDidMount() {
-    blogsRef.on('value', (snap) => {
-      const blogs = [];
-
-      snap.forEach((childSnap) => {
-        const blog = childSnap.val();
-        blog['.key'] = childSnap.key;
-        blogs.push(blog);
-      });
-      this.setState({
-        blogs,
-        _isMounted: true,
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    this.setState({
-      _isMounted: false,
-    });
   }
 
 
@@ -49,11 +25,9 @@ class CreateBlog extends Component {
     newBlog[event.target.name] = event.target.value;
     newBlog.timestamp = timeRef;
     newBlog.slug = generateSlug(newBlog.title);
-    if (this.state._isMounted) {
-      this.setState({
-        newBlog,
-      });
-    }
+    this.setState({
+      newBlog,
+    });
   }
 
   handleImgUpload(event) {
@@ -65,39 +39,31 @@ class CreateBlog extends Component {
     task.on('state_changed', (snap) => {
       const percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
       newBlog.imgProgress = percentage;
-      if (this.state._isMounted) {
-        this.setState({
-          newBlog,
-        });
-      }
+      this.setState({
+        newBlog,
+      });
     },
 (err) => {
   newBlog.imgError = err;
   console.log(err);
-  if (this.state._isMounted) {
-    this.setState({
-      newBlog,
-    });
-  }
+  this.setState({
+    newBlog,
+  });
 },
 () => {
   const url = task.snapshot.downloadURL;
   newBlog.imgUrl = url;
   newBlog.imgSuccess = true;
   newBlog.imgFileName = file.name;
-  if (this.state._isMounted) {
-    this.setState({
-      newBlog,
-    });
-  }
+  this.setState({
+    newBlog,
+  });
   setTimeout(() => {
     newBlog.imgSuccess = '';
     newBlog.imgProgress = 0;
-    if (this.state._isMounted) {
-      this.setState({
-        newBlog,
-      });
-    }
+    this.setState({
+      newBlog,
+    });
   }, 2000);
 });
   }
@@ -105,8 +71,11 @@ class CreateBlog extends Component {
   handleCreate(event) {
     event.preventDefault();
     const newBlog = Object.assign({}, this.state.newBlog);
-    newBlog.key = blogsRef.push().key;
-    blogsRef.push(newBlog).then(() => {
+    const newBlogKey = blogsRef.push().key;
+    newBlog.key = newBlogKey;
+    const updates = {};
+    updates[newBlogKey] = newBlog;
+    blogsRef.update(updates).then(() => {
       this.props.history.push('/dashboard');
     });
   }
