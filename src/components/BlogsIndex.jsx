@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Modal from 'react-modal';
+
 import { formatDate, blogsRef } from '../utils/';
 import Loading from './Loading';
 
@@ -9,9 +11,12 @@ class BlogsIndex extends Component {
     this.state = {
       blogs: [],
       msg: false,
-      _isMounted: '',
+      currentKey: '',
+      modalOpen: false,
     };
-    this.handleDelete = this.handleDelete.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   componentDidMount() {
@@ -25,42 +30,35 @@ class BlogsIndex extends Component {
       });
       this.setState({
         blogs,
-        _isMounted: true,
       });
     });
   }
 
-  componentWillUnmount() {
-    this.setState({
-      _isMounted: false,
+  onDelete(key) {
+    blogsRef.child(key).remove().then(() => {
+      this.setState({
+        msg: true,
+        modalOpen: false,
+      });
+      setTimeout(() => {
+        this.setState({
+          msg: false,
+          deleteKey: null,
+        });
+      }, 2000);
     });
   }
 
-  handleDelete(key) {
-// clean this up and make it a modal popup later
-    if (confirm('Are you sure you want to delete this post?')) {
-      blogsRef.child(key).remove().then(() => {
-        let msg = true;
-        if (this.state._isMounted) {
-          this.setState({
-            msg,
-          });
-        }
-        setTimeout(() => {
-          msg = false;
-          if (this.state._isMounted) {
-            this.setState({
-              msg,
-            });
-          }
-        }, 2000);
-      });
-    }
+  closeModal() {
+    this.setState({ modalOpen: false });
+  }
+
+  openModal(key) {
+    this.setState({ modalOpen: true, deleteKey: key });
   }
 
   render() {
     const { blogs } = this.state;
-
     let blogsArr = [];
     if (blogs.length) {
       blogsArr = blogs.map(blog => (
@@ -89,7 +87,7 @@ class BlogsIndex extends Component {
           <td className="blogInd__cell blogInd__icon-container">
             <button
               className="blogInd__icon blogInd__icon--delete"
-              onClick={() => this.handleDelete(blog['.key'])}
+              onClick={() => this.openModal(blog['.key'])}
             />
           </td>
         </tr>));
@@ -97,6 +95,47 @@ class BlogsIndex extends Component {
 
     return (
       <div className="blogInd__container">
+        <Modal
+          isOpen={this.state.modalOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          className="modal"
+          contentLabel="Confirm Delete"
+        >
+          <div className="modal__dialog">
+            <div className="modal__content">
+              <div className="modal__header">
+                <button
+                  type="button"
+                  onClick={this.closeModal}
+                  className="modal__close--x"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+                <h2 className="modal__title" id="modalTitle">Confirm Delete</h2>
+              </div>
+              <div className="modal__body">
+                <p>Are you sure you want to delete this post? This cannot be undone.</p>
+              </div>
+              <div className="modal__footer">
+                <button
+                  type="button"
+                  onClick={this.closeModal}
+                  className="modal__button modal__close--btn"
+                  data-dismiss="modal"
+                >Cancel</button>
+                <button
+                  type="button"
+                  onClick={() => this.onDelete(this.state.deleteKey)}
+                  className="modal__button modal__confirm"
+                  data-dismiss="modal"
+                >Delete</button>
+              </div>
+            </div>
+          </div>
+        </Modal>
         {this.state.msg && <div className="blogInd__message">The post was successfully deleted.</div>}
         { (!blogsArr.length) ? <Loading /> :
         <div className="blogInd__table-cont">
