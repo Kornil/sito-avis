@@ -16,14 +16,14 @@ class RecentBlogs extends Component {
     // fetch 3 most recent posts only
     blogsRef.orderByChild('id').limitToLast(3).on('value', (snap) => {
       this.setState({
-        blogs: snap.val().reverse(),
+        blogs: snap.val(),
       });
     });
   }
 
   render() {
     const blogs = this.state.blogs;
-    const recentBlogs = Object.values(blogs);
+    const recentBlogs = Object.values(blogs).reverse();
     let blogsArr = [];
     blogsArr = recentBlogs.map(blog => (
       <div className="blog__card" key={shortid.generate()}>
