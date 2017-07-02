@@ -33,3 +33,5 @@ firebase.initializeApp(config);
 export const rootRef = firebase.database().ref().child('avis');
 export const blogsRef = rootRef.child('blogs');
 export const timeRef = firebase.database.ServerValue.TIMESTAMP;
+
+export const createMarkup = input => ({ __html: input });

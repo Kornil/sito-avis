@@ -18,12 +18,12 @@
   },
   "homepage": "https://github.com/Kornil/sito-avis#readme",
   "dependencies": {
-    "dialog-polyfill": "^0.4.7",
     "firebase": "^3.9.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-modal": "^2.0.6",
+    "react-quill": "^1.0.0",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
@@ -32,6 +32,7 @@
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
     "shortid": "^2.2.8",
+    "slate": "^0.20.4",
     "style-loader": "^0.17.0"
   },
   "devDependencies": {

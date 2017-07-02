@@ -58,13 +58,22 @@
 		background-image: none;
 		-webkit-background-clip: padding-box;
 		background-clip: padding-box;
-		border: 1px solid rgba(0,0,0,.15) !important;
-		border-radius: .25rem !important;
+		border: 1px solid #ccc !important;
+		border-radius: 0 !important;
 		-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
 		transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
 		-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	}
+
+	&__editor {
+		margin-left: 6px;
+		width: 100%;
+	}
+
+	&__wrapper {
+		margin-left: 5px;
 	}
 
 	&__fileUploadWrap {

@@ -23,6 +23,10 @@ const config = {
         loader: 'babel-loader'
       },
       {
+        test: /\.css$/,
+        loaders: ['style-loader?sourceMap', 'css-loader']
+      },
+      {
         test: /\.scss$/,
         loaders: ['style-loader?sourceMap', 'css-loader', 'sass-loader']
       },
@@ -30,7 +34,8 @@ const config = {
         test:/\.(jpg|png|gif|bmp|svg|woff|woff2|ttf|eot)$/,
         loader: require.resolve("file-loader")
       }
-    ]
+    ],
+    noParse: /node_modules\/quill\/dist/
   },
   plugins: [
     new ExtractTextPlugin({

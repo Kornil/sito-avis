@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, generateSlug } from '../utils/';
+import { blogsRef, timeRef, generateSlug, createMarkup } from '../utils/';
 
 class CreateBlog extends Component {
   constructor(props) {
@@ -9,16 +11,49 @@ class CreateBlog extends Component {
     this.state = {
       newBlog: {
         title: '',
-        body: '',
         imgAlt: '',
         imgSuccess: '',
         imgProgress: '',
+        blogBody: '<br/>',
       },
+      unsavedChanges: false,
     };
+    this.modules = {
+      toolbar: [
+        [{ header: [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+        ['link', 'image'],
+        ['clean'],
+      ],
+    };
+    this.formats = [
+      'header',
+      'bold', 'italic', 'underline', 'strike', 'blockquote',
+      'list', 'bullet', 'indent',
+      'link', 'image',
+    ];
     this.handleChange = this.handleChange.bind(this);
+    this.handleQuillChange = this.handleQuillChange.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
+    this.unsavedChanges = this.unsavedChanges.bind(this);
   }
 
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.unsavedChanges);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.unsavedChanges);
+  }
+
+  unsavedChanges(e) {
+    if (this.state.unsavedChanges) {
+      e.returnValue = 'Unsaved Changes!';
+      return 'Unsaved Changes!';
+    }
+    return null;
+  }
 
   handleChange(event) {
     const newBlog = Object.assign({}, this.state.newBlog);
@@ -28,6 +63,16 @@ class CreateBlog extends Component {
     this.setState({
       newBlog,
     });
+  }
+
+  handleQuillChange(value) {
+    const newBlog = Object.assign({}, this.state.newBlog);
+    newBlog.blogBody = value;
+    this.setState({
+      newBlog,
+      unsavedChanges: true,
+    });
+    console.log(this.state.newBlog);
   }
 
   handleImgUpload(event) {
@@ -81,7 +126,7 @@ class CreateBlog extends Component {
   }
 
   render() {
-    const { title, imgUrl, imgAlt, body, imgSuccess, imgProgress } = this.state.newBlog;
+    const { title, imgUrl, imgAlt, imgSuccess, imgProgress, blogBody } = this.state.newBlog;
     return (
       <div>
         <h2 className="newBlog__banner">New Blog Post</h2>
@@ -90,18 +135,28 @@ class CreateBlog extends Component {
             <h3 className="newBlog__subhead">Input</h3>
             <input
               className="newBlog__input"
-              type="text" name="title"
+              type="text"
+              name="title"
               onChange={e => this.handleChange(e)}
               placeholder="Blog Title"
               value={title}
             />
             <br />
-            <textarea
-              className="newBlog__input"
-              name="body" onChange={e => this.handleChange(e)}
-              placeholder="Blog Content"
-              value={body}
-            />
+            <div className="newBlog__editor">
+              <ReactQuill
+                theme="snow"
+                value={blogBody}
+                placeholder="Your blog post here"
+                onChange={this.handleQuillChange}
+                modules={this.modules}
+                formats={this.formats}
+              >
+                <div
+                  key="editor"
+                  className="quill-contents"
+                />
+              </ReactQuill>
+            </div>
             <br />
             <div className="newBlog__fileUploadWrap newBlog__button">
               <span>Upload Image</span>
@@ -147,7 +202,10 @@ class CreateBlog extends Component {
             <div className="newBlog__wrapper">
               <h3 className="newBlog__title">{title}</h3>
               {imgUrl && <img className="newBlog__img" src={imgUrl} alt={imgAlt} />}
-              <div className="blog__body">{body}</div>
+              <div
+                className="blog__body"
+                dangerouslySetInnerHTML={createMarkup(blogBody)}
+              />
             </div>
           </div>
         </div>
