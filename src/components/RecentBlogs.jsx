@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
-import { formatDate, blogsRef } from '../utils/';
+import { formatDate, blogsRef, createMarkup } from '../utils/';
 
 class RecentBlogs extends Component {
   constructor() {
@@ -30,7 +30,7 @@ class RecentBlogs extends Component {
         <h3 className="blog__title">{blog.title}</h3>
         <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
         <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
-        <div className="blog__body blog__excerpt">{blog.body}</div>
+        <div className="blog__body blog__excerpt" dangerouslySetInnerHTML={createMarkup(blog.body)} />
         <Link to={`/blog/${blog.slug}`} className="blog__button">
           Leggi l&rsquo;articolo
           </Link>

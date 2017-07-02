@@ -22,7 +22,7 @@ class SinglePostDisplay extends Component {
 
 
   render() {
-    const { title, imgUrl, imgAlt, timestamp, blogBody } = this.state.currentPost;
+    const { title, imgUrl, imgAlt, timestamp, body } = this.state.currentPost;
     return (
       <div>
         {!title ?
@@ -33,7 +33,7 @@ class SinglePostDisplay extends Component {
               <img className="sp__img" src={imgUrl} alt={imgAlt} />
             </div>
             <div className="sp__meta">{formatDate(new Date(timestamp))}</div>
-            <div className="sp__body" dangerouslySetInnerHTML={createMarkup(blogBody)} />
+            <div className="sp__body" dangerouslySetInnerHTML={createMarkup(body)} />
           </div>
         }
       </div>

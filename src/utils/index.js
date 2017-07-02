@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import sanitizeHtml from 'sanitize-html';
 
 export const formatDate = (date) => {
   const monthNames = [
@@ -34,4 +35,13 @@ export const rootRef = firebase.database().ref().child('avis');
 export const blogsRef = rootRef.child('blogs');
 export const timeRef = firebase.database.ServerValue.TIMESTAMP;
 
-export const createMarkup = input => ({ __html: input });
+export const createMarkup = (dirty) => {
+  const clean = sanitizeHtml(dirty, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+    allowedAttributes: {
+      a: ['href', 'name', 'target'],
+      img: ['src', 'alt'],
+    },
+  });
+  return { __html: clean };
+};

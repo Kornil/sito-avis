@@ -14,7 +14,7 @@ class CreateBlog extends Component {
         imgAlt: '',
         imgSuccess: '',
         imgProgress: '',
-        blogBody: '<br/>',
+        body: '<br/>',
       },
       unsavedChanges: false,
     };
@@ -67,12 +67,11 @@ class CreateBlog extends Component {
 
   handleQuillChange(value) {
     const newBlog = Object.assign({}, this.state.newBlog);
-    newBlog.blogBody = value;
+    newBlog.body = value;
     this.setState({
       newBlog,
       unsavedChanges: true,
     });
-    console.log(this.state.newBlog);
   }
 
   handleImgUpload(event) {
@@ -126,7 +125,7 @@ class CreateBlog extends Component {
   }
 
   render() {
-    const { title, imgUrl, imgAlt, imgSuccess, imgProgress, blogBody } = this.state.newBlog;
+    const { title, imgUrl, imgAlt, imgSuccess, imgProgress, body } = this.state.newBlog;
     return (
       <div>
         <h2 className="newBlog__banner">New Blog Post</h2>
@@ -145,7 +144,7 @@ class CreateBlog extends Component {
             <div className="newBlog__editor">
               <ReactQuill
                 theme="snow"
-                value={blogBody}
+                value={body}
                 placeholder="Your blog post here"
                 onChange={this.handleQuillChange}
                 modules={this.modules}
@@ -204,7 +203,7 @@ class CreateBlog extends Component {
               {imgUrl && <img className="newBlog__img" src={imgUrl} alt={imgAlt} />}
               <div
                 className="blog__body"
-                dangerouslySetInnerHTML={createMarkup(blogBody)}
+                dangerouslySetInnerHTML={createMarkup(body)}
               />
             </div>
           </div>

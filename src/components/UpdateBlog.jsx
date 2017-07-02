@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, generateSlug } from '../utils/';
+import { blogsRef, timeRef, generateSlug, createMarkup } from '../utils/';
 import Loading from './Loading';
 
 class UpdateBlog extends Component {
@@ -16,12 +18,31 @@ class UpdateBlog extends Component {
         imgProgress: '',
       },
       blogs: [],
+      unsavedChanges: false,
     };
+    this.modules = {
+      toolbar: [
+        [{ header: [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+        ['link', 'image'],
+        ['clean'],
+      ],
+    };
+    this.formats = [
+      'header',
+      'bold', 'italic', 'underline', 'strike', 'blockquote',
+      'list', 'bullet', 'indent',
+      'link', 'image',
+    ];
     this.handleChange = this.handleChange.bind(this);
+    this.handleQuillChange = this.handleQuillChange.bind(this);
+    this.unsavedChanges = this.unsavedChanges.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
+    window.addEventListener('beforeunload', this.unsavedChanges);
     const key = this.props.match.params.key;
     blogsRef.child(key).once('value', (snapshot) => {
       const newBlog = snapshot.val();
@@ -29,6 +50,18 @@ class UpdateBlog extends Component {
         newBlog,
       });
     });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.unsavedChanges);
+  }
+
+  unsavedChanges(e) {
+    if (this.state.unsavedChanges) {
+      e.returnValue = 'Unsaved Changes!';
+      return 'Unsaved Changes!';
+    }
+    return null;
   }
 
 
@@ -39,6 +72,15 @@ class UpdateBlog extends Component {
     newBlog.slug = generateSlug(newBlog.title);
     this.setState({
       newBlog,
+    });
+  }
+
+  handleQuillChange(value) {
+    const newBlog = Object.assign({}, this.state.newBlog);
+    newBlog.body = value;
+    this.setState({
+      newBlog,
+      unsavedChanges: true,
     });
   }
 
@@ -112,12 +154,21 @@ class UpdateBlog extends Component {
                 value={title}
               />
               <br />
-              <textarea
-                className="newBlog__input"
-                name="body" onChange={e => this.handleChange(e)}
-                placeholder="Blog Content"
-                value={body}
-              />
+              <div className="newBlog__editor">
+                <ReactQuill
+                  theme="snow"
+                  value={body}
+                  placeholder="Your blog post here"
+                  onChange={this.handleQuillChange}
+                  modules={this.modules}
+                  formats={this.formats}
+                >
+                  <div
+                    key="editor"
+                    className="quill-contents"
+                  />
+                </ReactQuill>
+              </div>
               <br />
               <div className="newBlog__fileUploadWrap newBlog__button">
                 <span>Upload Image</span>
@@ -162,7 +213,10 @@ class UpdateBlog extends Component {
               <div className="newBlog__wrapper">
                 <h3 className="newBlog__title">{title}</h3>
                 {imgUrl && <img className="newBlog__img" src={imgUrl} alt={imgAlt} />}
-                <div className="blog__body">{body}</div>
+                <div
+                  className="blog__body"
+                  dangerouslySetInnerHTML={createMarkup(body)}
+                />
               </div>
             </div>
           </div>}
