@@ -87,12 +87,14 @@
   }
 
   &__title {
-  	margin: 0;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  	color: $color_blue;
+    margin: 0;
 		line-height: 1.4em;
-		font-size: 1.2em;
+		font-size: 1.4em;
 		margin-top: 10px;
 		margin-bottom: 10px;
-		font-weight: 700;
+		font-weight: 300;
   }
 
   &__button {

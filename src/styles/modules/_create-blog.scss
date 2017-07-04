@@ -29,6 +29,12 @@
 		font-weight: 300;
 		color: $color_blue;
 		margin: 0 0 20px 5px;
+
+		&--sm {
+			font-size: 18px;
+			margin-bottom: 10px;
+			display: inline-block;
+		}
 	}
 
 	&__title {
@@ -139,6 +145,13 @@
 			appearance: none;
 			-webkit-appearance: none;
 			border: none;
+
+			&--featured {
+				display: inline-block;
+				margin-left: 10px;
+				cursor: pointer;
+
+			}
 
 			&:hover, &-active, &:focus {
 					background: $color_blue-lighter;

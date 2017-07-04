@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 
 import * as firebase from 'firebase';
@@ -25,7 +26,9 @@ class CreateBlog extends Component {
         body: '<br/>',
       },
       unsavedChanges: false,
+      modalOpen: false,
     };
+
     this.quillRef = null;
     this.reactQuillRef = null;
 
@@ -56,30 +59,29 @@ class CreateBlog extends Component {
     this.handleImgUpload = this.handleImgUpload.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.unsavedChanges = this.unsavedChanges.bind(this);
-// this.attachQuillRefs = this.attachQuillRefs.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.unsavedChanges);
-// this.attachQuillRefs();
+    this.attachQuillRefs();
   }
 
   componentDidUpdate() {
-// this.attachQuillRefs();
+    this.attachQuillRefs();
   }
 
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.unsavedChanges);
   }
 
-/* attachQuillRefs() {
-if (typeof this.reactQuillRef.getEditor !== 'function') return;
-if (this.quillRef != null) return;
-const quillRef = this.reactQuillRef.getEditor();
-if (quillRef != null) this.quillRef = quillRef;
-console.log(this.reactQuillRef);
-console.log(this.quillRef);
-}*/
+  attachQuillRefs() {
+    if (typeof this.reactQuillRef.getEditor !== 'function') return;
+    if (this.quillRef != null) return;
+    const quillRef = this.reactQuillRef.getEditor();
+    if (quillRef != null) this.quillRef = quillRef;
+  }
 
   unsavedChanges(e) {
     if (this.state.unsavedChanges) {
@@ -91,7 +93,11 @@ console.log(this.quillRef);
 
   handleChange(event) {
     const newBlog = Object.assign({}, this.state.newBlog);
-    newBlog[event.target.name] = event.target.value;
+    if (event.target.name === 'alt') {
+      newBlog.images.current.alt = event.target.value;
+    } else {
+      newBlog[event.target.name] = event.target.value;
+    }
     newBlog.timestamp = timeRef;
     newBlog.slug = generateSlug(newBlog.title);
     this.setState({
@@ -108,13 +114,14 @@ console.log(this.quillRef);
     });
   }
 
-  handleInlineImage() {
-    console.log(this.quill);
-    const range = this.quill.getSelection();
-    document.getElementById('inlineImg').click();
-    const value = prompt('What is the image URL');
-    if (value) {
-      this.quill.insertEmbed(range.index, 'image', value, 'user');
+  handleInlineImage(url) {
+    if (!document.body.classList.contains('ReactModal__Body--open')) {
+      document.getElementById('openModal').click();
+    } else if (url) {
+      this.quillRef.focus();
+      const range = this.quillRef.getSelection();
+      this.quillRef.insertEmbed(range.index, 'image', url, 'user');
+      document.getElementById('closeModal').click();
     }
   }
 
@@ -145,13 +152,10 @@ console.log(this.quillRef);
   newBlog.images.current.url = url;
   newBlog.images.current.success = true;
   newBlog.images.current.fileName = filename;
-// instead of checking className, set state to be inline and check that)
-  if (event.target.className === 'ql-image') {
-    console.log('inline image');
+  if (this.state.newBlog.images.current.inline) {
     const inlineImage = Object.assign({}, newBlog.images.current);
     newBlog.images.filename = inlineImage;
   } else {
-    console.log('featured image');
     const featuredImage = Object.assign({}, newBlog.images.current);
     newBlog.images.featured = featuredImage;
   }
@@ -180,10 +184,92 @@ console.log(this.quillRef);
     });
   }
 
+  closeModal() {
+    this.setState({ modalOpen: false });
+  }
+
+  openModal(e) {
+    const newBlog = Object.assign({}, this.state.newBlog);
+    if (e.target.className === 'hidden') {
+      newBlog.images.current.inline = true;
+    }
+    this.setState({ modalOpen: true, newBlog });
+  }
+
   render() {
     const { title, images, body } = this.state.newBlog;
     return (
       <div>
+        <button className="hidden" id="openModal" onClick={e => this.openModal(e)} />
+        <button className="hidden" id="closeModal" onClick={e => this.closeModal(e)} />
+        <Modal
+          isOpen={this.state.modalOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          className="modal"
+          contentLabel="Upload File"
+        >
+          <div className="modal__dialog">
+            <div className="modal__content">
+              <div className="modal__header">
+                <button
+                  type="button"
+                  onClick={this.closeModal}
+                  className="modal__close--x"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+                <h2 className="modal__title" id="modalTitle">{images.current.inline ? 'Choose Image' : 'Set Featured Image'}</h2>
+              </div>
+              <div className="modal__body">
+                <div className="newBlog__fileUploadWrap newBlog__button">
+                  <span>Choose File</span>
+                  <input
+                    type="file"
+                    value=""
+                    className="newBlog__uploadBtn"
+                    title="uploadFile"
+                    name="uploadFile"
+                    id="uploadFile"
+                    onChange={e => this.handleImgUpload(e)}
+                  />
+                </div>
+                {images.current.progress > 0 && !images.current.success &&
+                <span className="newBlog__imgProg">
+                  <span className="newBlog__img-upload-progress">Uploading... {images.current.progress}%</span>
+                </span>}
+                {images.current.success &&
+                <span>
+                  <span className="newBlog__img-upload-progress">Upload Successful </span>
+                </span>}
+                <input
+                  className="newBlog__input"
+                  type="text"
+                  name="alt"
+                  onChange={e => this.handleChange(e)}
+                  placeholder="Alt text for image"
+                  value={images.current.alt}
+                />
+              </div>
+              <div className="modal__footer">
+                <button
+                  type="button"
+                  onClick={this.closeModal}
+                  className="modal__button modal__close--btn"
+                  data-dismiss="modal"
+                >Cancel</button>
+                <button
+                  type="button"
+                  onClick={() => this.handleInlineImage(images.current.url)}
+                  className="modal__button modal__confirm"
+                  data-dismiss="modal"
+                >Insert Image</button>
+              </div>
+            </div>
+          </div>
+        </Modal>
         <h2 className="newBlog__banner">New Blog Post</h2>
         <div className="newBlog__container">
           <form className="newBlog__form">
@@ -197,6 +283,12 @@ console.log(this.quillRef);
               value={title}
             />
             <br />
+            <h3 className="newBlog__subhead newBlog__subhead--sm">Set Featured Image</h3>
+            <button
+              className="newBlog__button newBlog__button--featured"
+              onClick={() => this.openModal(false, null)}
+            >Choose File</button>
+            <br />
             <div className="newBlog__editor">
               <ReactQuill
                 theme="snow"
@@ -206,7 +298,6 @@ console.log(this.quillRef);
                 modules={this.modules}
                 formats={this.formats}
                 ref={(el) => { this.reactQuillRef = el; }}
-                state={this.state}
               >
                 <div
                   key="editor"
@@ -214,36 +305,6 @@ console.log(this.quillRef);
                 />
               </ReactQuill>
             </div>
-            <input type="file" id="inlineImg" onChange={e => this.handleImgUpload(e)} />
-            <br />
-            <div className="newBlog__fileUploadWrap newBlog__button">
-              <span>Choose Featured Image</span>
-              <input
-                type="file"
-                value=""
-                className="newBlog__uploadBtn"
-                title="uploadFile"
-                name="uploadFile"
-                id="uploadFile"
-                onChange={e => this.handleImgUpload(e)}
-              />
-            </div>
-            {images.current.progress > 0 && !images.current.success &&
-            <span className="newBlog__imgProg">
-              <span className="newBlog__img-upload-progress">Uploading... {images.current.progress}%</span>
-            </span>}
-            {images.current.success &&
-            <span>
-              <span className="newBlog__img-upload-progress">Upload Successful </span>
-            </span>}
-            <br />
-            <input
-              className="newBlog__input"
-              type="text" name="imgAlt"
-              onChange={e => this.handleChange(e)}
-              placeholder="Alt text for image"
-              value={images.current.alt}
-            />
             <br />
             <button
               className="newBlog__submit newBlog__button"
