@@ -11,41 +11,75 @@ class CreateBlog extends Component {
     this.state = {
       newBlog: {
         title: '',
-        imgAlt: '',
-        imgSuccess: '',
-        imgProgress: '',
+        images: {
+          featured: {
+          },
+          current: {
+            success: '',
+            progress: '',
+            url: '',
+            fileName: '',
+            alt: '',
+          },
+        },
         body: '<br/>',
       },
       unsavedChanges: false,
     };
-    this.modules = {
-      toolbar: [
-        [{ header: [1, 2, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        ['link', 'image'],
-        ['clean'],
+    this.quillRef = null;
+    this.reactQuillRef = null;
+
+    const toolbarOptions = {
+      container: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+      ['link', 'image'],
+      ['clean'],
       ],
+      handlers: { image: this.handleInlineImage },
     };
+
+    this.modules = {
+      toolbar: toolbarOptions,
+    };
+
     this.formats = [
       'header',
       'bold', 'italic', 'underline', 'strike', 'blockquote',
       'list', 'bullet', 'indent',
       'link', 'image',
     ];
+
     this.handleChange = this.handleChange.bind(this);
     this.handleQuillChange = this.handleQuillChange.bind(this);
+    this.handleImgUpload = this.handleImgUpload.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.unsavedChanges = this.unsavedChanges.bind(this);
+// this.attachQuillRefs = this.attachQuillRefs.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.unsavedChanges);
+// this.attachQuillRefs();
+  }
+
+  componentDidUpdate() {
+// this.attachQuillRefs();
   }
 
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.unsavedChanges);
   }
+
+/* attachQuillRefs() {
+if (typeof this.reactQuillRef.getEditor !== 'function') return;
+if (this.quillRef != null) return;
+const quillRef = this.reactQuillRef.getEditor();
+if (quillRef != null) this.quillRef = quillRef;
+console.log(this.reactQuillRef);
+console.log(this.quillRef);
+}*/
 
   unsavedChanges(e) {
     if (this.state.unsavedChanges) {
@@ -74,6 +108,17 @@ class CreateBlog extends Component {
     });
   }
 
+  handleInlineImage() {
+    console.log(this.quill);
+    const range = this.quill.getSelection();
+    document.getElementById('inlineImg').click();
+    const value = prompt('What is the image URL');
+    if (value) {
+      this.quill.insertEmbed(range.index, 'image', value, 'user');
+    }
+  }
+
+
   handleImgUpload(event) {
     event.preventDefault();
     const newBlog = Object.assign({}, this.state.newBlog);
@@ -82,13 +127,13 @@ class CreateBlog extends Component {
     const task = storageRef.child(`images/${file.name}`).put(file);
     task.on('state_changed', (snap) => {
       const percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-      newBlog.imgProgress = percentage;
+      newBlog.images.current.progress = percentage;
       this.setState({
         newBlog,
       });
     },
 (err) => {
-  newBlog.imgError = err;
+  newBlog.images.current.error = err;
   console.log(err);
   this.setState({
     newBlog,
@@ -96,15 +141,26 @@ class CreateBlog extends Component {
 },
 () => {
   const url = task.snapshot.downloadURL;
-  newBlog.imgUrl = url;
-  newBlog.imgSuccess = true;
-  newBlog.imgFileName = file.name;
+  const filename = file.name;
+  newBlog.images.current.url = url;
+  newBlog.images.current.success = true;
+  newBlog.images.current.fileName = filename;
+// instead of checking className, set state to be inline and check that)
+  if (event.target.className === 'ql-image') {
+    console.log('inline image');
+    const inlineImage = Object.assign({}, newBlog.images.current);
+    newBlog.images.filename = inlineImage;
+  } else {
+    console.log('featured image');
+    const featuredImage = Object.assign({}, newBlog.images.current);
+    newBlog.images.featured = featuredImage;
+  }
   this.setState({
     newBlog,
   });
   setTimeout(() => {
-    newBlog.imgSuccess = '';
-    newBlog.imgProgress = 0;
+    newBlog.images.current.success = '';
+    newBlog.images.current.progress = 0;
     this.setState({
       newBlog,
     });
@@ -125,7 +181,7 @@ class CreateBlog extends Component {
   }
 
   render() {
-    const { title, imgUrl, imgAlt, imgSuccess, imgProgress, body } = this.state.newBlog;
+    const { title, images, body } = this.state.newBlog;
     return (
       <div>
         <h2 className="newBlog__banner">New Blog Post</h2>
@@ -149,6 +205,8 @@ class CreateBlog extends Component {
                 onChange={this.handleQuillChange}
                 modules={this.modules}
                 formats={this.formats}
+                ref={(el) => { this.reactQuillRef = el; }}
+                state={this.state}
               >
                 <div
                   key="editor"
@@ -156,9 +214,10 @@ class CreateBlog extends Component {
                 />
               </ReactQuill>
             </div>
+            <input type="file" id="inlineImg" onChange={e => this.handleImgUpload(e)} />
             <br />
             <div className="newBlog__fileUploadWrap newBlog__button">
-              <span>Upload Image</span>
+              <span>Choose Featured Image</span>
               <input
                 type="file"
                 value=""
@@ -169,11 +228,11 @@ class CreateBlog extends Component {
                 onChange={e => this.handleImgUpload(e)}
               />
             </div>
-            {imgProgress > 0 && !imgSuccess &&
+            {images.current.progress > 0 && !images.current.success &&
             <span className="newBlog__imgProg">
-              <span className="newBlog__img-upload-progress">Uploading... {imgProgress}%</span>
+              <span className="newBlog__img-upload-progress">Uploading... {images.current.progress}%</span>
             </span>}
-            {imgSuccess &&
+            {images.current.success &&
             <span>
               <span className="newBlog__img-upload-progress">Upload Successful </span>
             </span>}
@@ -183,7 +242,7 @@ class CreateBlog extends Component {
               type="text" name="imgAlt"
               onChange={e => this.handleChange(e)}
               placeholder="Alt text for image"
-              value={imgAlt}
+              value={images.current.alt}
             />
             <br />
             <button
@@ -200,7 +259,7 @@ class CreateBlog extends Component {
             <h3 className="newBlog__subhead">Preview</h3>
             <div className="newBlog__wrapper">
               <h3 className="newBlog__title">{title}</h3>
-              {imgUrl && <img className="newBlog__img" src={imgUrl} alt={imgAlt} />}
+              {images.featured.url && <img className="newBlog__img" src={images.featured.url} alt={images.featured.alt} />}
               <div
                 className="blog__body"
                 dangerouslySetInnerHTML={createMarkup(body)}
