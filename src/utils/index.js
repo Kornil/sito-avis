@@ -35,12 +35,23 @@ export const rootRef = firebase.database().ref().child('avis');
 export const blogsRef = rootRef.child('blogs');
 export const timeRef = firebase.database.ServerValue.TIMESTAMP;
 
-export const createMarkup = (dirty) => {
+export const sanitize = (dirty) => {
   const clean = sanitizeHtml(dirty, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'span']),
     allowedAttributes: {
       a: ['href', 'name', 'target'],
       img: ['src', 'alt'],
+      '*': ['style', 'align'],
+    },
+  });
+  return { __html: clean };
+};
+
+export const sanitizeExcerpt = (dirty) => {
+  const clean = sanitizeHtml(dirty, {
+    allowedTags: ['b', 'i', 'em', 'strong', 'a'],
+    allowedAttributes: {
+      a: ['href'],
     },
   });
   return { __html: clean };

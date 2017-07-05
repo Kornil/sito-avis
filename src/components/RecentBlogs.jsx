@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
-import { formatDate, blogsRef, createMarkup } from '../utils/';
+import { formatDate, blogsRef, sanitizeExcerpt } from '../utils/';
 
 class RecentBlogs extends Component {
   constructor() {
@@ -28,9 +28,11 @@ class RecentBlogs extends Component {
     blogsArr = recentBlogs.map(blog => (
       <div className="blog__card" key={shortid.generate()}>
         <h3 className="blog__title">{blog.title}</h3>
-        <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
+        {blog.images &&
+        <img className="blog__img" src={blog.images.featured.url} alt={blog.images.featured.alt} />
+      }
         <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
-        <div className="blog__body blog__excerpt" dangerouslySetInnerHTML={createMarkup(blog.body)} />
+        <div className="blog__body blog__excerpt" dangerouslySetInnerHTML={sanitizeExcerpt(blog.body)} />
         <Link to={`/blog/${blog.slug}`} className="blog__button">
           Leggi l&rsquo;articolo
           </Link>

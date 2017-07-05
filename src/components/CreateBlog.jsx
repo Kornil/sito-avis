@@ -4,7 +4,8 @@ import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, generateSlug, createMarkup } from '../utils/';
+import { blogsRef, timeRef, generateSlug, sanitize } from '../utils/';
+import CustomToolbar from './CustomToolbar';
 
 class CreateBlog extends Component {
   constructor(props) {
@@ -21,38 +22,56 @@ class CreateBlog extends Component {
             url: '',
             fileName: '',
             alt: '',
+            inline: '',
           },
         },
         body: '<br/>',
       },
       unsavedChanges: false,
-      modalOpen: false,
-    };
-
-    this.quillRef = null;
-    this.reactQuillRef = null;
-
-    const toolbarOptions = {
-      container: [
-      [{ header: [1, 2, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-      ['link', 'image'],
-      ['clean'],
-      ],
-      handlers: { image: this.handleInlineImage },
+      modal: {
+        open: false,
+        type: '',
+        title: '',
+        body: '',
+        confirm: '',
+        danger: false,
+        url: '',
+      },
     };
 
     this.modules = {
-      toolbar: toolbarOptions,
+      toolbar: {
+        container: '#toolbar',
+        handlers: {
+          image: (value) => {
+            const newBlog = Object.assign({}, this.state.newBlog);
+            newBlog.images.current = {
+              success: '',
+              progress: '',
+              url: '',
+              fileName: '',
+              alt: '',
+              inline: true,
+            };
+            const type = 'inline';
+            const title = 'Choose image';
+            const confirm = 'Insert image';
+            const danger = false;
+            this.setState({ modal: { open: true, type, title, confirm, danger, value }, newBlog });
+          },
+        },
+      },
     };
 
     this.formats = [
       'header',
-      'bold', 'italic', 'underline', 'strike', 'blockquote',
+      'bold', 'italic', 'underline', 'strike', 'blockquote', 'color',
       'list', 'bullet', 'indent',
       'link', 'image',
     ];
+
+    this.quillRef = null;
+    this.reactQuillRef = null;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleQuillChange = this.handleQuillChange.bind(this);
@@ -114,17 +133,14 @@ class CreateBlog extends Component {
     });
   }
 
-  handleInlineImage(url) {
-    if (!document.body.classList.contains('ReactModal__Body--open')) {
-      document.getElementById('openModal').click();
-    } else if (url) {
+  handleInsertImage(url) {
+    if (url) {
       this.quillRef.focus();
       const range = this.quillRef.getSelection();
       this.quillRef.insertEmbed(range.index, 'image', url, 'user');
-      document.getElementById('closeModal').click();
+      this.closeModal();
     }
   }
-
 
   handleImgUpload(event) {
     event.preventDefault();
@@ -138,23 +154,23 @@ class CreateBlog extends Component {
       this.setState({
         newBlog,
       });
+    }, (err) => {
+      newBlog.images.current.error = err;
+      console.log(err);
+      this.setState({
+        newBlog,
+      });
     },
-(err) => {
-  newBlog.images.current.error = err;
-  console.log(err);
-  this.setState({
-    newBlog,
-  });
-},
 () => {
   const url = task.snapshot.downloadURL;
-  const filename = file.name;
+  const fileName = file.name;
   newBlog.images.current.url = url;
   newBlog.images.current.success = true;
-  newBlog.images.current.fileName = filename;
+  newBlog.images.current.fileName = fileName;
   if (this.state.newBlog.images.current.inline) {
     const inlineImage = Object.assign({}, newBlog.images.current);
-    newBlog.images.filename = inlineImage;
+    const fileNameClean = fileName.replace(/[^a-zA-Z0-9 ]/g, '');
+    newBlog.images[fileNameClean] = inlineImage;
   } else {
     const featuredImage = Object.assign({}, newBlog.images.current);
     newBlog.images.featured = featuredImage;
@@ -162,13 +178,6 @@ class CreateBlog extends Component {
   this.setState({
     newBlog,
   });
-  setTimeout(() => {
-    newBlog.images.current.success = '';
-    newBlog.images.current.progress = 0;
-    this.setState({
-      newBlog,
-    });
-  }, 2000);
 });
   }
 
@@ -185,29 +194,36 @@ class CreateBlog extends Component {
   }
 
   closeModal() {
-    this.setState({ modalOpen: false });
+    this.setState({
+      modal: { open: false, title: '' },
+    });
   }
 
-  openModal(e) {
+  openModal(type, title, confirm, danger, url) {
     const newBlog = Object.assign({}, this.state.newBlog);
-    if (e.target.className === 'hidden') {
-      newBlog.images.current.inline = true;
-    }
-    this.setState({ modalOpen: true, newBlog });
+    newBlog.images.current = {
+      success: '',
+      progress: '',
+      url: '',
+      fileName: '',
+      alt: '',
+      inline: false,
+    };
+    this.setState({ modal: { open: true, type, title, confirm, danger, url }, newBlog });
   }
 
   render() {
-    const { title, images, body } = this.state.newBlog;
+    const { title, body, images } = this.state.newBlog;
+    const modalStyles = { overlay: { zIndex: 10 } };
     return (
       <div>
-        <button className="hidden" id="openModal" onClick={e => this.openModal(e)} />
-        <button className="hidden" id="closeModal" onClick={e => this.closeModal(e)} />
         <Modal
-          isOpen={this.state.modalOpen}
+          style={modalStyles}
+          isOpen={this.state.modal.open}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           className="modal"
-          contentLabel="Upload File"
+          contentLabel={this.state.modal.title}
         >
           <div className="modal__dialog">
             <div className="modal__content">
@@ -221,8 +237,9 @@ class CreateBlog extends Component {
                 >
                   <span aria-hidden="true">×</span>
                 </button>
-                <h2 className="modal__title" id="modalTitle">{images.current.inline ? 'Choose Image' : 'Set Featured Image'}</h2>
+                <h2 className="modal__title" id="modalTitle">{this.state.modal.title}</h2>
               </div>
+              {this.state.modal.type !== 'unsavedChanges' &&
               <div className="modal__body">
                 <div className="newBlog__fileUploadWrap newBlog__button">
                   <span>Choose File</span>
@@ -239,11 +256,14 @@ class CreateBlog extends Component {
                 {images.current.progress > 0 && !images.current.success &&
                 <span className="newBlog__imgProg">
                   <span className="newBlog__img-upload-progress">Uploading... {images.current.progress}%</span>
-                </span>}
+                </span>
+              }
                 {images.current.success &&
-                <span>
-                  <span className="newBlog__img-upload-progress">Upload Successful </span>
-                </span>}
+                <div>
+                  <img className="newBlog__img--modal" src={images.current.url} alt={images.current.alt} />
+                  <div className="newBlog__img-upload-success">Upload Successful </div>
+                </div>
+              }
                 <input
                   className="newBlog__input"
                   type="text"
@@ -252,7 +272,9 @@ class CreateBlog extends Component {
                   placeholder="Alt text for image"
                   value={images.current.alt}
                 />
-              </div>
+              </div>}
+              {this.state.modal.type === 'unsavedChanges' &&
+              <div className="modal__body" /> }
               <div className="modal__footer">
                 <button
                   type="button"
@@ -262,10 +284,10 @@ class CreateBlog extends Component {
                 >Cancel</button>
                 <button
                   type="button"
-                  onClick={() => this.handleInlineImage(images.current.url)}
-                  className="modal__button modal__confirm"
+                  onClick={this.state.modal.type === 'inline' ? () => this.handleInsertImage(images.current.url) : () => this.closeModal()}
+                  className={this.state.modal.danger ? 'modal__button modal__confirm modal__confirm--danger' : 'modal__button modal__confirm'}
                   data-dismiss="modal"
-                >Insert Image</button>
+                >{this.state.modal.confirm}</button>
               </div>
             </div>
           </div>
@@ -284,12 +306,18 @@ class CreateBlog extends Component {
             />
             <br />
             <h3 className="newBlog__subhead newBlog__subhead--sm">Set Featured Image</h3>
-            <button
+            <a
+              role="button"
+              tabIndex="0"
+              onKeyPress={() => this.openModal('featured', 'Set Featured Image', 'OK', false)}
               className="newBlog__button newBlog__button--featured"
-              onClick={() => this.openModal(false, null)}
-            >Choose File</button>
+              onClick={() => this.openModal('featured', 'Set Featured Image', 'OK', false)}
+            >Choose File</a>
             <br />
             <div className="newBlog__editor">
+              <CustomToolbar
+                handleInlineImage={this.handleInlineImage}
+              />
               <ReactQuill
                 theme="snow"
                 value={body}
@@ -320,10 +348,10 @@ class CreateBlog extends Component {
             <h3 className="newBlog__subhead">Preview</h3>
             <div className="newBlog__wrapper">
               <h3 className="newBlog__title">{title}</h3>
-              {images.featured.url && <img className="newBlog__img" src={images.featured.url} alt={images.featured.alt} />}
+              {images.featured && <img className="newBlog__img" src={images.featured.url} alt={images.featured.alt} />}
               <div
-                className="blog__body"
-                dangerouslySetInnerHTML={createMarkup(body)}
+                className="newBlog__body"
+                dangerouslySetInnerHTML={sanitize(body)}
               />
             </div>
           </div>

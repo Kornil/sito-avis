@@ -69,11 +69,12 @@ class BlogsIndex extends Component {
             </Link>
           </td>
           <td className="blogInd__cell blogInd__imgCont">
+            {blog.images && blog.images.featured &&
             <img
               className="blogInd__thumb"
-              src={blog.imgUrl}
-              alt={blog.imgAlt}
-            />
+              src={blog.images.featured.url}
+              alt={blog.images.featured.alt}
+            /> }
           </td>
           <td className="blogInd__cell blogInd__meta">{formatDate(new Date(blog.timestamp))}</td>
           <td className="blogInd__cell blogInd__icon-container">

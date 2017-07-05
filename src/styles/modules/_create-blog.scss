@@ -51,7 +51,15 @@
 	  height: auto;
 	  margin: 0 0 20px 0;
 	  border: 1px solid $color_gray_text;
+
+	  &--modal {
+	  	max-height: 60vh;
+	  	width: auto;
+	  	max-width: 100%;
+	  	margin: 0 auto 10px auto;
+	  	display: block;
       }
+	  }
 
 	&__input {
 		display: block;
@@ -76,7 +84,7 @@
 	&__body {
 	margin-bottom: 20px;
 
-	& ul, &ol {
+	& ul, & ol {
 		margin-left: 1.5em;
 	}
 
@@ -84,8 +92,21 @@
 		margin-bottom: .8em;
 	}
 
-	& h2, & h3 {
+	& h3, & h4 {
 		margin-bottom: .5em;
+	}
+
+	& h3 {
+		font-size: 1.25em;
+	}
+
+	& h4 {
+		font-size: 1.1em;
+	}
+
+	& img {
+		max-width: 100%;
+		height: auto;
 	}
 }
 
@@ -112,6 +133,13 @@
 		-ms-user-select: none;
 		user-select: none;
 		margin: 0 20px 0 0;
+
+		&:hover, &-active, &:focus {
+					background: $color_blue-lighter;
+					transition: all 180ms ease-in-out;
+					outline: none;
+					border: none;
+			}
 	}
 
 	&__uploadBtn {
@@ -124,11 +152,23 @@
 		cursor: pointer;
 		opacity: 0;
 		filter: alpha(opacity=0);
+
+		&:hover, &-active, &:focus {
+					background: $color_blue-lighter;
+					transition: all 180ms ease-in-out;
+					outline: none;
+					border: none;
+			}
 	}
 
 	&__img-upload-progress {
 		margin-left: 20px;
 		transition: all 180ms ease-in-out;
+	}
+
+	&__img-upload-success {
+		margin: 0 auto 10px auto;
+		text-align: center;
 	}
 
 	&__button {

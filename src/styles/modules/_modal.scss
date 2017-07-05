@@ -152,18 +152,23 @@
   &__confirm {
   	margin-left: 5px;
   	color: #fff;
+    background-color: $color_blue;
+    border-color: $color_blue;
+
+    &:hover, &:active, &:focus  {
+    background-color: $color_blue-lighter;
+    border-color: $color_blue-lighter;
+    }
+
+    &--danger {
     background-color: $color_red;
-    border-color: #d43f3a;
+    border-color: $color_red;
 
-    &:hover, &:active  {
+    &:hover, &:active, &:focus  {
     background-color: $color_red-lighter;
-    border-color: #ac2925;
+    border-color: $color_red-lighter;
     }
-
-    &:focus {
-    background-color: $color_red-lighter;
-    border-color: #761c19;
-    }
+  }
 
   }
 

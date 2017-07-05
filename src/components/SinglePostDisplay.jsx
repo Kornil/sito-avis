@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { formatDate, blogsRef, createMarkup } from '../utils/';
+import { formatDate, blogsRef, sanitize } from '../utils/';
 
 class SinglePostDisplay extends Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class SinglePostDisplay extends Component {
               <img className="sp__img" src={imgUrl} alt={imgAlt} />
             </div>
             <div className="sp__meta">{formatDate(new Date(timestamp))}</div>
-            <div className="sp__body" dangerouslySetInnerHTML={createMarkup(body)} />
+            <div className="sp__body" dangerouslySetInnerHTML={sanitize(body)} />
           </div>
         }
       </div>
