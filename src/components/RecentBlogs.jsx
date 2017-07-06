@@ -28,7 +28,7 @@ class RecentBlogs extends Component {
     blogsArr = recentBlogs.map(blog => (
       <div className="blog__card" key={shortid.generate()}>
         <h3 className="blog__title">{blog.title}</h3>
-        {blog.images &&
+        {blog.images && blog.images.featured &&
         <img className="blog__img" src={blog.images.featured.url} alt={blog.images.featured.alt} />
       }
         <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>

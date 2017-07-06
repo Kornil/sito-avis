@@ -22,7 +22,7 @@ class SinglePostDisplay extends Component {
 
 
   render() {
-    const { title, imgUrl, imgAlt, timestamp, body } = this.state.currentPost;
+    const { title, images, timestamp, body } = this.state.currentPost;
     return (
       <div>
         {!title ?
@@ -30,10 +30,12 @@ class SinglePostDisplay extends Component {
           <div className="sp__container">
             <h3 className="sp__title">{title}</h3>
             <div className="sp__img-cont">
-              <img className="sp__img" src={imgUrl} alt={imgAlt} />
+              {images && images.featured &&
+              <img className="sp__img" src={images.featured.url} alt={images.featured.alt} />
+            }
             </div>
             <div className="sp__meta">{formatDate(new Date(timestamp))}</div>
-            <div className="sp__body" dangerouslySetInnerHTML={sanitize(body)} />
+            <div className="newBlog__body" dangerouslySetInnerHTML={sanitize(body)} />
           </div>
         }
       </div>

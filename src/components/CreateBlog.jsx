@@ -6,6 +6,7 @@ import ReactQuill from 'react-quill';
 import * as firebase from 'firebase';
 import { blogsRef, timeRef, generateSlug, sanitize } from '../utils/';
 import CustomToolbar from './CustomToolbar';
+import Loading from './Loading';
 
 class CreateBlog extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class CreateBlog extends Component {
         body: '<br/>',
       },
       unsavedChanges: false,
+      edit: '',
       modal: {
         open: false,
         type: '',
@@ -76,7 +78,7 @@ class CreateBlog extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleQuillChange = this.handleQuillChange.bind(this);
     this.handleImgUpload = this.handleImgUpload.bind(this);
-    this.handleCreate = this.handleCreate.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.unsavedChanges = this.unsavedChanges.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -85,6 +87,16 @@ class CreateBlog extends Component {
   componentDidMount() {
     window.addEventListener('beforeunload', this.unsavedChanges);
     this.attachQuillRefs();
+    if (this.props.match.params.key) {
+      const key = this.props.match.params.key;
+      blogsRef.child(key).once('value', (snapshot) => {
+        const newBlog = snapshot.val();
+        this.setState({
+          newBlog,
+          edit: true,
+        });
+      });
+    }
   }
 
   componentDidUpdate() {
@@ -181,16 +193,29 @@ class CreateBlog extends Component {
 });
   }
 
-  handleCreate(event) {
+  handleSubmit(event) {
     event.preventDefault();
-    const newBlog = Object.assign({}, this.state.newBlog);
-    const newBlogKey = blogsRef.push().key;
-    newBlog.key = newBlogKey;
-    const updates = {};
-    updates[newBlogKey] = newBlog;
-    blogsRef.update(updates).then(() => {
-      this.props.history.push('/dashboard');
-    });
+    if (this.state.edit) {
+      const { key } = this.state.newBlog;
+      blogsRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
+        if (snapshot.val() === null) {
+          console.log('post not found');
+        } else {
+          snapshot.ref.child(key).update(this.state.newBlog).then(() => {
+            this.props.history.push('/dashboard');
+          });
+        }
+      });
+    } else {
+      const newBlog = Object.assign({}, this.state.newBlog);
+      const newBlogKey = blogsRef.push().key;
+      newBlog.key = newBlogKey;
+      const updates = {};
+      updates[newBlogKey] = newBlog;
+      blogsRef.update(updates).then(() => {
+        this.props.history.push('/dashboard');
+      });
+    }
   }
 
   closeModal() {
@@ -292,7 +317,8 @@ class CreateBlog extends Component {
             </div>
           </div>
         </Modal>
-        <h2 className="newBlog__banner">New Blog Post</h2>
+        <h2 className="newBlog__banner">{this.state.edit ? 'Update Post' : 'New Blog Post'}</h2>
+        {this.state.edit && title === '' ? <Loading /> :
         <div className="newBlog__container">
           <form className="newBlog__form">
             <h3 className="newBlog__subhead">Input</h3>
@@ -337,8 +363,8 @@ class CreateBlog extends Component {
             <button
               className="newBlog__submit newBlog__button"
               type="submit"
-              onClick={e => this.handleCreate(e)}
-            >Create Post</button>
+              onClick={e => this.handleSubmit(e)}
+            >{this.state.edit ? 'Update Post' : 'Create Post'}</button>
             <Link
               to="/dashboard"
               className="newBlog__cancel newBlog__button"
@@ -355,7 +381,7 @@ class CreateBlog extends Component {
               />
             </div>
           </div>
-        </div>
+        </div>}
       </div>
     );
   }

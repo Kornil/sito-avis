@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
-import { formatDate, blogsRef, createMarkup } from '../utils/';
+import { formatDate, blogsRef, sanitize } from '../utils/';
 
 class Notizie extends Component {
   constructor() {
@@ -27,9 +27,11 @@ class Notizie extends Component {
     blogsArr = recentBlogs.map(blog => (
       <div className="blog__card" key={shortid.generate()}>
         <h3 className="blog__title">{blog.title}</h3>
-        <img className="blog__img" src={blog.imgUrl} alt={blog.imgAlt} />
+        {blog.images && blog.images.featured &&
+          <img className="blog__img" src={blog.images.featured.url} alt={blog.images.featured.alt} />
+        }
         <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
-        <div className="blog__body" dangerouslySetInnerHTML={createMarkup(blog.body)} />
+        <div className="blog__body blog__excerpt" dangerouslySetInnerHTML={sanitize(blog.body)} />
         <Link to={`/blog/${blog.slug}`} className="blog__button">
           Leggi l&rsquo;articolo
           </Link>
@@ -40,7 +42,7 @@ class Notizie extends Component {
       <div className="news">
         <h2 className="news__banner">In evidenza</h2>
         <div className="blog__container">
-          { blogsArr }
+          { blogsArr.reverse() }
         </div>
       </div>
     );
