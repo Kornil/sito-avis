@@ -5,7 +5,6 @@ import ReactQuill from 'react-quill';
 
 import * as firebase from 'firebase';
 import { blogsRef, timeRef, generateSlug, sanitize } from '../utils/';
-import CustomToolbar from './CustomToolbar';
 import Loading from './Loading';
 
 class CreateBlog extends Component {
@@ -43,7 +42,10 @@ class CreateBlog extends Component {
 
     this.modules = {
       toolbar: {
-        container: '#toolbar',
+        container: [
+        [{ header: [3, 4, false] }], ['bold', 'italic', 'underline', 'strike', 'blockquote', { color: ['#007DC5', '#ED1C24', '#7a7a7a'] }],
+        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '+1' }, { indent: '-1' }, 'link', 'image', 'clean'],
+        ],
         handlers: {
           image: (value) => {
             const newBlog = Object.assign({}, this.state.newBlog);
@@ -181,7 +183,7 @@ class CreateBlog extends Component {
   newBlog.images.current.fileName = fileName;
   if (this.state.newBlog.images.current.inline) {
     const inlineImage = Object.assign({}, newBlog.images.current);
-    const fileNameClean = fileName.replace(/[^a-zA-Z0-9 ]/g, '');
+    const fileNameClean = generateSlug(fileName);
     newBlog.images[fileNameClean] = inlineImage;
   } else {
     const featuredImage = Object.assign({}, newBlog.images.current);
@@ -341,9 +343,6 @@ class CreateBlog extends Component {
             >Choose File</a>
             <br />
             <div className="newBlog__editor">
-              <CustomToolbar
-                handleInlineImage={this.handleInlineImage}
-              />
               <ReactQuill
                 theme="snow"
                 value={body}
