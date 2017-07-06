@@ -11,7 +11,7 @@
   right: auto;
   bottom: auto;
   margin-right: -50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-48%, -50%);
 	z-index: 1050;
 	-webkit-overflow-scrolling: touch;
 	outline: 0;
@@ -28,7 +28,7 @@
     -o-transition: -o-transform .3s ease-out;
     transition: transform .3s ease-out;
     width: 600px;
-    max-width: 100%;
+    max-width: 95vw;
     margin: 30px auto;
     position: relative;
 	}

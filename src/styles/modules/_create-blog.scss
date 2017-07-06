@@ -2,17 +2,30 @@
 
 	&__container {
 	width: 100%;
-	padding: 20px;
-	display: flex;
+	padding: 10px;
+	@include for-tablet-portrait-up {
+		display: flex;
+		padding: 20px;
+	}
 	}
 
 	&__form {
-	width: 50%;
-	padding: 20px;
+		width: 100%;
+		padding: 10px;
+
+		@include for-tablet-portrait-up {
+        width: 50%;
+				padding: 20px;
+        }
 	}
 	&__preview {
-	width: 50%;
-	padding: 20px;
+		width: 100%;
+		padding: 10px;
+
+		@include for-tablet-portrait-up {
+        width: 50%;
+				padding: 20px;
+        }
 	}
 
 	&__banner {
