@@ -56,3 +56,8 @@ export const sanitizeExcerpt = (dirty) => {
   });
   return { __html: clean };
 };
+
+export const resize = (width, downloadUrl) => {
+  let encodedUrl = encodeURIComponent(downloadUrl).replace(/'/g,"%27").replace(/"/g,"%22");
+  return `http://res.cloudinary.com/avis-rovigo/image/fetch/w_${width},c_scale/${encodedUrl}`;
+}

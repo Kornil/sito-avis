@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 
-import { formatDate, blogsRef } from '../utils/';
+import { formatDate, blogsRef, resize } from '../utils/';
 import Loading from './Loading';
 
 class BlogsIndex extends Component {
@@ -72,7 +72,7 @@ class BlogsIndex extends Component {
             {blog.images && blog.images.featured &&
             <img
               className="blogInd__thumb"
-              src={blog.images.featured.url}
+              src={resize(50, blog.images.featured.url)}
               alt={blog.images.featured.alt}
             /> }
           </td>

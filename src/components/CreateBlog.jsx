@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, generateSlug, sanitize } from '../utils/';
+import { blogsRef, timeRef, generateSlug, sanitize, resize } from '../utils/';
 import Loading from './Loading';
 
 class CreateBlog extends Component {
@@ -135,6 +135,7 @@ class CreateBlog extends Component {
     newBlog.slug = generateSlug(newBlog.title);
     this.setState({
       newBlog,
+      unsavedChanges: true,
     });
   }
 
@@ -149,9 +150,10 @@ class CreateBlog extends Component {
 
   handleInsertImage(url) {
     if (url) {
+      let resized = resize(600, url);
       this.quillRef.focus();
       const range = this.quillRef.getSelection();
-      this.quillRef.insertEmbed(range.index, 'image', url, 'user');
+      this.quillRef.insertEmbed(range.index, 'image', resized, 'user');
       this.closeModal();
     }
   }
@@ -247,7 +249,6 @@ class CreateBlog extends Component {
         <Modal
           style={modalStyles}
           isOpen={this.state.modal.open}
-          onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           className="modal"
           contentLabel={this.state.modal.title}
@@ -266,7 +267,6 @@ class CreateBlog extends Component {
                 </button>
                 <h2 className="modal__title" id="modalTitle">{this.state.modal.title}</h2>
               </div>
-              {this.state.modal.type !== 'unsavedChanges' &&
               <div className="modal__body">
                 <div className="newBlog__fileUploadWrap newBlog__button">
                   <span>Choose File</span>
@@ -287,7 +287,7 @@ class CreateBlog extends Component {
               }
                 {images.current.success &&
                 <div>
-                  <img className="newBlog__img--modal" src={images.current.url} alt={images.current.alt} />
+                  <img className="newBlog__img--modal" src={resize(600, images.current.url)} alt={images.current.alt} />
                   <div className="newBlog__img-upload-success">Upload Successful </div>
                 </div>
               }
@@ -299,9 +299,7 @@ class CreateBlog extends Component {
                   placeholder="Alt text for image"
                   value={images.current.alt}
                 />
-              </div>}
-              {this.state.modal.type === 'unsavedChanges' &&
-              <div className="modal__body" /> }
+              </div>
               <div className="modal__footer">
                 <button
                   type="button"
@@ -373,7 +371,7 @@ class CreateBlog extends Component {
             <h3 className="newBlog__subhead">Preview</h3>
             <div className="newBlog__wrapper">
               <h3 className="newBlog__title">{title}</h3>
-              {images.featured && <img className="newBlog__img" src={images.featured.url} alt={images.featured.alt} />}
+              {images.featured.url && <img className="newBlog__img" src={resize(600, images.featured.url)} alt={images.featured.alt} />}
               <div
                 className="newBlog__body"
                 dangerouslySetInnerHTML={sanitize(body)}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
-import { formatDate, blogsRef, sanitizeExcerpt } from '../utils/';
+import { formatDate, blogsRef, sanitizeExcerpt, resize } from '../utils/';
 
 class RecentBlogs extends Component {
   constructor() {
@@ -29,7 +29,7 @@ class RecentBlogs extends Component {
       <div className="blog__card" key={shortid.generate()}>
         <h3 className="blog__title">{blog.title}</h3>
         {blog.images && blog.images.featured &&
-        <img className="blog__img" src={blog.images.featured.url} alt={blog.images.featured.alt} />
+        <img className="blog__img" src={resize(600, blog.images.featured.url)} alt={blog.images.featured.alt} />
       }
         <div className="blog__meta">{formatDate(new Date(blog.timestamp))}</div>
         <div className="blog__body blog__excerpt" dangerouslySetInnerHTML={sanitizeExcerpt(blog.body)} />

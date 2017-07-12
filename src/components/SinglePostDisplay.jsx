@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { formatDate, blogsRef, sanitize } from '../utils/';
+import { formatDate, blogsRef, sanitize, resize } from '../utils/';
 
 class SinglePostDisplay extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class SinglePostDisplay extends Component {
             <h3 className="sp__title">{title}</h3>
             <div className="sp__img-cont">
               {images && images.featured &&
-              <img className="sp__img" src={images.featured.url} alt={images.featured.alt} />
+              <img className="sp__img" src={resize(900, images.featured.url)} alt={images.featured.alt} />
             }
             </div>
             <div className="sp__meta">{formatDate(new Date(timestamp))}</div>
