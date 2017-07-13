@@ -6,6 +6,7 @@ import ReactQuill from 'react-quill';
 import * as firebase from 'firebase';
 import { blogsRef, timeRef, generateSlug, sanitize, resize } from '../utils/';
 import Loading from './Loading';
+import ModalGuts from './ModalGuts';
 
 class CreateBlog extends Component {
   constructor(props) {
@@ -81,7 +82,6 @@ class CreateBlog extends Component {
     this.handleQuillChange = this.handleQuillChange.bind(this);
     this.handleImgUpload = this.handleImgUpload.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.unsavedChanges = this.unsavedChanges.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
@@ -148,16 +148,6 @@ class CreateBlog extends Component {
     });
   }
 
-  handleInsertImage(url) {
-    if (url) {
-      let resized = resize(600, url);
-      this.quillRef.focus();
-      const range = this.quillRef.getSelection();
-      this.quillRef.insertEmbed(range.index, 'image', resized, 'user');
-      this.closeModal();
-    }
-  }
-
   handleImgUpload(event) {
     event.preventDefault();
     const newBlog = Object.assign({}, this.state.newBlog);
@@ -191,9 +181,10 @@ class CreateBlog extends Component {
     const featuredImage = Object.assign({}, newBlog.images.current);
     newBlog.images.featured = featuredImage;
   }
-  this.setState({
+  this.setState(() => ({
     newBlog,
-  });
+  }),
+);
 });
   }
 
@@ -245,7 +236,7 @@ class CreateBlog extends Component {
     const { title, body, images } = this.state.newBlog;
     const modalStyles = { overlay: { zIndex: 10 } };
     return (
-      <div>
+      <div id="cb">
         <Modal
           style={modalStyles}
           isOpen={this.state.modal.open}
@@ -253,69 +244,18 @@ class CreateBlog extends Component {
           className="modal"
           contentLabel={this.state.modal.title}
         >
-          <div className="modal__dialog">
-            <div className="modal__content">
-              <div className="modal__header">
-                <button
-                  type="button"
-                  onClick={this.closeModal}
-                  className="modal__close--x"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-                <h2 className="modal__title" id="modalTitle">{this.state.modal.title}</h2>
-              </div>
-              <div className="modal__body">
-                <div className="newBlog__fileUploadWrap newBlog__button">
-                  <span>Choose File</span>
-                  <input
-                    type="file"
-                    value=""
-                    className="newBlog__uploadBtn"
-                    title="uploadFile"
-                    name="uploadFile"
-                    id="uploadFile"
-                    onChange={e => this.handleImgUpload(e)}
-                  />
-                </div>
-                {images.current.progress > 0 && !images.current.success &&
-                <span className="newBlog__imgProg">
-                  <span className="newBlog__img-upload-progress">Uploading... {images.current.progress}%</span>
-                </span>
-              }
-                {images.current.success &&
-                <div>
-                  <img className="newBlog__img--modal" src={resize(600, images.current.url)} alt={images.current.alt} />
-                  <div className="newBlog__img-upload-success">Upload Successful </div>
-                </div>
-              }
-                <input
-                  className="newBlog__input"
-                  type="text"
-                  name="alt"
-                  onChange={e => this.handleChange(e)}
-                  placeholder="Alt text for image"
-                  value={images.current.alt}
-                />
-              </div>
-              <div className="modal__footer">
-                <button
-                  type="button"
-                  onClick={this.closeModal}
-                  className="modal__button modal__close--btn"
-                  data-dismiss="modal"
-                >Cancel</button>
-                <button
-                  type="button"
-                  onClick={this.state.modal.type === 'inline' ? () => this.handleInsertImage(images.current.url) : () => this.closeModal()}
-                  className={this.state.modal.danger ? 'modal__button modal__confirm modal__confirm--danger' : 'modal__button modal__confirm'}
-                  data-dismiss="modal"
-                >{this.state.modal.confirm}</button>
-              </div>
-            </div>
-          </div>
+          <ModalGuts
+            closeModal={this.closeModal}
+            title={this.state.modal.title}
+            handleImgUpload={this.handleImgUpload}
+            images={this.state.newBlog.images}
+            handleChange={this.handleChange}
+            type={this.state.modal.type}
+            danger={this.state.modal.danger}
+            confirm={this.state.modal.confirm}
+            handleInsertImage={this.handleInsertImage}
+            quillRef={this.quillRef}
+          />
         </Modal>
         <h2 className="newBlog__banner">{this.state.edit ? 'Update Post' : 'New Blog Post'}</h2>
         {this.state.edit && title === '' ? <Loading /> :
@@ -371,7 +311,14 @@ class CreateBlog extends Component {
             <h3 className="newBlog__subhead">Preview</h3>
             <div className="newBlog__wrapper">
               <h3 className="newBlog__title">{title}</h3>
-              {images.featured.url && <img className="newBlog__img" src={resize(600, images.featured.url)} alt={images.featured.alt} />}
+              <div id="imgCont">
+                {images.featured.url &&
+                <img
+                  className="newBlog__img"
+                  src={resize(document.getElementById('imgCont').offsetWidth, images.featured.url)}
+                  alt={images.featured.alt}
+                />}
+              </div>
               <div
                 className="newBlog__body"
                 dangerouslySetInnerHTML={sanitize(body)}

@@ -16,7 +16,6 @@ class BlogsIndex extends Component {
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.onDelete = this.onDelete.bind(this);
   }
 
   componentDidMount() {
@@ -28,9 +27,11 @@ class BlogsIndex extends Component {
         blog['.key'] = childSnap.key;
         blogs.push(blog);
       });
-      this.setState({
-        blogs,
-      });
+      if (document.getElementById('blogInd')) {
+        this.setState(() => ({
+          blogs,
+        }));
+      }
     });
   }
 
@@ -50,11 +51,11 @@ class BlogsIndex extends Component {
   }
 
   closeModal() {
-    this.setState({ modalOpen: false });
+    this.setState(() => ({ modalOpen: false }));
   }
 
   openModal(key) {
-    this.setState({ modalOpen: true, deleteKey: key });
+    this.setState(() => ({ modalOpen: true, deleteKey: key }));
   }
 
   render() {
@@ -95,7 +96,7 @@ class BlogsIndex extends Component {
     }
 
     return (
-      <div className="blogInd__container">
+      <div className="blogInd__container" id="blogInd">
         <Modal
           isOpen={this.state.modalOpen}
           onAfterOpen={this.afterOpenModal}

@@ -58,6 +58,15 @@ export const sanitizeExcerpt = (dirty) => {
 };
 
 export const resize = (width, downloadUrl) => {
-  let encodedUrl = encodeURIComponent(downloadUrl).replace(/'/g,"%27").replace(/"/g,"%22");
+  const encodedUrl = encodeURIComponent(downloadUrl).replace(/'/g, '%27').replace(/"/g, '%22');
   return `http://res.cloudinary.com/avis-rovigo/image/fetch/w_${width},c_scale/${encodedUrl}`;
-}
+};
+
+export const cardWidth = () => {
+  if (window.innerWidth > 600) {
+    return Math.floor(window.innerWidth / 3);
+  } else if (window.innerWidth < 600 && window.innerWidth > 480) {
+    return Math.floor(window.innerWidth / 2);
+  }
+  return Math.floor(window.innerWidth);
+};

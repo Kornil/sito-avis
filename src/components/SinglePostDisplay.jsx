@@ -24,20 +24,22 @@ class SinglePostDisplay extends Component {
   render() {
     const { title, images, timestamp, body } = this.state.currentPost;
     return (
-      <div>
+      <div id="imgCont">
         {!title ?
           <div className="sp__loader">Loading...</div> :
           <div className="sp__container">
             <h3 className="sp__title">{title}</h3>
             <div className="sp__img-cont">
               {images && images.featured &&
-              <img className="sp__img" src={resize(900, images.featured.url)} alt={images.featured.alt} />
-            }
+              <img
+                className="sp__img"
+                src={resize(document.getElementById('imgCont').offsetWidth, images.featured.url)}
+                alt={images.featured.alt}
+              />}
             </div>
             <div className="sp__meta">{formatDate(new Date(timestamp))}</div>
             <div className="newBlog__body" dangerouslySetInnerHTML={sanitize(body)} />
-          </div>
-        }
+          </div>}
       </div>
     );
   }
