@@ -4,9 +4,10 @@ import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, generateSlug, sanitize, resize } from '../utils/';
+import { blogsRef, timeRef, generateSlug, sanitize, resize, run, fieldValidations } from '../utils/';
 import Loading from './Loading';
 import ModalGuts from './ModalGuts';
+import FormInput from './FormInput';
 
 class CreateBlog extends Component {
   constructor(props) {
@@ -39,13 +40,21 @@ class CreateBlog extends Component {
         danger: false,
         url: '',
       },
+      showErrors: false,
+      validationErrors: { },
+      touched: {
+        title: false,
+        body: false,
+        alt: false,
+      },
+      submit: false,
     };
 
     this.modules = {
       toolbar: {
-        container: [
-        [{ header: [3, 4, false] }], ['bold', 'italic', 'underline', 'strike', 'blockquote', { color: ['#007DC5', '#ED1C24', '#7a7a7a'] }],
-        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '+1' }, { indent: '-1' }, 'link', 'image', 'clean'],
+        container: [[{ header: [3, 4, false] }], ['bold', 'italic', 'underline', 'strike', 'blockquote',
+{ color: ['#007DC5', '#ED1C24', '#7a7a7a'] }],
+[{ list: 'ordered' }, { list: 'bullet' }, { indent: '+1' }, { indent: '-1' }, 'link', 'image', 'clean'],
         ],
         handlers: {
           image: (value) => {
@@ -79,11 +88,15 @@ class CreateBlog extends Component {
     this.reactQuillRef = null;
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
     this.handleQuillChange = this.handleQuillChange.bind(this);
     this.handleImgUpload = this.handleImgUpload.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.errorFor = this.errorFor.bind(this);
+    this.setAltText = this.setAltText.bind(this);
   }
 
   componentDidMount() {
@@ -96,6 +109,10 @@ class CreateBlog extends Component {
         this.setState({
           newBlog,
           edit: true,
+        }, () => {
+          this.setState({
+            validationErrors: run(this.state.newBlog, fieldValidations),
+          });
         });
       });
     }
@@ -109,33 +126,61 @@ class CreateBlog extends Component {
     window.removeEventListener('beforeunload', this.unsavedChanges);
   }
 
-  attachQuillRefs() {
-    if (typeof this.reactQuillRef.getEditor !== 'function') return;
-    if (this.quillRef != null) return;
-    const quillRef = this.reactQuillRef.getEditor();
-    if (quillRef != null) this.quillRef = quillRef;
-  }
-
-  unsavedChanges(e) {
-    if (this.state.unsavedChanges) {
-      e.returnValue = 'Unsaved Changes!';
-      return 'Unsaved Changes!';
-    }
-    return null;
-  }
-
-  handleChange(event) {
+  setAltText(inline, filename) {
     const newBlog = Object.assign({}, this.state.newBlog);
-    if (event.target.name === 'alt') {
-      newBlog.images.current.alt = event.target.value;
+    if (inline) {
+      const inlineImg = Object.assign({}, newBlog.images[filename]);
+      inlineImg.alt = newBlog.images.current.alt;
+      newBlog.images[filename] = inlineImg;
     } else {
-      newBlog[event.target.name] = event.target.value;
+      newBlog.images.featured.alt = newBlog.images.current.alt;
+    }
+    this.setState(() => ({ newBlog }), () => {
+      if (filename) {
+        console.log(this.state.newBlog.images[filename]);
+      }
+    });
+  }
+
+  handleChange(e) {
+    const newBlog = Object.assign({}, this.state.newBlog);
+    if (e.target.name === 'alt') {
+      newBlog.images.current.alt = e.target.value;
+    } else {
+      newBlog[e.target.name] = e.target.value;
     }
     newBlog.timestamp = timeRef;
     newBlog.slug = generateSlug(newBlog.title);
     this.setState({
       newBlog,
       unsavedChanges: true,
+    });
+  }
+
+  handleBlur(e) {
+    const field = e.target.name;
+    const newBlog = Object.assign({}, this.state.newBlog);
+    newBlog[e.target.name] = e.target.value;
+    const validationErrors = run(newBlog, fieldValidations);
+    const touched = Object.assign({}, this.state.touched);
+    touched[field] = true;
+    const showErrors = !!(Object.values(validationErrors).length && touched[field]);
+    this.setState({
+      validationErrors,
+      showErrors,
+      touched,
+    });
+  }
+
+  handleFocus(e) {
+    const field = e.target.name;
+    const newBlog = Object.assign({}, this.state.newBlog);
+    const validationErrors = run(newBlog, fieldValidations);
+    validationErrors[field] = false;
+    const showErrors = false;
+    this.setState({
+      validationErrors,
+      showErrors,
     });
   }
 
@@ -188,29 +233,58 @@ class CreateBlog extends Component {
 });
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  errorFor(field) {
+    if (this.state.validationErrors) {
+      return this.state.validationErrors[field] || '';
+    }
+    return null;
+  }
+
+  unsavedChanges(e) {
+    if (this.state.unsavedChanges) {
+      e.returnValue = 'Unsaved Changes!';
+      return 'Unsaved Changes!';
+    }
+    return null;
+  }
+
+  attachQuillRefs() {
+    if (typeof this.reactQuillRef.getEditor !== 'function') return;
+    if (this.quillRef != null) return;
+    const quillRef = this.reactQuillRef.getEditor();
+    if (quillRef != null) this.quillRef = quillRef;
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.setState({ showErrors: true, submit: true });
+    if (Object.values(this.state.validationErrors).length) {
+      return null;
+    }
     if (this.state.edit) {
       const { key } = this.state.newBlog;
       blogsRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
         if (snapshot.val() === null) {
           console.log('post not found');
-        } else {
-          snapshot.ref.child(key).update(this.state.newBlog).then(() => {
-            this.props.history.push('/dashboard');
-          });
+          return null;
         }
+        snapshot.ref.child(key).update(this.state.newBlog).then(() => {
+          this.props.history.push('/dashboard');
+        });
+        return null;
       });
-    } else {
-      const newBlog = Object.assign({}, this.state.newBlog);
-      const newBlogKey = blogsRef.push().key;
-      newBlog.key = newBlogKey;
-      const updates = {};
-      updates[newBlogKey] = newBlog;
-      blogsRef.update(updates).then(() => {
-        this.props.history.push('/dashboard');
-      });
+      return null;
     }
+    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlogKey = blogsRef.push().key;
+    newBlog.key = newBlogKey;
+    const updates = {};
+    updates[newBlogKey] = newBlog;
+    blogsRef.update(updates).then(() => {
+      this.setState({ showErrors: true });
+      this.props.history.push('/dashboard');
+    });
+    return null;
   }
 
   closeModal() {
@@ -255,27 +329,41 @@ class CreateBlog extends Component {
             confirm={this.state.modal.confirm}
             handleInsertImage={this.handleInsertImage}
             quillRef={this.quillRef}
+            handleBlur={this.handleBlur}
+            handleFocus={this.handleFocus}
+            setAlt={this.setAltText}
           />
         </Modal>
         <h2 className="newBlog__banner">{this.state.edit ? 'Update Post' : 'New Blog Post'}</h2>
-        {this.state.edit && title === '' ? <Loading /> :
+        {this.state.edit && title === '' && !body ? <Loading /> :
         <div className="newBlog__container">
           <form className="newBlog__form">
             <h3 className="newBlog__subhead">Input</h3>
-            <input
+            <FormInput
               className="newBlog__input"
-              type="text"
-              name="title"
-              onChange={e => this.handleChange(e)}
+              handleChange={this.handleChange}
+              handleBlur={this.handleBlur}
+              handleFocus={this.handleFocus}
               placeholder="Blog Title"
-              value={title}
+              showError={this.state.showErrors}
+              text={this.state.newBlog.title}
+              errorText={this.errorFor('title')}
+              touched={this.state.touched.title}
+              name="title"
+              submit={this.state.submit}
             />
             <br />
             <h3 className="newBlog__subhead newBlog__subhead--sm">Set Featured Image</h3>
             <a
               role="button"
               tabIndex="0"
-              onKeyPress={() => this.openModal('featured', 'Set Featured Image', 'OK', false)}
+              onKeyPress={(e) => {
+                const code = (e.keyCode ? e.keyCode : e.which);
+                if (code === 32 || code === 13) {
+                  this.openModal('featured', 'Set Featured Image', 'OK', false);
+                }
+              }
+            }
               className="newBlog__button newBlog__button--featured"
               onClick={() => this.openModal('featured', 'Set Featured Image', 'OK', false)}
             >Choose File</a>
@@ -312,7 +400,7 @@ class CreateBlog extends Component {
             <div className="newBlog__wrapper">
               <h3 className="newBlog__title">{title}</h3>
               <div id="imgCont">
-                {images.featured.url &&
+                {images.featured && images.featured.url &&
                 <img
                   className="newBlog__img"
                   src={resize(document.getElementById('imgCont').offsetWidth, images.featured.url)}

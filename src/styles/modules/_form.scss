@@ -1,0 +1,38 @@
+.form {
+
+&__input {
+		display: block;
+		width: 100%;
+		padding: .5rem .75rem !important;
+		font-size: 1rem !important;
+		line-height: 1.25;
+		color: #464a4c;
+		background-color: #fff;
+		background-image: none;
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		border: 1px solid #ccc !important;
+		border-radius: 0 !important;
+		-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+		transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+		-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+
+		&--error {
+			border: 1px solid red !important;
+		}
+	}
+
+	&__error-wrap {
+		padding-left: 5px;
+    display: flex;
+    justify-content: flex-end;
+	}
+
+	&__error-content {
+		color: red;
+
+	}
+
+}

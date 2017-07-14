@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
-import { resize } from '../utils/';
+import { resize, run, fieldValidationsModal, generateSlug } from '../utils/';
+import FormInput from './FormInput';
 
 class ModalGuts extends Component {
 
-  handleInsertImage(url) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showErrors: false,
+      validationErrors: { },
+      touched: {
+        alt: false,
+      },
+      submit: false,
+    };
+    this.errorFor = this.errorFor.bind(this);
+  }
+
+  errorFor(field) {
+    return this.state.validationErrors[field] || '';
+  }
+
+  handleInsertImage(url, alt) {
     if (url) {
       const resized = resize(600, url);
       this.props.quillRef.focus();
       const range = this.props.quillRef.getSelection();
-      this.props.quillRef.insertEmbed(range.index, 'image', resized, 'user');
+// this.props.quillRef.insertEmbed(range.index, 'image', resized, 'user');
+      const imgHtml = `<img src="${resized}" alt="${alt}" />`;
+      this.props.quillRef.clipboard.dangerouslyPasteHTML(range.index, imgHtml, 'user');
       this.props.closeModal();
     }
   }
@@ -57,13 +77,18 @@ class ModalGuts extends Component {
                 <div className="newBlog__img-upload-success">Upload Successful </div>
               </div>}
             </div>
-            <input
+            <FormInput
               className="newBlog__input"
-              type="text"
-              name="alt"
-              onChange={e => this.props.handleChange(e)}
+              handleChange={e => this.props.handleChange(e)}
+              handleBlur={e => this.props.handleBlur(e)}
+              handleFocus={e => this.props.handleFocus(e)}
               placeholder="Alt text for image"
-              value={this.props.images.current.alt}
+              showError={this.state.showErrors}
+              text={this.props.images.current.alt}
+              errorText={this.errorFor('alt')}
+              touched={this.state.touched.alt}
+              name="alt"
+              submit={this.state.submit}
             />
           </div>
           <div className="modal__footer">
@@ -75,7 +100,25 @@ class ModalGuts extends Component {
             >Cancel</button>
             <button
               type="button"
-              onClick={this.props.type === 'inline' ? () => this.handleInsertImage(this.props.images.current.url) : () => this.props.closeModal()}
+              onClick={() => {
+                this.setState(() => ({ showErrors: true, submit: true }), () => {
+                  const validationErrors = run(this.props.images.current, fieldValidationsModal);
+                  this.setState(() => ({ validationErrors }), () => {
+                    if (validationErrors.alt || validationErrors.file) {
+                      return null;
+                    } else if (this.props.type === 'inline') {
+                      const fileNameClean = generateSlug(this.props.images.current.fileName);
+                      this.props.setAlt(true, fileNameClean);
+                      const current = this.props.images.current;
+                      this.handleInsertImage(current.url, current.alt);
+                      return null;
+                    }
+                    this.props.setAlt(false);
+                    this.props.closeModal();
+                    return null;
+                  });
+                });
+              }}
               className={this.props.danger ? 'modal__button modal__confirm modal__confirm--danger' : 'modal__button modal__confirm'}
               data-dismiss="modal"
             >{this.props.confirm}</button>
