@@ -18,7 +18,7 @@ import UpdateStats from './UpdateStats';
 import SinglePostDisplay from './SinglePostDisplay';
 import Notizie from './Notizie';
 import Dashboard from './Dashboard';
-
+import CreatePhotoGallery from './CreatePhotoGallery';
 
 import { saveAuth } from '../actions';
 
@@ -57,13 +57,12 @@ class App extends Component {
             <Route path="/notizie" component={Notizie} />
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
+            {this.props.auth && <Route path="/createphotogallery" component={CreatePhotoGallery} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
             {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
             {this.props.auth && <Route path="/edit/:key" component={CreateBlog} />}
 
             <Route path="/blog/:slug" component={SinglePostDisplay} />
-
-
           </Switch>
         </main>
         <Footer />
@@ -77,7 +76,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  saveAuth: () => (dispatch(saveAuth())),
+  saveAuth: () => dispatch(saveAuth()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
