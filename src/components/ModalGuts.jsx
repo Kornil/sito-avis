@@ -1,6 +1,33 @@
 import React, { Component } from 'react';
+import ReactQuill from 'react-quill';
 import { resize, run, fieldValidationsModal, generateSlug } from '../utils/';
 import FormInput from './FormInput';
+
+
+// / Custom ImageBlot to add alt text to inline images ///
+
+const Quill = ReactQuill.Quill;
+const BlockEmbed = Quill.import('blots/block/embed');
+
+class ImageBlot extends BlockEmbed {
+  static create(value) {
+    const node = super.create();
+    node.setAttribute('alt', value.alt);
+    node.setAttribute('src', value.url);
+    return node;
+  }
+
+  static value(node) {
+    return {
+      alt: node.getAttribute('alt'),
+      url: node.getAttribute('src'),
+    };
+  }
+}
+ImageBlot.blotName = 'image';
+ImageBlot.tagName = 'img';
+ImageBlot.className = 'inline-img';
+Quill.register(ImageBlot);
 
 class ModalGuts extends Component {
 
@@ -22,13 +49,22 @@ class ModalGuts extends Component {
   }
 
   handleInsertImage(url, alt) {
+    console.log(url, alt);
     if (url) {
       const resized = resize(600, url);
       this.props.quillRef.focus();
       const range = this.props.quillRef.getSelection();
-// this.props.quillRef.insertEmbed(range.index, 'image', resized, 'user');
-      const imgHtml = `<img src="${resized}" alt="${alt}" />`;
-      this.props.quillRef.clipboard.dangerouslyPasteHTML(range.index, imgHtml, 'user');
+      this.props.quillRef.insertText(range.index, '\n', 'user');
+      this.props.quillRef.insertEmbed(range.index + 1, 'image', {
+        alt,
+        url: resized,
+      }, 'user');
+      this.props.quillRef.setSelection(range.index + 2, 'silent');
+      console.log('63');
+      console.log(this.props.quillRef.getContents().ops);
+      // this.props.quillRef.insertEmbed(range.index, 'image', resized, 'user');
+      // const imgHtml = `<img src="${resized}" alt="${alt}" />`;
+      // this.props.quillRef.clipboard.dangerouslyPasteHTML(range.index, imgHtml, 'user');
       this.props.closeModal();
     }
   }
