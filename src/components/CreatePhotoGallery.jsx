@@ -1,3 +1,6 @@
+// TODO: Don't allow files with the same file.name
+// TODO: Create image uploading progress
+
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import * as firebase from 'firebase';
@@ -41,6 +44,7 @@ class CreatePhotoGallery extends Component {
     this.handleUpload = this.handleUpload.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.removeFile = this.removeFile.bind(this);
+    this.handleAltChange = this.handleAltChange.bind(this);
   }
 
   componentDidMount() {
@@ -52,6 +56,7 @@ class CreatePhotoGallery extends Component {
   }
 
   onImageDrop(files) {
+    files.forEach((file) => { file.altText = ''; });
     this.setState(prevState => ({ images: [...prevState.images, ...files] }));
   }
 
@@ -106,10 +111,10 @@ class CreatePhotoGallery extends Component {
   }
 
   removeFile(e) {
-    const file = e.target.id;
-    console.log(file);
+    const fileName = e.target.name;
+    console.log(fileName);
     this.setState({
-      images: this.state.images.filter(img => img.preview !== file),
+      images: this.state.images.filter(img => img.name !== fileName),
     });
   }
 
@@ -119,6 +124,14 @@ class CreatePhotoGallery extends Component {
       return 'Unsaved Changes!';
     }
     return null;
+  }
+
+  handleAltChange(e) {
+    const fileName = e.target.name;
+    const imageIndex = this.state.images.findIndex(image => image.name === fileName);
+    const newImages = [...this.state.images];
+    newImages[imageIndex].altText = e.target.value;
+    this.setState({ images: newImages });
   }
 
   render() {
@@ -190,7 +203,7 @@ class CreatePhotoGallery extends Component {
             <h3 className="newBlog__subhead">Preview</h3>
             <div className="newBlog__wrapper">
               <PreviewGrid options={packeryOptions}>
-                {this.state.images.map(file =>
+                {this.state.images.map(file => (
                   <div key={file.preview}>
                     <img
                       width={200}
@@ -198,9 +211,16 @@ class CreatePhotoGallery extends Component {
                       src={file.preview}
                       alt="preview"
                     />
+                    <input
+                      className="form__input"
+                      type="text"
+                      onChange={this.handleAltChange}
+                      name={file.name}
+                      value={this.state.images.find(item => item.name === file.name).altText}
+                    />
                     <a
                       style={{ display: 'block' }}
-                      id={file.preview}
+                      name={file.name}
                       role="button"
                       tabIndex="0"
                       className="newBlog__button newBlog__button--featured"
@@ -208,8 +228,8 @@ class CreatePhotoGallery extends Component {
                     >
                       Remove
                     </a>
-                  </div>,
-                )}
+                  </div>
+                ))}
               </PreviewGrid>
               {/* <h3 className="newBlog__title" /> */}
               {/* <div id="imgCont"> */}
