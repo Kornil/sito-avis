@@ -138,5 +138,5 @@ export const singleRuleRunner = (field, name, v) => (state) => {
     console.log({ [field]: errorMessageFunc(name) }); // returning correct data
     return { [field]: errorMessageFunc(name) };
   }
-  return null;
+  return {};
 };
