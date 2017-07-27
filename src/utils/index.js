@@ -107,6 +107,7 @@ export const ruleRunner = (field, name, ...validations) => (state) => {
   validations.forEach((v) => {
     const errorMessageFunc = v(state[field], state);
     if (errorMessageFunc) {
+      // console.log({ [field]: errorMessageFunc(name) }); // returning correct data
       return { [field]: errorMessageFunc(name) };
     }
     return null;
@@ -114,8 +115,9 @@ export const ruleRunner = (field, name, ...validations) => (state) => {
   return null;
 };
 
-export const run = (state, runners) =>
-runners.reduce((memo, runner) => Object.assign(memo, runner(state)), {});
+export const run = (state, runners) => runners.reduce((memo, runner) =>
+    // console.log(Object.assign(memo, runner(state))); //returning empty object
+     Object.assign(memo, runner(state)), {});
 
 export const fieldValidations = [
   ruleRunner('title', 'Title', required),
@@ -125,3 +127,16 @@ export const fieldValidationsModal = [
   ruleRunner('alt', 'Alt text', required),
   // ruleRunner("alt", "Alt text", conditionalRequired("alt", "url"))
 ];
+
+// simplified version of field validation
+// for validating one field at a time
+// since the other one isn't working ...
+
+export const singleRuleRunner = (field, name, v) => (state) => {
+  const errorMessageFunc = v(state[field], state);
+  if (errorMessageFunc) {
+    console.log({ [field]: errorMessageFunc(name) }); // returning correct data
+    return { [field]: errorMessageFunc(name) };
+  }
+  return null;
+};

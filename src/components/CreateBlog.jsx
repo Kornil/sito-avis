@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, generateSlug, sanitize, resize, run, fieldValidations } from '../utils/';
+import { blogsRef, timeRef, generateSlug, sanitize, resize, singleRuleRunner, required } from '../utils/';
 import Loading from './Loading';
 import ModalGuts from './ModalGuts';
 import FormInput from './FormInput';
@@ -97,6 +97,8 @@ class CreateBlog extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.errorFor = this.errorFor.bind(this);
     this.setAltText = this.setAltText.bind(this);
+    this.updateValidationErrors = this.updateValidationErrors.bind(this);
+    this.updateErrorViz = this.updateErrorViz.bind(this);
   }
 
   componentDidMount() {
@@ -109,10 +111,6 @@ class CreateBlog extends Component {
         this.setState({
           newBlog,
           edit: true,
-        }, () => {
-          this.setState({
-            validationErrors: run(this.state.newBlog, fieldValidations),
-          });
         });
       });
     }
@@ -137,7 +135,7 @@ class CreateBlog extends Component {
     }
     this.setState(() => ({ newBlog }), () => {
       if (filename) {
-        console.log(this.state.newBlog.images[filename]);
+        // console.log(this.state.newBlog.images[filename]);
       }
     });
   }
@@ -161,7 +159,8 @@ class CreateBlog extends Component {
     const field = e.target.name;
     const newBlog = Object.assign({}, this.state.newBlog);
     newBlog[e.target.name] = e.target.value;
-    const validationErrors = run(newBlog, fieldValidations);
+    let validationErrors = singleRuleRunner(field, e.target.placeholder, required)(newBlog);
+    if (!validationErrors) { validationErrors = {}; }
     const touched = Object.assign({}, this.state.touched);
     touched[field] = true;
     const showErrors = !!(Object.values(validationErrors).length && touched[field]);
@@ -169,18 +168,22 @@ class CreateBlog extends Component {
       validationErrors,
       showErrors,
       touched,
+    }, () => {
+      // console.log(this.state.validationErrors);
     });
   }
 
   handleFocus(e) {
     const field = e.target.name;
     const newBlog = Object.assign({}, this.state.newBlog);
-    const validationErrors = run(newBlog, fieldValidations);
+    const validationErrors = singleRuleRunner(field, e.target.placeholder, required)(newBlog);
     validationErrors[field] = false;
     const showErrors = false;
     this.setState({
       validationErrors,
       showErrors,
+    }, () => {
+      // console.log(this.state.validationErrors);
     });
   }
 
@@ -258,33 +261,39 @@ class CreateBlog extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({ showErrors: true, submit: true });
-    if (Object.values(this.state.validationErrors).length) {
-      return null;
-    }
-    if (this.state.edit) {
-      const { key } = this.state.newBlog;
-      blogsRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
-        if (snapshot.val() === null) {
-          console.log('post not found');
+    const newBlog = Object.assign({}, this.state.newBlog);
+    let validationErrors = singleRuleRunner('title', 'Title', required)(newBlog);
+    if (!validationErrors) { validationErrors = {}; }
+    this.setState({
+      validationErrors,
+    }, () => {
+      if (validationErrors.title) {
+        return null;
+      }
+      if (this.state.edit) {
+        const { key } = this.state.newBlog;
+        blogsRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
+          if (snapshot.val() === null) {
+            console.log('post not found');
+            return null;
+          }
+          snapshot.ref.child(key).update(this.state.newBlog).then(() => {
+            this.props.history.push('/dashboard');
+          });
           return null;
-        }
-        snapshot.ref.child(key).update(this.state.newBlog).then(() => {
-          this.props.history.push('/dashboard');
         });
         return null;
+      }
+      const newBlogKey = blogsRef.push().key;
+      newBlog.key = newBlogKey;
+      const updates = {};
+      updates[newBlogKey] = newBlog;
+      blogsRef.update(updates).then(() => {
+        this.setState({ showErrors: true });
+        this.props.history.push('/dashboard');
       });
       return null;
-    }
-    const newBlog = Object.assign({}, this.state.newBlog);
-    const newBlogKey = blogsRef.push().key;
-    newBlog.key = newBlogKey;
-    const updates = {};
-    updates[newBlogKey] = newBlog;
-    blogsRef.update(updates).then(() => {
-      this.setState({ showErrors: true });
-      this.props.history.push('/dashboard');
     });
-    return null;
   }
 
   closeModal() {
@@ -304,6 +313,23 @@ class CreateBlog extends Component {
       inline: false,
     };
     this.setState({ modal: { open: true, type, title, confirm, danger, url }, newBlog });
+  }
+
+  updateValidationErrors(validationErrors, callback) {
+    this.setState({
+      validationErrors,
+    }, () => {
+      callback();
+    });
+  }
+
+  updateErrorViz() {
+    this.setState({
+      showErrors: true,
+      submit: true,
+    }, () => {
+      // console.log(this.state.showErrors, this.state.submit);
+    });
   }
 
   render() {
@@ -331,7 +357,14 @@ class CreateBlog extends Component {
             quillRef={this.quillRef}
             handleBlur={this.handleBlur}
             handleFocus={this.handleFocus}
-            setAlt={this.setAltText}
+            setAltText={this.setAltText}
+            validatonErrors={this.state.validationErrors}
+            errorFor={this.errorFor}
+            touched={this.state.touched}
+            showError={this.state.showErrors}
+            updateValidationErrors={this.updateValidationErrors}
+            updateErrorViz={this.updateErrorViz}
+            submit={this.state.submit}
           />
         </Modal>
         <h2 className="newBlog__banner">{this.state.edit ? 'Update Post' : 'New Blog Post'}</h2>
