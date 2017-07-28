@@ -56,7 +56,7 @@ class CreatePhotoGallery extends Component {
   }
 
   onImageDrop(files) {
-    files.forEach((file) => { file.altText = ''; });
+    files.forEach((file) => { file.altText = ''; }); // eslint-disable-line
     this.setState(prevState => ({ images: [...prevState.images, ...files] }));
   }
 
