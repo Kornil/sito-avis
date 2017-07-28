@@ -1,24 +1,39 @@
 import React, { Component } from 'react';
-import { resize, run, fieldValidationsModal, generateSlug } from '../utils/';
+import ReactQuill from 'react-quill';
+import { resize, singleRuleRunner, required, generateSlug } from '../utils/';
 import FormInput from './FormInput';
 
-class ModalGuts extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      showErrors: false,
-      validationErrors: { },
-      touched: {
-        alt: false,
-      },
-      submit: false,
-    };
-    this.errorFor = this.errorFor.bind(this);
+// / Custom ImageBlot to add alt text to inline images / ///
+
+const Quill = ReactQuill.Quill;
+const BlockEmbed = Quill.import('blots/block/embed');
+
+class ImageBlot extends BlockEmbed {
+  static create(value) {
+    const node = super.create();
+    node.setAttribute('alt', value.alt);
+    node.setAttribute('src', value.url);
+    return node;
   }
 
-  errorFor(field) {
-    return this.state.validationErrors[field] || '';
+  static value(node) {
+    return {
+      alt: node.getAttribute('alt'),
+      url: node.getAttribute('src'),
+    };
+  }
+}
+ImageBlot.blotName = 'image';
+ImageBlot.tagName = 'img';
+ImageBlot.className = 'inline-img';
+Quill.register(ImageBlot);
+
+class ModalGuts extends Component {
+  constructor(props) {
+    super(props);
+    this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.handleInsertImage = this.handleInsertImage.bind(this);
   }
 
   handleInsertImage(url, alt) {
@@ -26,11 +41,37 @@ class ModalGuts extends Component {
       const resized = resize(600, url);
       this.props.quillRef.focus();
       const range = this.props.quillRef.getSelection();
-// this.props.quillRef.insertEmbed(range.index, 'image', resized, 'user');
-      const imgHtml = `<img src="${resized}" alt="${alt}" />`;
-      this.props.quillRef.clipboard.dangerouslyPasteHTML(range.index, imgHtml, 'user');
+      this.props.quillRef.insertText(range.index, '\n', 'user');
+      this.props.quillRef.insertEmbed(range.index + 1, 'image', {
+        alt,
+        url: resized,
+      }, 'user');
+      this.props.quillRef.setSelection(range.index + 2, 'silent');
       this.props.closeModal();
     }
+  }
+
+  handleModalSubmit() {
+    this.props.updateErrorViz();
+    let validationErrors = singleRuleRunner('alt', 'Alt text', required)(this.props.images.current);
+    if (!validationErrors) { validationErrors = {}; }
+    const callback = () => {
+      if (validationErrors.alt || validationErrors.file) {
+        return null;
+      } else if (this.props.type === 'inline') {
+        const fileNameClean = generateSlug(this.props.images.current.fileName);
+        this.props.setAltText(true, fileNameClean);
+        const current = this.props.images.current;
+        this.handleInsertImage(current.url, current.alt);
+        this.props.closeModal();
+        return null;
+      }
+      this.props.setAltText(false);
+      this.props.closeModal();
+      return null;
+    };
+    this.props.updateValidationErrors(validationErrors, callback);
+    return null;
   }
 
   render() {
@@ -83,12 +124,12 @@ class ModalGuts extends Component {
               handleBlur={e => this.props.handleBlur(e)}
               handleFocus={e => this.props.handleFocus(e)}
               placeholder="Alt text for image"
-              showError={this.state.showErrors}
+              showError={this.props.showError}
               text={this.props.images.current.alt}
-              errorText={this.errorFor('alt')}
-              touched={this.state.touched.alt}
+              errorText={this.props.errorFor('alt')}
+              touched={this.props.touched.alt}
               name="alt"
-              submit={this.state.submit}
+              submit={this.props.submit}
             />
           </div>
           <div className="modal__footer">
@@ -100,25 +141,7 @@ class ModalGuts extends Component {
             >Cancel</button>
             <button
               type="button"
-              onClick={() => {
-                this.setState(() => ({ showErrors: true, submit: true }), () => {
-                  const validationErrors = run(this.props.images.current, fieldValidationsModal);
-                  this.setState(() => ({ validationErrors }), () => {
-                    if (validationErrors.alt || validationErrors.file) {
-                      return null;
-                    } else if (this.props.type === 'inline') {
-                      const fileNameClean = generateSlug(this.props.images.current.fileName);
-                      this.props.setAlt(true, fileNameClean);
-                      const current = this.props.images.current;
-                      this.handleInsertImage(current.url, current.alt);
-                      return null;
-                    }
-                    this.props.setAlt(false);
-                    this.props.closeModal();
-                    return null;
-                  });
-                });
-              }}
+              onClick={this.handleModalSubmit}
               className={this.props.danger ? 'modal__button modal__confirm modal__confirm--danger' : 'modal__button modal__confirm'}
               data-dismiss="modal"
             >{this.props.confirm}</button>
