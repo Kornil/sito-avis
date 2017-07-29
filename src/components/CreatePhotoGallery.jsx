@@ -211,12 +211,7 @@ class CreatePhotoGallery extends Component {
                 onKeyPress={(e) => {
                   const code = e.keyCode ? e.keyCode : e.which;
                   if (code === 32 || code === 13) {
-                    this.openModal(
-                      'featured',
-                      'Set Featured Image',
-                      'OK',
-                      false,
-                    );
+                    dropzoneRef.open();
                   }
                 }}
                 className="newBlog__button newBlog__button--featured"
