@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import * as firebase from 'firebase';
 import FormInput from './FormInput';
+import { fieldValidations, run } from '../utils/index';
 
 const PreviewGrid = require('react-packery-component')(React);
 
@@ -33,18 +34,19 @@ class CreatePhotoGallery extends Component {
       showErrors: false,
       validationErrors: {},
       touched: {
-        title: false,
-        body: false,
-        alt: false,
+        galleryName: false,
       },
       submit: false,
     };
 
     this.onImageDrop = this.onImageDrop.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.removeFile = this.removeFile.bind(this);
     this.handleAltChange = this.handleAltChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.errorFor = this.errorFor.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
   }
 
   componentDidMount() {
@@ -60,11 +62,39 @@ class CreatePhotoGallery extends Component {
     this.setState(prevState => ({ images: [...prevState.images, ...files] }));
   }
 
-  handleTitleChange(e) {
+  errorFor(field) {
+    if (this.state.validationErrors) {
+      return this.state.validationErrors[field] || '';
+    }
+    return null;
+  }
+
+  handleChange(e) {
+    console.log(e.target.name);
     this.setState({
-      galleryName: e.target.value,
+      [e.target.name]: e.target.value,
       unsavedChanges: true,
     });
+  }
+
+  handleBlur(e) {
+    const field = e.target.name;
+    const newState = {
+      validationErrors: run(Object.assign({}, this.state), fieldValidations),
+      showErrors: true,
+      touched: { [field]: true },
+    };
+    this.setState(Object.assign({}, this.state, newState));
+  }
+
+  handleFocus(e) {
+    const field = e.target.name;
+    const newState = {
+      validationErrors: run(Object.assign({}, this.state), fieldValidations),
+      showErrors: false,
+      touched: { [field]: false },
+    };
+    this.setState(Object.assign({}, this.state, newState));
   }
 
   handleUpload() {
@@ -144,7 +174,14 @@ class CreatePhotoGallery extends Component {
             <FormInput
               placeholder="Gallery Name"
               className="form__input"
-              handleChange={this.handleTitleChange}
+              handleChange={this.handleChange}
+              handleBlur={this.handleBlur}
+              handleFocus={this.handleFocus}
+              name="galleryName"
+              showError={this.state.showErrors}
+              errorText={this.errorFor('galleryName')}
+              touched={this.state.touched.galleryName}
+              text={this.state.galleryName}
             />
             <Dropzone
               style={{
