@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import * as firebase from 'firebase';
 import FormInput from './FormInput';
-import { fieldValidations, run } from '../utils/index';
+import { fieldValidations, run, ruleRunner, required } from '../utils/index';
 
 const PreviewGrid = require('react-packery-component')(React);
 
@@ -31,7 +31,9 @@ class CreatePhotoGallery extends Component {
       //   danger: false,
       //   url: '',
       // },
-      showErrors: false,
+      showErrors: {
+        galleryName: false,
+      },
       validationErrors: {},
       touched: {
         galleryName: false,
@@ -43,7 +45,7 @@ class CreatePhotoGallery extends Component {
     this.handleUpload = this.handleUpload.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.removeFile = this.removeFile.bind(this);
-    this.handleAltChange = this.handleAltChange.bind(this);
+    // this.handleAltChange = this.handleAltChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.errorFor = this.errorFor.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
@@ -58,8 +60,16 @@ class CreatePhotoGallery extends Component {
   }
 
   onImageDrop(files) {
-    files.forEach((file) => { file.altText = ''; }); // eslint-disable-line
-    this.setState(prevState => ({ images: [...prevState.images, ...files] }));
+    files.forEach((file) => {
+      // file.altText = ''; // eslint-disable-line
+
+      // create a new ruleRunner for each new image
+      fieldValidations.push(
+        ruleRunner(file.name, 'Alt text', required),
+      );
+      // this.setState({ [file.name]: '' });
+    });
+    this.setState({ images: [...this.state.images, ...files] });
   }
 
   errorFor(field) {
@@ -70,7 +80,6 @@ class CreatePhotoGallery extends Component {
   }
 
   handleChange(e) {
-    console.log(e.target.name);
     this.setState({
       [e.target.name]: e.target.value,
       unsavedChanges: true,
@@ -81,8 +90,8 @@ class CreatePhotoGallery extends Component {
     const field = e.target.name;
     const newState = {
       validationErrors: run(Object.assign({}, this.state), fieldValidations),
-      showErrors: true,
-      touched: { [field]: true },
+      showErrors: Object.assign({}, this.state.showErrors, { [field]: true }),
+      touched: Object.assign({}, this.state.touched, { [field]: true }),
     };
     this.setState(Object.assign({}, this.state, newState));
   }
@@ -91,14 +100,13 @@ class CreatePhotoGallery extends Component {
     const field = e.target.name;
     const newState = {
       validationErrors: run(Object.assign({}, this.state), fieldValidations),
-      showErrors: false,
-      touched: { [field]: false },
+      showErrors: Object.assign({}, this.state.showErrors, { [field]: false }),
+      touched: Object.assign({}, this.state.touched, { [field]: false }),
     };
     this.setState(Object.assign({}, this.state, newState));
   }
 
   handleUpload() {
-    console.log(this.state.images[0]);
     const files = this.state.images;
     const storageRef = firebase.storage().ref();
     const dateStamp = Date.now();
@@ -156,13 +164,13 @@ class CreatePhotoGallery extends Component {
     return null;
   }
 
-  handleAltChange(e) {
-    const fileName = e.target.name;
-    const imageIndex = this.state.images.findIndex(image => image.name === fileName);
-    const newImages = [...this.state.images];
-    newImages[imageIndex].altText = e.target.value;
-    this.setState({ images: newImages });
-  }
+  // handleAltChange(e) {
+  //   const fileName = e.target.name;
+  //   const imageIndex = this.state.images.findIndex(image => image.name === fileName);
+  //   const newImages = [...this.state.images];
+  //   newImages[imageIndex].altText = e.target.value;
+  //   this.setState({ images: newImages });
+  // }
 
   render() {
     let dropzoneRef;
@@ -178,7 +186,7 @@ class CreatePhotoGallery extends Component {
               handleBlur={this.handleBlur}
               handleFocus={this.handleFocus}
               name="galleryName"
-              showError={this.state.showErrors}
+              showError={this.state.showErrors.galleryName}
               errorText={this.errorFor('galleryName')}
               touched={this.state.touched.galleryName}
               text={this.state.galleryName}
@@ -243,12 +251,18 @@ class CreatePhotoGallery extends Component {
                       src={file.preview}
                       alt="preview"
                     />
-                    <input
+                    <FormInput
                       className="form__input"
                       type="text"
-                      onChange={this.handleAltChange}
                       name={file.name}
                       value={this.state.images.find(item => item.name === file.name).altText}
+                      placeholder="Alt text for image"
+                      handleChange={this.handleChange}
+                      handleBlur={this.handleBlur}
+                      handleFocus={this.handleFocus}
+                      showError={this.state.showErrors[file.name]}
+                      errorText={this.errorFor(file.name)}
+                      touched={this.state.touched[file.name]}
                     />
                     <a
                       style={{ display: 'block' }}
