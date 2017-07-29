@@ -33,11 +33,11 @@ export const formatDate = (date) => {
 };
 
 export const generateSlug = title => title.toString().toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
+  .replace(/\s+/g, '-')
+  .replace(/[^\w-]+/g, '')
+  .replace(/--+/g, '-')
+  .replace(/^-+/, '')
+  .replace(/-+$/, '');
 
 // //////////// BLOG POST DISPLAY FUNCTIONS /////////////////
 
@@ -104,23 +104,19 @@ export const minLength = length =>
   text => (text.length >= length ? null : _minLength(length));
 
 export const ruleRunner = (field, name, ...validations) => (state) => {
-  validations.forEach((v) => {
-    const errorMessageFunc = v(state[field], state);
-    if (errorMessageFunc) {
-      // console.log({ [field]: errorMessageFunc(name) }); // returning correct data
-      return { [field]: errorMessageFunc(name) };
-    }
-    return null;
-  });
+  const errorMessageFunc = validations.find(v => v(state[field], state));
+  if (errorMessageFunc) {
+    return { [field]: errorMessageFunc(state[field], state)(name) };
+  }
   return null;
 };
 
-export const run = (state, runners) => runners.reduce((memo, runner) =>
-    // console.log(Object.assign(memo, runner(state))); //returning empty object
-     Object.assign(memo, runner(state)), {});
+export const run = (state, runners) =>
+  runners.reduce((memo, runner) => Object.assign(memo, runner(state)), {});
 
 export const fieldValidations = [
   ruleRunner('title', 'Title', required),
+  ruleRunner('galleryName', 'Gallery Name', required),
 ];
 
 export const fieldValidationsModal = [
