@@ -113,12 +113,18 @@ class CreatePhotoGallery extends Component {
     const promises = files.map((file) => {
       // TODO: figure out better way to handle making a unique id
 
+      const metaData = {
+        customMetadata: {
+          altText: this.state[file.name],
+        },
+      };
+
       const task = storageRef
         .child(
         `images/galleries/${this.state
           .galleryName} (${dateStamp})/${file.name}`,
       )
-        .put(file);
+        .put(file, metaData);
 
       return new Promise((resolve, reject) => {
         task.on(
