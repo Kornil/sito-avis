@@ -27,12 +27,14 @@ class BlogsIndex extends Component {
         blog['.key'] = childSnap.key;
         blogs.push(blog);
       });
-      if (document.getElementById('blogInd')) {
-        this.setState(() => ({
-          blogs,
-        }));
-      }
+      this.setState(() => ({
+        blogs,
+      }));
     });
+  }
+
+  componentWillUnmount() {
+    blogsRef.off();
   }
 
   onDelete(key) {
@@ -42,10 +44,12 @@ class BlogsIndex extends Component {
         modalOpen: false,
       });
       setTimeout(() => {
-        this.setState({
-          msg: false,
-          deleteKey: null,
-        });
+        if (this.componentRef) {
+          this.setState({
+            msg: false,
+            deleteKey: null,
+          });
+        }
       }, 2000);
     });
   }
@@ -71,11 +75,11 @@ class BlogsIndex extends Component {
           </td>
           <td className="blogInd__cell blogInd__imgCont">
             {blog.images && blog.images.featured &&
-            <img
-              className="blogInd__thumb"
-              src={resize(50, blog.images.featured.url)}
-              alt={blog.images.featured.alt}
-            /> }
+              <img
+                className="blogInd__thumb"
+                src={resize(50, blog.images.featured.url)}
+                alt={blog.images.featured.alt}
+              />}
           </td>
           <td className="blogInd__cell blogInd__meta">{formatDate(new Date(blog.timestamp))}</td>
           <td className="blogInd__cell blogInd__icon-container">
@@ -139,23 +143,24 @@ class BlogsIndex extends Component {
           </div>
         </Modal>
         {this.state.msg && <div className="blogInd__message">The post was successfully deleted.</div>}
-        { (!blogsArr.length) ? <Loading /> :
-        <div className="blogInd__table-cont">
-          <table className="blogInd__grid">
-            <thead>
-              <tr>
-                <th className="blogInd__tableHead">Title</th>
-                <th className="blogInd__tableHead">Image</th>
-                <th className="blogInd__tableHead">Date</th>
-                <th className="blogInd__tableHead">Edit</th>
-                <th className="blogInd__tableHead">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {blogsArr.reverse()}
-            </tbody>
-          </table>
-        </div>}
+        {(!blogsArr.length)
+          ? <Loading />
+          : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
+            <table className="blogInd__grid">
+              <thead>
+                <tr>
+                  <th className="blogInd__tableHead">Title</th>
+                  <th className="blogInd__tableHead">Image</th>
+                  <th className="blogInd__tableHead">Date</th>
+                  <th className="blogInd__tableHead">Edit</th>
+                  <th className="blogInd__tableHead">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {blogsArr.reverse()}
+              </tbody>
+            </table>
+          </div>}
       </div>
     );
   }
