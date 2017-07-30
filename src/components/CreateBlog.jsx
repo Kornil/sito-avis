@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import ReactQuill from 'react-quill';
 
 import * as firebase from 'firebase';
-import { blogsRef, timeRef, generateSlug, sanitize, resize, singleRuleRunner, required } from '../utils/';
+import { blogsRef, timeRef, generateSlug, sanitize, resize, fieldValidations, run } from '../utils/';
 import Loading from './Loading';
 import ModalGuts from './ModalGuts';
 import FormInput from './FormInput';
@@ -159,8 +159,7 @@ class CreateBlog extends Component {
     const field = e.target.name;
     const newBlog = Object.assign({}, this.state.newBlog);
     newBlog[e.target.name] = e.target.value;
-    let validationErrors = singleRuleRunner(field, e.target.placeholder, required)(newBlog);
-    if (!validationErrors) { validationErrors = {}; }
+    const validationErrors = run(newBlog, fieldValidations);
     const touched = Object.assign({}, this.state.touched);
     touched[field] = true;
     const showErrors = !!(Object.values(validationErrors).length && touched[field]);
@@ -169,21 +168,21 @@ class CreateBlog extends Component {
       showErrors,
       touched,
     }, () => {
-      // console.log(this.state.validationErrors);
+      console.log(this.state.validationErrors);
     });
   }
 
   handleFocus(e) {
     const field = e.target.name;
     const newBlog = Object.assign({}, this.state.newBlog);
-    const validationErrors = singleRuleRunner(field, e.target.placeholder, required)(newBlog);
+    const validationErrors = run(newBlog, fieldValidations);
     validationErrors[field] = false;
     const showErrors = false;
     this.setState({
       validationErrors,
       showErrors,
     }, () => {
-      // console.log(this.state.validationErrors);
+      console.log(this.state.validationErrors);
     });
   }
 
@@ -262,8 +261,7 @@ class CreateBlog extends Component {
     e.preventDefault();
     this.setState({ showErrors: true, submit: true });
     const newBlog = Object.assign({}, this.state.newBlog);
-    let validationErrors = singleRuleRunner('title', 'Title', required)(newBlog);
-    if (!validationErrors) { validationErrors = {}; }
+    const validationErrors = run(newBlog, fieldValidations);
     this.setState({
       validationErrors,
     }, () => {

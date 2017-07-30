@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactQuill from 'react-quill';
-import { resize, singleRuleRunner, required, generateSlug } from '../utils/';
+import { resize, run, fieldValidationsModal, generateSlug } from '../utils/';
 import FormInput from './FormInput';
 
 
@@ -53,8 +53,7 @@ class ModalGuts extends Component {
 
   handleModalSubmit() {
     this.props.updateErrorViz();
-    let validationErrors = singleRuleRunner('alt', 'Alt text', required)(this.props.images.current);
-    if (!validationErrors) { validationErrors = {}; }
+    const validationErrors = run(this.props.images.current, fieldValidationsModal);
     const callback = () => {
       if (validationErrors.alt || validationErrors.file) {
         return null;

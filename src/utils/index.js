@@ -104,19 +104,14 @@ export const minLength = length =>
   text => (text.length >= length ? null : _minLength(length));
 
 export const ruleRunner = (field, name, ...validations) => (state) => {
-  validations.forEach((v) => {
-    const errorMessageFunc = v(state[field], state);
-    if (errorMessageFunc) {
-      // console.log({ [field]: errorMessageFunc(name) }); // returning correct data
-      return { [field]: errorMessageFunc(name) };
-    }
-    return null;
-  });
-  return null;
+  const errorMessageFunc = validations.find(v => v(state[field], state));
+  if (errorMessageFunc) {
+    return { [field]: errorMessageFunc(state[field], state)(name) };
+  }
+  return {};
 };
 
 export const run = (state, runners) => runners.reduce((memo, runner) =>
-    // console.log(Object.assign(memo, runner(state))); //returning empty object
      Object.assign(memo, runner(state)), {});
 
 export const fieldValidations = [
@@ -127,16 +122,3 @@ export const fieldValidationsModal = [
   ruleRunner('alt', 'Alt text', required),
   // ruleRunner("alt", "Alt text", conditionalRequired("alt", "url"))
 ];
-
-// simplified version of field validation
-// for validating one field at a time
-// since the other one isn't working ...
-
-export const singleRuleRunner = (field, name, v) => (state) => {
-  const errorMessageFunc = v(state[field], state);
-  if (errorMessageFunc) {
-    console.log({ [field]: errorMessageFunc(name) }); // returning correct data
-    return { [field]: errorMessageFunc(name) };
-  }
-  return {};
-};
