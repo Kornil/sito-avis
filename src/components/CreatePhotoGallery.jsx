@@ -1,10 +1,10 @@
-// TODO: Don't allow files with the same file.name
 // TODO: Create image uploading progress
 
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import * as firebase from 'firebase';
 import FormInput from './FormInput';
+import ErrorMessages from './ErrorMessages';
 import { fieldValidations, run, ruleRunner, required } from '../utils/index';
 
 const PreviewGrid = require('react-packery-component')(React);
@@ -31,6 +31,7 @@ class CreatePhotoGallery extends Component {
       //   danger: false,
       //   url: '',
       // },
+      mainErrorDisplay: '',
       showErrors: {
         galleryName: false,
       },
@@ -60,16 +61,20 @@ class CreatePhotoGallery extends Component {
   }
 
   onImageDrop(files) {
-    files.forEach((file) => {
-      // file.altText = ''; // eslint-disable-line
+    // check to ensure file names are unique
+    if (files.some(file => this.state.images.some(image => image.name === file.name))) {
+      this.setState({ mainErrorDisplay: 'File names must be unique ' });
+      return;
+    }
 
+    files.forEach((file) => {
       // create a new ruleRunner for each new image
       fieldValidations.push(
         ruleRunner(file.name, 'Alt text', required),
       );
-      // this.setState({ [file.name]: '' });
+
+      this.setState({ images: [...this.state.images, ...files] });
     });
-    this.setState({ images: [...this.state.images, ...files] });
   }
 
   errorFor(field) {
@@ -197,6 +202,11 @@ class CreatePhotoGallery extends Component {
               touched={this.state.touched.galleryName}
               text={this.state.galleryName}
             />
+            <ErrorMessages display={!!this.state.mainErrorDisplay}>
+              <div className="form__error-wrap">
+                <span className="form__error-content">{this.state.mainErrorDisplay}</span>
+              </div>
+            </ErrorMessages>
             <Dropzone
               style={{
                 height: '200px',
