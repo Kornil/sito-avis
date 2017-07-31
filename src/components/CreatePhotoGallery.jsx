@@ -5,7 +5,7 @@ import Dropzone from 'react-dropzone';
 import * as firebase from 'firebase';
 import FormInput from './FormInput';
 import ErrorMessages from './ErrorMessages';
-import { fieldValidations, run, ruleRunner, required } from '../utils/index';
+import { fieldValidationsPhotoGallery, run, ruleRunner, required } from '../utils/index';
 
 const PreviewGrid = require('react-packery-component')(React);
 
@@ -31,6 +31,13 @@ class CreatePhotoGallery extends Component {
       //   danger: false,
       //   url: '',
       // },
+      uploadProgress: {
+        files: [],
+        totalBytes: 0,
+        bytesTransferred: 0,
+        percentProgress: 0,
+      },
+      uploading: false,
       mainErrorDisplay: '',
       showErrors: {
         galleryName: false,
@@ -43,7 +50,7 @@ class CreatePhotoGallery extends Component {
     };
 
     this.onImageDrop = this.onImageDrop.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.removeFile = this.removeFile.bind(this);
     // this.handleAltChange = this.handleAltChange.bind(this);
@@ -69,16 +76,19 @@ class CreatePhotoGallery extends Component {
 
     files.forEach((file) => {
       // create a new ruleRunner for each new image
-      fieldValidations.push(
+      fieldValidationsPhotoGallery.push(
         ruleRunner(file.name, 'Alt text', required),
       );
 
-      this.setState({ images: [...this.state.images, ...files] });
+      this.setState({
+        images: [...this.state.images, ...files],
+        validationErrors: run(Object.assign({}, this.state), fieldValidationsPhotoGallery),
+      });
     });
   }
 
   errorFor(field) {
-    if (this.state.validationErrors) {
+    if (this.state.validationErrors[field]) {
       return this.state.validationErrors[field] || '';
     }
     return null;
@@ -94,7 +104,7 @@ class CreatePhotoGallery extends Component {
   handleBlur(e) {
     const field = e.target.name;
     const newState = {
-      validationErrors: run(Object.assign({}, this.state), fieldValidations),
+      validationErrors: run(Object.assign({}, this.state), fieldValidationsPhotoGallery),
       showErrors: Object.assign({}, this.state.showErrors, { [field]: true }),
       touched: Object.assign({}, this.state.touched, { [field]: true }),
     };
@@ -104,64 +114,97 @@ class CreatePhotoGallery extends Component {
   handleFocus(e) {
     const field = e.target.name;
     const newState = {
-      validationErrors: run(Object.assign({}, this.state), fieldValidations),
+      validationErrors: run(Object.assign({}, this.state), fieldValidationsPhotoGallery),
       showErrors: Object.assign({}, this.state.showErrors, { [field]: false }),
       touched: Object.assign({}, this.state.touched, { [field]: false }),
     };
     this.setState(Object.assign({}, this.state, newState));
   }
 
-  handleUpload() {
-    const files = this.state.images;
-    const storageRef = firebase.storage().ref();
-    const dateStamp = Date.now();
-    const promises = files.map((file) => {
-      // TODO: figure out better way to handle making a unique id
+  _updateProgress(snap, fileName) {
+    let totalBytes = this.state.uploadProgress.totalBytes;
+    const files = [...this.state.uploadProgress.files];
+    const fileIndex = files.findIndex(f => Object.keys(f)[0] === fileName);
+    if (fileIndex === -1) {
+      files.push({ [fileName]: snap.bytesTransferred });
+      totalBytes = this.state.uploadProgress.totalBytes + snap.totalBytes;
+    } else {
+      files[fileIndex][fileName] = snap.bytesTransferred;
+    }
+    const bytesTransferred = files.reduce((total, file) => total + Object.values(file)[0], 0);
+    this.setState({
+      uploadProgress: {
+        totalBytes,
+        files,
+        percentProgress: Math.round((bytesTransferred / totalBytes) * 100),
+      },
+    });
+  }
 
-      const metaData = {
-        customMetadata: {
-          altText: this.state[file.name],
-        },
-      };
-
-      const task = storageRef
-        .child(
-        `images/galleries/${this.state
-          .galleryName} (${dateStamp})/${file.name}`,
-      )
-        .put(file, metaData);
-
-      return new Promise((resolve, reject) => {
-        task.on(
-          'state_changed',
-          (snap) => {
-            const percentage = Math.round(
-              snap.bytesTransferred / snap.totalBytes * 100, // eslint-disable-line
-            );
-            console.log(percentage);
-          },
-          (err) => {
-            // newBlog.images.current.error = err;
-            console.log(err);
-            reject();
-          },
-          () => {
-            console.log('upload successful');
-            resolve();
-          },
-        );
+  handleSubmit(e) {
+    e.preventDefault();
+    const newState = Object.assign(
+      {}, this.state, {
+        validationErrors: run(Object.assign({}, this.state), fieldValidationsPhotoGallery),
+        showErrors: { galleryName: true },
+        submit: true,
+        uploading: true,
       });
-    });
+    this.state.images.forEach((image) => { newState.showErrors[image.name] = true; });
 
-    Promise.all(promises).then(() => {
-      console.log('All files uploaded');
-      this.setState({ images: [] });
-    });
+    Object.keys(newState.touched).forEach((key) => { newState.touched[key] = true; });
+    this.setState(
+      Object.assign({}, this.state, newState), () => {
+        // VALIDATION OK: BEGIN UPLOAD PRCOCESS
+        if (Object.keys(this.state.validationErrors).length > 0) {
+          return;
+        }
+        const files = this.state.images;
+        const storageRef = firebase.storage().ref();
+        const dateStamp = Date.now();
+
+        const uploads = files.map((file) => {
+          // TODO: figure out better way to handle making a unique id
+
+          const metaData = {
+            customMetadata: {
+              altText: this.state[file.name],
+            },
+          };
+
+          const task = storageRef
+            .child(
+            `images/galleries/${this.state
+              .galleryName} (${dateStamp})/${file.name}`,
+          )
+            .put(file, metaData);
+
+          return new Promise((resolve, reject) => {
+            task.on(
+              'state_changed',
+              (snap) => {
+                this._updateProgress(snap, file.name);
+              },
+              (err) => {
+                // newBlog.images.current.error = err;
+                console.log(err);
+                reject();
+              },
+              () => {
+                resolve();
+              },
+            );
+          });
+        });
+
+        Promise.all(uploads).then(() => {
+          this.props.history.push('/dashboard');
+        });
+      });
   }
 
   removeFile(e) {
     const fileName = e.target.name;
-    console.log(fileName);
     this.setState({
       images: this.state.images.filter(img => img.name !== fileName),
     });
@@ -249,11 +292,15 @@ class CreatePhotoGallery extends Component {
                 role="button"
                 tabIndex="0"
                 className="newBlog__button newBlog__button--featured"
-                onClick={this.handleUpload}
+                onClick={this.handleSubmit}
               >
-                Upload Gallery
+                {!this.state.uploading ? 'Upload Gallery' : 'Uploading'}
               </a>
             </div>
+            {this.state.uploadProgress.percentProgress > 0 &&
+              <span className="newBlog__imgProg">
+                <span className="newBlog__img-upload-progress">Uploading... {this.state.uploadProgress.percentProgress}%</span>
+              </span>}
           </form>
           <div className="newBlog__preview">
             <h3 className="newBlog__subhead">Preview</h3>
@@ -279,6 +326,7 @@ class CreatePhotoGallery extends Component {
                       showError={this.state.showErrors[file.name]}
                       errorText={this.errorFor(file.name)}
                       touched={this.state.touched[file.name]}
+                      submit={this.state.submit}
                     />
                     <a
                       style={{ display: 'block' }}
