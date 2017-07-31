@@ -21,16 +21,6 @@ class CreatePhotoGallery extends Component {
       galleryName: '',
       images: [],
       unsavedChanges: false,
-      edit: '',
-      // modal: {
-      //   open: false,
-      //   type: '',
-      //   title: '',
-      //   body: '',
-      //   confirm: '',
-      //   danger: false,
-      //   url: '',
-      // },
       uploadProgress: {
         files: [],
         totalBytes: 0,
@@ -53,18 +43,9 @@ class CreatePhotoGallery extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.removeFile = this.removeFile.bind(this);
-    // this.handleAltChange = this.handleAltChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.errorFor = this.errorFor.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
-  }
-
-  componentDidMount() {
-    window.addEventListener('beforeunload', this.unsavedChanges);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.unsavedChanges);
   }
 
   onImageDrop(files) {
@@ -155,10 +136,11 @@ class CreatePhotoGallery extends Component {
     Object.keys(newState.touched).forEach((key) => { newState.touched[key] = true; });
     this.setState(
       Object.assign({}, this.state, newState), () => {
-        // VALIDATION OK: BEGIN UPLOAD PRCOCESS
         if (Object.keys(this.state.validationErrors).length > 0) {
           return;
         }
+
+        // VALIDATION OK: BEGIN UPLOAD PRCOCESS
         const files = this.state.images;
         const storageRef = firebase.storage().ref();
         const dateStamp = Date.now();
@@ -186,7 +168,6 @@ class CreatePhotoGallery extends Component {
                 this._updateProgress(snap, file.name);
               },
               (err) => {
-                // newBlog.images.current.error = err;
                 console.log(err);
                 reject();
               },
@@ -217,14 +198,6 @@ class CreatePhotoGallery extends Component {
     }
     return null;
   }
-
-  // handleAltChange(e) {
-  //   const fileName = e.target.name;
-  //   const imageIndex = this.state.images.findIndex(image => image.name === fileName);
-  //   const newImages = [...this.state.images];
-  //   newImages[imageIndex].altText = e.target.value;
-  //   this.setState({ images: newImages });
-  // }
 
   render() {
     let dropzoneRef;
@@ -341,17 +314,6 @@ class CreatePhotoGallery extends Component {
                   </div>
                 ))}
               </PreviewGrid>
-              {/* <h3 className="newBlog__title" /> */}
-              {/* <div id="imgCont"> */}
-              {/* {images.featured &&
-                images.featured.url &&
-                <img
-                  className="newBlog__img"
-                  src={resize(document.getElementById('imgCont').offsetWidth, images.featured.url)}
-                  alt={images.featured.alt}
-                />} */}
-              {/* </div> */}
-              {/* <div className="newBlog__body" dangerouslySetInnerHTML={sanitize(body)} /> */}
             </div>
           </div>
         </div>
