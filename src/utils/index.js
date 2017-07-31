@@ -116,6 +116,9 @@ export const run = (state, runners) => runners.reduce((memo, runner) =>
 
 export const fieldValidations = [
   ruleRunner('title', 'Title', required),
+];
+
+export const fieldValidationsPhotoGallery = [
   ruleRunner('galleryName', 'Gallery Name', required),
 ];
 
