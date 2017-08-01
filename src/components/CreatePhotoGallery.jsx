@@ -125,6 +125,13 @@ class CreatePhotoGallery extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+
+    // Prevent submit when no images have been selected for upload
+    if (this.state.images.length === 0) {
+      // display error message
+      return;
+    }
+
     const newState = Object.assign(
       {}, this.state, {
         validationErrors: run(Object.assign({}, this.state), fieldValidationsPhotoGallery),
