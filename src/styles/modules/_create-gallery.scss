@@ -1,36 +1,36 @@
 .createGallery__preview {
-  input.form__input {
+  .form__input {
     margin: 0 auto;
   }
-  a.removeButton {
+  .removeButton {
     margin: 0 auto;
   }
-}
 
-.preview-item {
-  overflow: hidden;
-  width: 150px;
-  height: 200px;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: -4px 4px 4px #888;
-  border: 1px solid #888;
-}
+  .preview-item {
+    overflow: hidden;
+    width: 150px;
+    height: 200px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -4px 4px 4px #888;
+    border: 1px solid #888;
+  }
 
-.image-container {
-  display: flex;
-  height: 100%;
-  align-items: center;
-}
+  .image-container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
 
-.preview-image {
-  max-width:80%;
-  max-height:80%;
-  display: block;
-  margin: 0 auto;
-}
+  .preview-image {
+    max-width:80%;
+    max-height:80%;
+    display: block;
+    margin: 0 auto;
+  }
 
-.preview-form-items {
-  margin-top: auto;
+  .preview-form-items {
+    margin-top: auto;
+  }
 }
