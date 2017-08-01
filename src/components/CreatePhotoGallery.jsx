@@ -1,4 +1,4 @@
-// TODO: Create image uploading progress
+// TODO: Remove main error display after delay
 
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
@@ -11,6 +11,7 @@ const PreviewGrid = require('react-packery-component')(React);
 
 const packeryOptions = {
   gutter: 10,
+  itemSelector: '.preview-item',
 };
 
 class CreatePhotoGallery extends Component {
@@ -275,15 +276,14 @@ class CreatePhotoGallery extends Component {
                 <span className="newBlog__img-upload-progress">Uploading... {this.state.uploadProgress.percentProgress}%</span>
               </span>}
           </form>
-          <div className="newBlog__preview">
+          <div className="newBlog__preview createGallery__preview">
             <h3 className="newBlog__subhead">Preview</h3>
             <div className="newBlog__wrapper">
               <PreviewGrid options={packeryOptions}>
                 {this.state.images.map(file => (
-                  <div key={file.preview}>
+                  <div key={file.preview} className="preview-item">
                     <img
-                      width={200}
-                      height={200}
+                      className="preview-image"
                       src={file.preview}
                       alt="preview"
                     />
@@ -306,7 +306,7 @@ class CreatePhotoGallery extends Component {
                       name={file.name}
                       role="button"
                       tabIndex="0"
-                      className="newBlog__button newBlog__button--featured"
+                      className="removeButton newBlog__button newBlog__button--featured"
                       onClick={this.removeFile}
                     >
                       Remove
