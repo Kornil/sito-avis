@@ -38,6 +38,7 @@ class CreatePhotoGallery extends Component {
         galleryName: false,
       },
       submit: false,
+      componentRef: null,
     };
 
     this.onImageDrop = this.onImageDrop.bind(this);
@@ -52,7 +53,7 @@ class CreatePhotoGallery extends Component {
   onImageDrop(files) {
     // check to ensure file names are unique
     if (files.some(file => this.state.images.some(image => image.name === file.name))) {
-      this.setState({ mainErrorDisplay: 'File names must be unique ' });
+      this.displayMainError('File names must be unique');
       return;
     }
 
@@ -123,12 +124,21 @@ class CreatePhotoGallery extends Component {
     });
   }
 
+  displayMainError(errorMsg) {
+    this.setState({ mainErrorDisplay: errorMsg });
+    setTimeout(() => {
+      if (this.componentRef) {
+        this.setState({ mainErrorDisplay: '' });
+      }
+    }, 2000);
+  }
+
   handleSubmit(e) {
     e.preventDefault();
 
     // Prevent submit when no images have been selected for upload
     if (this.state.images.length === 0) {
-      // display error message
+      this.displayMainError('Gallery cannot be empty');
       return;
     }
 
@@ -194,6 +204,12 @@ class CreatePhotoGallery extends Component {
 
   removeFile(e) {
     const fileName = e.target.name;
+    console.log(fieldValidationsPhotoGallery);
+    // remove rule runner
+    // fieldValidationsPhotoGallery.push(
+    //     ruleRunner(file.name, 'Alt text', required),
+    //   );
+
     this.setState({
       images: this.state.images.filter(img => img.name !== fileName),
     });
@@ -210,7 +226,7 @@ class CreatePhotoGallery extends Component {
   render() {
     let dropzoneRef;
     return (
-      <div>
+      <div ref={(ref) => { this.componentRef = ref; }}>
         <h2>Create a new photo gallery</h2>
         <div className="newBlog__container">
           <form className="newBlog__form">
