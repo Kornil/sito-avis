@@ -282,35 +282,41 @@ class CreatePhotoGallery extends Component {
               <PreviewGrid options={packeryOptions}>
                 {this.state.images.map(file => (
                   <div key={file.preview} className="preview-item">
-                    <img
-                      className="preview-image"
-                      src={file.preview}
-                      alt="preview"
-                    />
-                    <FormInput
-                      className="form__input"
-                      type="text"
-                      name={file.name}
-                      value={this.state.images.find(item => item.name === file.name).altText}
-                      placeholder="Alt text for image"
-                      handleChange={this.handleChange}
-                      handleBlur={this.handleBlur}
-                      handleFocus={this.handleFocus}
-                      showError={this.state.showErrors[file.name]}
-                      errorText={this.errorFor(file.name)}
-                      touched={this.state.touched[file.name]}
-                      submit={this.state.submit}
-                    />
-                    <a
-                      style={{ display: 'block' }}
-                      name={file.name}
-                      role="button"
-                      tabIndex="0"
-                      className="removeButton newBlog__button newBlog__button--featured"
-                      onClick={this.removeFile}
-                    >
-                      Remove
+                    <div className="image-container">
+                      <div>
+                        <img
+                          className="preview-image"
+                          src={file.preview}
+                          alt="preview"
+                        />
+                      </div>
+                    </div>
+                    <div className="preview-form-items">
+                      <FormInput
+                        className="form__input"
+                        type="text"
+                        name={file.name}
+                        value={this.state.images.find(item => item.name === file.name).altText}
+                        placeholder="Alt text for image"
+                        handleChange={this.handleChange}
+                        handleBlur={this.handleBlur}
+                        handleFocus={this.handleFocus}
+                        showError={this.state.showErrors[file.name]}
+                        errorText={this.errorFor(file.name)}
+                        touched={this.state.touched[file.name]}
+                        submit={this.state.submit}
+                      />
+                      <a
+                        style={{ display: 'block' }}
+                        name={file.name}
+                        role="button"
+                        tabIndex="0"
+                        className="removeButton newBlog__button newBlog__button--featured"
+                        onClick={this.removeFile}
+                      >
+                        Remove
                     </a>
+                    </div>
                   </div>
                 ))}
               </PreviewGrid>
