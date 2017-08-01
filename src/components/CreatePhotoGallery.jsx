@@ -130,7 +130,6 @@ class CreatePhotoGallery extends Component {
         validationErrors: run(Object.assign({}, this.state), fieldValidationsPhotoGallery),
         showErrors: { galleryName: true },
         submit: true,
-        uploading: true,
       });
     this.state.images.forEach((image) => { newState.showErrors[image.name] = true; });
 
@@ -142,6 +141,7 @@ class CreatePhotoGallery extends Component {
         }
 
         // VALIDATION OK: BEGIN UPLOAD PRCOCESS
+        this.setState({ uploading: true });
         const files = this.state.images;
         const storageRef = firebase.storage().ref();
         const dateStamp = Date.now();
