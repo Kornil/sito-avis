@@ -1,5 +1,3 @@
-// TODO: Remove main error display after delay
-
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import * as firebase from 'firebase';
@@ -71,7 +69,7 @@ class CreatePhotoGallery extends Component {
 
       this.setState({
         images: [...this.state.images, ...files],
-        validationErrors: run(Object.assign({}, this.state), localFieldValidations),
+        validationErrors: run({ ...this.state }, localFieldValidations),
       });
     });
   }
@@ -93,21 +91,21 @@ class CreatePhotoGallery extends Component {
   handleBlur(e) {
     const field = e.target.name;
     const newState = {
-      validationErrors: run(Object.assign({}, this.state), localFieldValidations),
-      showErrors: Object.assign({}, this.state.showErrors, { [field]: true }),
-      touched: Object.assign({}, this.state.touched, { [field]: true }),
+      validationErrors: run({ ...this.state }, localFieldValidations),
+      showErrors: { ...this.state.showErrors, [field]: true },
+      touched: { ...this.state.touched, [field]: true },
     };
-    this.setState(Object.assign({}, this.state, newState));
+    this.setState({ ...this.state, ...newState });
   }
 
   handleFocus(e) {
     const field = e.target.name;
     const newState = {
-      validationErrors: run(Object.assign({}, this.state), localFieldValidations),
-      showErrors: Object.assign({}, this.state.showErrors, { [field]: false }),
-      touched: Object.assign({}, this.state.touched, { [field]: false }),
+      validationErrors: run({ ...this.state }, localFieldValidations),
+      showErrors: { ...this.state.showErrors, [field]: false },
+      touched: { ...this.state.touched, [field]: false },
     };
-    this.setState(Object.assign({}, this.state, newState));
+    this.setState({ ...this.state, ...newState });
   }
 
   _updateProgress(snap, fileName) {
@@ -148,17 +146,19 @@ class CreatePhotoGallery extends Component {
       return;
     }
 
-    const newState = Object.assign(
-      {}, this.state, {
-        validationErrors: run(Object.assign({}, this.state), localFieldValidations),
+    const newState = {
+      ...this.state,
+      ...{
+        validationErrors: run({ ...this.state }, localFieldValidations),
         showErrors: { galleryName: true },
         submit: true,
-      });
+      },
+    };
     this.state.images.forEach((image) => { newState.showErrors[image.name] = true; });
 
     Object.keys(newState.touched).forEach((key) => { newState.touched[key] = true; });
     this.setState(
-      Object.assign({}, this.state, newState), () => {
+      { ...this.state, ...newState }, () => {
         if (Object.keys(this.state.validationErrors).length > 0) {
           return;
         }
