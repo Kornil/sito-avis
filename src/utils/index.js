@@ -33,11 +33,11 @@ export const formatDate = (date) => {
 };
 
 export const generateSlug = title => title.toString().toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
+  .replace(/\s+/g, '-')
+  .replace(/[^\w-]+/g, '')
+  .replace(/--+/g, '-')
+  .replace(/^-+/, '')
+  .replace(/-+$/, '');
 
 // //////////// BLOG POST DISPLAY FUNCTIONS /////////////////
 
@@ -112,10 +112,14 @@ export const ruleRunner = (field, name, ...validations) => (state) => {
 };
 
 export const run = (state, runners) => runners.reduce((memo, runner) =>
-     Object.assign(memo, runner(state)), {});
+  Object.assign(memo, runner(state)), {});
 
 export const fieldValidations = [
   ruleRunner('title', 'Title', required),
+];
+
+export const fieldValidationsPhotoGallery = [
+  ruleRunner('galleryName', 'Gallery Name', required),
 ];
 
 export const fieldValidationsModal = [
