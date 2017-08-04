@@ -7,6 +7,8 @@ import { fieldValidationsPhotoGallery, run, ruleRunner, required } from '../util
 
 const PreviewGrid = require('react-packery-component')(React);
 
+const galleriesRef = firebase.database().ref().child('avis').child('galleries');
+
 const packeryOptions = {
   gutter: 10,
   itemSelector: '.preview-item',
@@ -171,8 +173,9 @@ class CreatePhotoGallery extends Component {
         const storageRef = firebase.storage().ref();
         const dateStamp = Date.now();
 
+        const dbEntry = [];
         const uploads = files.map((file) => {
-          // TODO: figure out better way to handle making a unique id
+          // TODO: figure out a better way to handle unique ids
 
           const metaData = {
             customMetadata: {
@@ -198,14 +201,26 @@ class CreatePhotoGallery extends Component {
                 reject();
               },
               () => {
+                dbEntry.push({
+                  fileName: file.name,
+                  fileUrl: task.snapshot.downloadURL,
+                  altText: this.state[file.name],
+                });
                 resolve();
               },
             );
-          });
+          })
+            .catch((err) => {
+              console.error(err);
+            });
         });
 
         Promise.all(uploads).then(() => {
-          this.props.history.push('/dashboard');
+          galleriesRef.child(`${this.state.galleryName}/`)
+            .set(dbEntry)
+            .then(() => {
+              this.props.history.push('/dashboard');
+            });
         });
       });
   }
