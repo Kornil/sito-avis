@@ -5,14 +5,6 @@ import FormInput from './FormInput';
 import ErrorMessages from './ErrorMessages';
 import { fieldValidationsPhotoGallery, run, ruleRunner, required } from '../utils/index';
 
-let localFieldValidations = [...fieldValidationsPhotoGallery];
-
-const createFieldValidations = (file) => {
-  localFieldValidations.push(
-    ruleRunner(file.name, 'Alt text', required),
-  );
-};
-
 const PreviewGrid = require('react-packery-component')(React);
 
 const packeryOptions = {
@@ -27,6 +19,7 @@ class CreatePhotoGallery extends Component {
     this.state = {
       galleryName: '',
       images: [],
+      localFieldValidations: [...fieldValidationsPhotoGallery],
       unsavedChanges: false,
       uploadProgress: {
         files: [],
@@ -65,12 +58,21 @@ class CreatePhotoGallery extends Component {
 
     files.forEach((file) => {
       // create a new ruleRunner for each new image
-      createFieldValidations(file);
+      this.createFieldValidations(file);
 
       this.setState({
         images: [...this.state.images, ...files],
-        validationErrors: run({ ...this.state }, localFieldValidations),
+        validationErrors: run({ ...this.state }, this.state.localFieldValidations),
       });
+    });
+  }
+
+  createFieldValidations(file) {
+    this.setState({
+      localFieldValidations: [
+        ...this.state.localFieldValidations,
+        ruleRunner(file.name, 'Alt text', required),
+      ],
     });
   }
 
@@ -91,7 +93,7 @@ class CreatePhotoGallery extends Component {
   handleBlur(e) {
     const field = e.target.name;
     const newState = {
-      validationErrors: run({ ...this.state }, localFieldValidations),
+      validationErrors: run({ ...this.state }, this.state.localFieldValidations),
       showErrors: { ...this.state.showErrors, [field]: true },
       touched: { ...this.state.touched, [field]: true },
     };
@@ -101,7 +103,7 @@ class CreatePhotoGallery extends Component {
   handleFocus(e) {
     const field = e.target.name;
     const newState = {
-      validationErrors: run({ ...this.state }, localFieldValidations),
+      validationErrors: run({ ...this.state }, this.state.localFieldValidations),
       showErrors: { ...this.state.showErrors, [field]: false },
       touched: { ...this.state.touched, [field]: false },
     };
@@ -149,7 +151,7 @@ class CreatePhotoGallery extends Component {
     const newState = {
       ...this.state,
       ...{
-        validationErrors: run({ ...this.state }, localFieldValidations),
+        validationErrors: run({ ...this.state }, this.state.localFieldValidations),
         showErrors: { galleryName: true },
         submit: true,
       },
@@ -215,9 +217,9 @@ class CreatePhotoGallery extends Component {
       images: this.state.images.filter(img => img.name !== fileName),
     }, () => {
       // reset field validations
-      localFieldValidations = [...fieldValidationsPhotoGallery];
+      this.setState({ localFieldValidations: [...fieldValidationsPhotoGallery] });
       this.state.images.forEach((file) => {
-        createFieldValidations(file);
+        this.createFieldValidations(file);
       });
     });
   }
