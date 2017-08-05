@@ -67,48 +67,46 @@ class BlogsIndex extends Component {
 
   render() {
     const tableColumns = [
-      { Header: 'Title',
+      { Header: () => <div className="blogInd__tableHead">Title</div>,
         accessor: 'title',
         minWidth: 160,
         Cell: props =>
-          <Link to={`/blog/${props.original.slug}`}>{props.original.title}</Link> },
-      { Header: 'Image',
+        <div className="blogInd__cell">
+          <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
+      { Header: () => <div className="blogInd__tableHead">Image</div>,
         accessor: 'image',
         minWidth: 30,
         filterable: false,
         Cell: props =>
+        <div className="blogInd__cell center">
           <img
             className="blogInd__thumb"
             src={resize(50, props.original.images.featured.url)}
             alt={props.original.images.featured.alt}
-          /> },
-      { Header: 'Date', accessor: 'date', minWidth: 60, filterable: false, Cell: props => formatDate(new Date(props.original.timestamp)),
-    // sortMethod: (a, b) => {
-    //                 if (a.length === b.length) {
-    //                   return a > b ? 1 : -1;
-    //                 }
-    //                 return a.length > b.length ? 1 : -1;
-    //               }
+          /> </div>},
+      { Header: () => <div className="blogInd__tableHead">Date</div>,
+        accessor: 'date', minWidth: 60, filterable: false, Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
       },
-      { Header: 'Edit',
+      { Header: () => <div className="blogInd__tableHead">Edit</div>,
         accessor: 'edit',
         minWidth: 40,
         filterable: false,
         Cell: props =>
+        <div className="blogInd__cell center">
           <Link
             to={`/edit/${props.original.key}`}
             className=""
           >
             <div className="blogInd__icon blogInd__icon--edit" />
-          </Link> },
-      { Header: 'Delete',
+          </Link> </div>},
+      { Header: () => <div className="blogInd__tableHead">Delete</div>,
         accessor: 'delete',
         minWidth: 40,
         filterable: false,
-        Cell: props => <button
+        Cell: props => <div className="blogInd__cell center"> <button
           className="blogInd__icon blogInd__icon--delete"
           onClick={() => this.openModal(props.original['.key'])}
-        /> },
+        /></div> },
     ];
 
     const { blogs } = this.state;
@@ -196,26 +194,14 @@ class BlogsIndex extends Component {
           ? <Loading />
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
             <ReactTable
-              className="blogInd__grid table"
+              className="blogInd__grid -striped"
               data={blogs}
               columns={tableColumns}
-              defaultPageSize={10}
+              defaultPageSize={5}
               filterable
               defaultFilterMethod={(filter, row) =>
                     row[filter.id].includes(filter.value)}
             />
-            {/*  <thead>
-                <tr>
-                  <th className="blogInd__tableHead">Title</th>
-                  <th className="blogInd__tableHead">Image</th>
-                  <th className="blogInd__tableHead">Date</th>
-                  <th className="blogInd__tableHead">Edit</th>
-                  <th className="blogInd__tableHead">Delete</th>
-                </tr>
-              </thead>
-                {blogsArr.reverse()}
-            </Table> */}
-
           </div>}
       </div>
     );
