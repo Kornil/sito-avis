@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 import { formatDate, blogsRef, resize } from '../utils/';
 import Loading from './Loading';
@@ -13,6 +15,7 @@ class BlogsIndex extends Component {
       msg: false,
       currentKey: '',
       modalOpen: false,
+      filterQuery: '',
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -63,6 +66,51 @@ class BlogsIndex extends Component {
   }
 
   render() {
+    const tableColumns = [
+      { Header: 'Title',
+        accessor: 'title',
+        minWidth: 160,
+        Cell: props =>
+          <Link to={`/blog/${props.original.slug}`}>{props.original.title}</Link> },
+      { Header: 'Image',
+        accessor: 'image',
+        minWidth: 30,
+        filterable: false,
+        Cell: props =>
+          <img
+            className="blogInd__thumb"
+            src={resize(50, props.original.images.featured.url)}
+            alt={props.original.images.featured.alt}
+          /> },
+      { Header: 'Date', accessor: 'date', minWidth: 60, filterable: false, Cell: props => formatDate(new Date(props.original.timestamp)),
+    // sortMethod: (a, b) => {
+    //                 if (a.length === b.length) {
+    //                   return a > b ? 1 : -1;
+    //                 }
+    //                 return a.length > b.length ? 1 : -1;
+    //               }
+      },
+      { Header: 'Edit',
+        accessor: 'edit',
+        minWidth: 40,
+        filterable: false,
+        Cell: props =>
+          <Link
+            to={`/edit/${props.original.key}`}
+            className=""
+          >
+            <div className="blogInd__icon blogInd__icon--edit" />
+          </Link> },
+      { Header: 'Delete',
+        accessor: 'delete',
+        minWidth: 40,
+        filterable: false,
+        Cell: props => <button
+          className="blogInd__icon blogInd__icon--delete"
+          onClick={() => this.openModal(props.original['.key'])}
+        /> },
+    ];
+
     const { blogs } = this.state;
     let blogsArr = [];
     if (blogs.length) {
@@ -81,7 +129,8 @@ class BlogsIndex extends Component {
                 alt={blog.images.featured.alt}
               />}
           </td>
-          <td className="blogInd__cell blogInd__meta">{formatDate(new Date(blog.timestamp))}</td>
+          <td className="blogInd__cell blogInd__meta">
+            {formatDate(new Date(blog.timestamp))}</td>
           <td className="blogInd__cell blogInd__icon-container">
             <Link
               to={`/edit/${blog.key}`}
@@ -90,7 +139,7 @@ class BlogsIndex extends Component {
               <div className="blogInd__icon blogInd__icon--edit" />
             </Link>
           </td>
-          <td className="blogInd__cell blogInd__icon-container">
+          <td className="blogInd__cell blogInd__icon-container" column="Delete">
             <button
               className="blogInd__icon blogInd__icon--delete"
               onClick={() => this.openModal(blog['.key'])}
@@ -146,8 +195,16 @@ class BlogsIndex extends Component {
         {(!blogsArr.length)
           ? <Loading />
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
-            <table className="blogInd__grid">
-              <thead>
+            <ReactTable
+              className="blogInd__grid table"
+              data={blogs}
+              columns={tableColumns}
+              defaultPageSize={10}
+              filterable
+              defaultFilterMethod={(filter, row) =>
+                    row[filter.id].includes(filter.value)}
+            />
+            {/*  <thead>
                 <tr>
                   <th className="blogInd__tableHead">Title</th>
                   <th className="blogInd__tableHead">Image</th>
@@ -156,10 +213,9 @@ class BlogsIndex extends Component {
                   <th className="blogInd__tableHead">Delete</th>
                 </tr>
               </thead>
-              <tbody>
                 {blogsArr.reverse()}
-              </tbody>
-            </table>
+            </Table> */}
+
           </div>}
       </div>
     );

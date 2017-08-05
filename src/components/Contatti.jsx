@@ -25,9 +25,9 @@ const Contatti = () => (
     </div>
 
     <div className="contatti__space-creator" />
-    {/* cards section*/}
+    {/* cards section */}
     <div className="contatti__cards-container">
-      {/* 1st Card*/}
+      {/* 1st Card */}
       <div className="contatti__card">
         <p className="contatti__card-heading">
           Avis Sede <br className="break-desktop-only" />Nazionale
@@ -65,7 +65,7 @@ const Contatti = () => (
           </li>
         </ul>
       </div>
-      {/* 2nd Card*/}
+      {/* 2nd Card */}
       <div className="contatti__card">
         <div className="contatti__card-heading">
           Avis Regionale <br className="break-desktop-only" />Veneto
@@ -96,7 +96,7 @@ const Contatti = () => (
           </li>
         </ul>
       </div>
-      {/* 3rd card*/}
+      {/* 3rd card */}
       <div className="contatti__card">
         <div className="contatti__card-heading">
           Avis Provinciale <br className="break-desktop-only" />Rovigo

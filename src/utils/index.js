@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import sanitizeHtml from 'sanitize-html';
+// import FirebasePaginator from 'firebase-paginator';
 
 // /////////// FIREBASE CONFIG //////////////////
 
@@ -122,3 +123,12 @@ export const fieldValidationsModal = [
   ruleRunner('alt', 'Alt text', required),
   // ruleRunner("alt", "Alt text", conditionalRequired("alt", "url"))
 ];
+
+
+// ////////// FIREBASE PAGINATION ////////////
+
+// const paginationOptions = {
+//   finite: true,
+//   pageSize: 3,
+// }
+// export const paginator = new FirebasePaginator(blogsRef, paginationOptions);
