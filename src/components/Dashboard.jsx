@@ -16,18 +16,15 @@ class Dashboard extends Component {
       <div className="dash__container">
         <h2 className="dash__banner">Dashboard</h2>
         <div className="dash__buttons-cont">
-          <Link
-            to="/createblog"
-            className="dash__button"
-          >New Blog Post</Link>
-          <Link
-            to="/updatestats"
-            className="dash__button"
-          >Update Statistics</Link>
-          <Link
-            to="/"
-            className="dash__button"
-          >New Photo Gallery</Link>
+          <Link to="/createblog" className="dash__button">
+            New Blog Post
+          </Link>
+          <Link to="/updatestats" className="dash__button">
+            Update Statistics
+          </Link>
+          <Link to="/createphotogallery" className="dash__button">
+            New Photo Gallery
+          </Link>
         </div>
         <div className="blog__container">
           <BlogsIndex />

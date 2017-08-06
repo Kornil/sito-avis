@@ -1,0 +1,378 @@
+import React, { Component } from 'react';
+import Dropzone from 'react-dropzone';
+import * as firebase from 'firebase';
+import FormInput from './FormInput';
+import ErrorMessages from './ErrorMessages';
+import { fieldValidationsPhotoGallery, run, ruleRunner, required } from '../utils/index';
+
+const PreviewGrid = require('react-packery-component')(React);
+
+const galleriesRef = firebase.database().ref().child('avis').child('galleries');
+
+const packeryOptions = {
+  gutter: 10,
+  itemSelector: '.preview-item',
+};
+
+class CreatePhotoGallery extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      galleryName: '',
+      images: [],
+      localFieldValidations: [...fieldValidationsPhotoGallery],
+      unsavedChanges: false,
+      uploadProgress: {
+        files: [],
+        totalBytes: 0,
+        bytesTransferred: 0,
+        percentProgress: 0,
+      },
+      uploading: false,
+      mainErrorDisplay: '',
+      showErrors: {
+        galleryName: false,
+      },
+      validationErrors: {},
+      touched: {
+        galleryName: false,
+      },
+      submit: false,
+      componentRef: null,
+    };
+
+    this.onImageDrop = this.onImageDrop.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.removeFile = this.removeFile.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.errorFor = this.errorFor.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+  }
+
+  onImageDrop(files) {
+    // check to ensure file names are unique
+    if (files.some(file => this.state.images.some(image => image.name === file.name))) {
+      this.displayMainError('File names must be unique');
+      return;
+    }
+
+    files.forEach((file) => {
+      // create a new ruleRunner for each new image
+      this.createFieldValidations(file);
+
+      this.setState({
+        images: [...this.state.images, ...files],
+        validationErrors: run({ ...this.state }, this.state.localFieldValidations),
+      });
+    });
+  }
+
+  createFieldValidations(file) {
+    this.setState({
+      localFieldValidations: [
+        ...this.state.localFieldValidations,
+        ruleRunner(file.name, 'Alt text', required),
+      ],
+    });
+  }
+
+  errorFor(field) {
+    if (this.state.validationErrors[field]) {
+      return this.state.validationErrors[field] || '';
+    }
+    return null;
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+      unsavedChanges: true,
+    });
+  }
+
+  handleBlur(e) {
+    const field = e.target.name;
+    const newState = {
+      validationErrors: run({ ...this.state }, this.state.localFieldValidations),
+      showErrors: { ...this.state.showErrors, [field]: true },
+      touched: { ...this.state.touched, [field]: true },
+    };
+    this.setState({ ...this.state, ...newState });
+  }
+
+  handleFocus(e) {
+    const field = e.target.name;
+    const newState = {
+      validationErrors: run({ ...this.state }, this.state.localFieldValidations),
+      showErrors: { ...this.state.showErrors, [field]: false },
+      touched: { ...this.state.touched, [field]: false },
+    };
+    this.setState({ ...this.state, ...newState });
+  }
+
+  _updateProgress(snap, fileName) {
+    let totalBytes = this.state.uploadProgress.totalBytes;
+    const files = [...this.state.uploadProgress.files];
+    const fileIndex = files.findIndex(f => Object.keys(f)[0] === fileName);
+    if (fileIndex === -1) {
+      files.push({ [fileName]: snap.bytesTransferred });
+      totalBytes = this.state.uploadProgress.totalBytes + snap.totalBytes;
+    } else {
+      files[fileIndex][fileName] = snap.bytesTransferred;
+    }
+    const bytesTransferred = files.reduce((total, file) => total + Object.values(file)[0], 0);
+    this.setState({
+      uploadProgress: {
+        totalBytes,
+        files,
+        percentProgress: Math.round((bytesTransferred / totalBytes) * 100),
+      },
+    });
+  }
+
+  displayMainError(errorMsg) {
+    this.setState({ mainErrorDisplay: errorMsg });
+    setTimeout(() => {
+      if (this.componentRef) {
+        this.setState({ mainErrorDisplay: '' });
+      }
+    }, 2000);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    // Prevent submit when no images have been selected for upload
+    if (this.state.images.length === 0) {
+      this.displayMainError('Gallery cannot be empty');
+      return;
+    }
+
+    const newState = {
+      ...this.state,
+      ...{
+        validationErrors: run({ ...this.state }, this.state.localFieldValidations),
+        showErrors: { galleryName: true },
+        submit: true,
+      },
+    };
+    this.state.images.forEach((image) => { newState.showErrors[image.name] = true; });
+
+    Object.keys(newState.touched).forEach((key) => { newState.touched[key] = true; });
+    this.setState(
+      { ...this.state, ...newState }, () => {
+        if (Object.keys(this.state.validationErrors).length > 0) {
+          return;
+        }
+
+        // VALIDATION OK: BEGIN UPLOAD PRCOCESS
+        this.setState({ uploading: true });
+        const files = this.state.images;
+        const storageRef = firebase.storage().ref();
+        const dateStamp = Date.now();
+
+        const dbEntry = [];
+        const uploads = files.map((file) => {
+          // TODO: figure out a better way to handle unique ids
+
+          const metaData = {
+            customMetadata: {
+              altText: this.state[file.name],
+            },
+          };
+
+          const task = storageRef
+            .child(
+            `images/galleries/${this.state
+              .galleryName} (${dateStamp})/${file.name}`,
+          )
+            .put(file, metaData);
+
+          return new Promise((resolve, reject) => {
+            task.on(
+              'state_changed',
+              (snap) => {
+                this._updateProgress(snap, file.name);
+              },
+              (err) => {
+                console.log(err);
+                reject();
+              },
+              () => {
+                dbEntry.push({
+                  fileName: file.name,
+                  fileUrl: task.snapshot.downloadURL,
+                  altText: this.state[file.name],
+                });
+                resolve();
+              },
+            );
+          })
+            .catch((err) => {
+              console.error(err);
+            });
+        });
+
+        Promise.all(uploads).then(() => {
+          galleriesRef.child(`${this.state.galleryName}/`)
+            .set(dbEntry)
+            .then(() => {
+              this.props.history.push('/dashboard');
+            });
+        });
+      });
+  }
+
+  removeFile(e) {
+    const fileName = e.target.name;
+
+    this.setState({
+      images: this.state.images.filter(img => img.name !== fileName),
+    }, () => {
+      // reset field validations
+      this.setState({ localFieldValidations: [...fieldValidationsPhotoGallery] });
+      this.state.images.forEach((file) => {
+        this.createFieldValidations(file);
+      });
+    });
+  }
+
+  unsavedChanges(e) {
+    if (this.state.unsavedChanges) {
+      e.returnValue = 'Unsaved Changes!';
+      return 'Unsaved Changes!';
+    }
+    return null;
+  }
+
+  render() {
+    let dropzoneRef;
+    return (
+      <div ref={(ref) => { this.componentRef = ref; }}>
+        <h2>Create a new photo gallery</h2>
+        <div className="newBlog__container">
+          <form className="newBlog__form">
+            <FormInput
+              placeholder="Gallery Name"
+              className="form__input"
+              handleChange={this.handleChange}
+              handleBlur={this.handleBlur}
+              handleFocus={this.handleFocus}
+              name="galleryName"
+              showError={this.state.showErrors.galleryName}
+              errorText={this.errorFor('galleryName')}
+              touched={this.state.touched.galleryName}
+              text={this.state.galleryName}
+            />
+            <ErrorMessages display={!!this.state.mainErrorDisplay}>
+              <div className="form__error-wrap">
+                <span className="form__error-content">{this.state.mainErrorDisplay}</span>
+              </div>
+            </ErrorMessages>
+            <Dropzone
+              style={{
+                height: '200px',
+                width: '200px',
+                borderStyle: 'dashed',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                textAlign: 'center',
+                paddingTop: '20px',
+                marginBottom: '20px',
+              }}
+              ref={(node) => {
+                dropzoneRef = node;
+              }}
+              multiple
+              accept="image/*"
+              onDrop={this.onImageDrop}
+            >
+              <p>Drop images here</p>
+            </Dropzone>
+            {/* button container */}
+            <div style={{ textAlign: 'center' }}>
+              <a
+                role="button"
+                tabIndex="0"
+                onKeyPress={(e) => {
+                  const code = e.keyCode ? e.keyCode : e.which;
+                  if (code === 32 || code === 13) {
+                    dropzoneRef.open();
+                  }
+                }}
+                className="newBlog__button newBlog__button--featured"
+                onClick={() => {
+                  dropzoneRef.open();
+                }}
+              >
+                Choose File
+              </a>
+              <a
+                role="button"
+                tabIndex="0"
+                className="newBlog__button newBlog__button--featured"
+                onClick={this.handleSubmit}
+              >
+                {!this.state.uploading ? 'Upload Gallery' : 'Uploading'}
+              </a>
+            </div>
+            {this.state.uploadProgress.percentProgress > 0 &&
+              <span className="newBlog__imgProg">
+                <span className="newBlog__img-upload-progress">Uploading... {this.state.uploadProgress.percentProgress}%</span>
+              </span>}
+          </form>
+          <div className="newBlog__preview createGallery__preview">
+            <h3 className="newBlog__subhead">Preview</h3>
+            <div className="newBlog__wrapper">
+              <PreviewGrid options={packeryOptions}>
+                {this.state.images.map(file => (
+                  <div key={file.preview} className="preview-item">
+                    <div className="image-container">
+                      <div>
+                        <img
+                          className="preview-image"
+                          src={file.preview}
+                          alt="preview"
+                        />
+                      </div>
+                    </div>
+                    <div className="preview-form-items">
+                      <FormInput
+                        className="form__input"
+                        type="text"
+                        name={file.name}
+                        value={this.state.images.find(item => item.name === file.name).altText}
+                        placeholder="Alt text for image"
+                        handleChange={this.handleChange}
+                        handleBlur={this.handleBlur}
+                        handleFocus={this.handleFocus}
+                        showError={this.state.showErrors[file.name]}
+                        errorText={this.errorFor(file.name)}
+                        touched={this.state.touched[file.name]}
+                        submit={this.state.submit}
+                      />
+                      <a
+                        style={{ display: 'block' }}
+                        name={file.name}
+                        role="button"
+                        tabIndex="0"
+                        className="removeButton newBlog__button newBlog__button--featured"
+                        onClick={this.removeFile}
+                      >
+                        Remove
+                    </a>
+                    </div>
+                  </div>
+                ))}
+              </PreviewGrid>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default CreatePhotoGallery;
