@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 import { formatDate, blogsRef, resize } from '../utils/';
 import Loading from './Loading';
@@ -13,6 +15,7 @@ class BlogsIndex extends Component {
       msg: false,
       currentKey: '',
       modalOpen: false,
+      filterQuery: '',
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -63,6 +66,49 @@ class BlogsIndex extends Component {
   }
 
   render() {
+    const tableColumns = [
+      { Header: () => <div className="blogInd__tableHead">Title</div>,
+        accessor: 'title',
+        minWidth: 160,
+        Cell: props =>
+        <div className="blogInd__cell">
+          <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
+      { Header: () => <div className="blogInd__tableHead">Image</div>,
+        accessor: 'image',
+        minWidth: 30,
+        filterable: false,
+        Cell: props =>
+        <div className="blogInd__cell center">
+          <img
+            className="blogInd__thumb"
+            src={resize(50, props.original.images.featured.url)}
+            alt={props.original.images.featured.alt}
+          /> </div>},
+      { Header: () => <div className="blogInd__tableHead">Date</div>,
+        accessor: 'date', minWidth: 60, filterable: false, Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
+      },
+      { Header: () => <div className="blogInd__tableHead">Edit</div>,
+        accessor: 'edit',
+        minWidth: 40,
+        filterable: false,
+        Cell: props =>
+        <div className="blogInd__cell center">
+          <Link
+            to={`/edit/${props.original.key}`}
+            className=""
+          >
+            <div className="blogInd__icon blogInd__icon--edit" />
+          </Link> </div>},
+      { Header: () => <div className="blogInd__tableHead">Delete</div>,
+        accessor: 'delete',
+        minWidth: 40,
+        filterable: false,
+        Cell: props => <div className="blogInd__cell center"> <button
+          className="blogInd__icon blogInd__icon--delete"
+          onClick={() => this.openModal(props.original['.key'])}
+        /></div> },
+    ];
+
     const { blogs } = this.state;
     let blogsArr = [];
     if (blogs.length) {
@@ -81,7 +127,8 @@ class BlogsIndex extends Component {
                 alt={blog.images.featured.alt}
               />}
           </td>
-          <td className="blogInd__cell blogInd__meta">{formatDate(new Date(blog.timestamp))}</td>
+          <td className="blogInd__cell blogInd__meta">
+            {formatDate(new Date(blog.timestamp))}</td>
           <td className="blogInd__cell blogInd__icon-container">
             <Link
               to={`/edit/${blog.key}`}
@@ -90,7 +137,7 @@ class BlogsIndex extends Component {
               <div className="blogInd__icon blogInd__icon--edit" />
             </Link>
           </td>
-          <td className="blogInd__cell blogInd__icon-container">
+          <td className="blogInd__cell blogInd__icon-container" column="Delete">
             <button
               className="blogInd__icon blogInd__icon--delete"
               onClick={() => this.openModal(blog['.key'])}
@@ -146,20 +193,15 @@ class BlogsIndex extends Component {
         {(!blogsArr.length)
           ? <Loading />
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
-            <table className="blogInd__grid">
-              <thead>
-                <tr>
-                  <th className="blogInd__tableHead">Title</th>
-                  <th className="blogInd__tableHead">Image</th>
-                  <th className="blogInd__tableHead">Date</th>
-                  <th className="blogInd__tableHead">Edit</th>
-                  <th className="blogInd__tableHead">Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {blogsArr.reverse()}
-              </tbody>
-            </table>
+            <ReactTable
+              className="blogInd__grid -striped"
+              data={blogs}
+              columns={tableColumns}
+              defaultPageSize={5}
+              filterable
+              defaultFilterMethod={(filter, row) =>
+                    row[filter.id].includes(filter.value)}
+            />
           </div>}
       </div>
     );

@@ -20,28 +20,30 @@
 		font-weight: 300;
 		font-size: 1.2em;
 		color: $color_blue;
-		border: 1px solid $color_gray_lighter;
 		padding: 15px;
 	}
 
-	&__row {
-		border: 1px solid $color_gray_lighter;
+	// &__row, .rt-tr {
+	// 	border: 1px solid $color_gray_lighter;
 
-	}
+	// }
 
-	&__row:nth-of-type(odd) {
-	  background-color: rgba(0,0,0,.05);
-	}
+	// &__row:nth-of-type(odd) {
+	//   background-color: rgba(0,0,0,.05);
+	// }
 
 	&__cell {
 		padding: 15px;
-		min-height: 3em;
-		border: 1px solid $color_gray_lighter;
 	}
 
 	&__thumb {
+		margin: auto;
 		width: 50px;
 		height: auto;
+	}
+
+	&__title {
+		padding: 15px;
 	}
 
 	&__meta {
