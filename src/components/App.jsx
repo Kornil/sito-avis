@@ -19,6 +19,7 @@ import SinglePostDisplay from './SinglePostDisplay';
 import Notizie from './Notizie';
 import Dashboard from './Dashboard';
 import CreatePhotoGallery from './CreatePhotoGallery';
+import GalleryIndex from './GalleryIndex';
 
 import { saveAuth } from '../actions';
 
@@ -58,6 +59,7 @@ class App extends Component {
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
             {this.props.auth && <Route path="/createphotogallery" component={CreatePhotoGallery} />}
+            {this.props.auth && <Route path="/galleryindex" component={GalleryIndex} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
             {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
             {this.props.auth && <Route path="/edit/:key" component={CreateBlog} />}
