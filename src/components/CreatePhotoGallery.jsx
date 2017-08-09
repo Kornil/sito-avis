@@ -250,7 +250,7 @@ class CreatePhotoGallery extends Component {
           .child(newGalleryKey)
           .set(dbEntry)
           .then(() => {
-            this.props.history.push('/dashboard');
+            this.props.history.push('/galleryindex');
           });
       });
     });

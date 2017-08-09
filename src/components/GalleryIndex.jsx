@@ -103,7 +103,7 @@ class GalleryIndex extends Component {
         Cell: props =>
           <div className="blogInd__cell center">
             <Link
-              to={`/edit-gallery/${props.original.slug}`}
+              to={`/edit-gallery/${props.original.key}`}
               className=""
             >
               <div className="blogInd__icon blogInd__icon--edit" />
