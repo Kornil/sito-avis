@@ -40,6 +40,23 @@ class GalleryIndex extends Component {
     galleriesRef.off();
   }
 
+  onDelete(key) {
+    galleriesRef.child(key).remove().then(() => {
+      this.setState({
+        msg: true,
+        modalOpen: false,
+      });
+      setTimeout(() => {
+        if (this.componentRef) {
+          this.setState({
+            msg: false,
+            deleteKey: null,
+          });
+        }
+      }, 2000);
+    });
+  }
+
   closeModal() {
     this.setState(() => ({ modalOpen: false }));
   }
@@ -77,6 +94,30 @@ class GalleryIndex extends Component {
         minWidth: 60,
         filterable: false,
         Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
+      },
+      {
+        Header: () => <div className="blogInd__tableHead">Edit</div>,
+        accessor: 'edit',
+        minWidth: 40,
+        filterable: false,
+        Cell: props =>
+          <div className="blogInd__cell center">
+            <Link
+              to={`/edit-gallery/${props.original.slug}`}
+              className=""
+            >
+              <div className="blogInd__icon blogInd__icon--edit" />
+            </Link></div>,
+      },
+      {
+        Header: () => <div className="blogInd__tableHead">Delete</div>,
+        accessor: 'delete',
+        minWidth: 40,
+        filterable: false,
+        Cell: props => <div className="blogInd__cell center"> <button
+          className="blogInd__icon blogInd__icon--delete"
+          onClick={() => this.openModal(props.original['.key'])}
+        /></div>,
       },
     ];
 
