@@ -15,6 +15,7 @@ class GalleryIndex extends Component {
       msg: false,
       // currentKey: '',
       modalOpen: false,
+      galleriesExistInDb: false,
       // filterQuery: '',
     };
     this.openModal = this.openModal.bind(this);
@@ -23,6 +24,9 @@ class GalleryIndex extends Component {
 
   componentDidMount() {
     galleriesRef.on('value', (snap) => {
+      this.setState({
+        galleriesExistInDb: !!snap.val(),
+      });
       const galleries = [];
 
       snap.forEach((childSnap) => {
@@ -141,7 +145,12 @@ class GalleryIndex extends Component {
           </td>
         </tr>));
     }
-
+    // TODO: add styling to <div>
+    let noDataPlaceholder = <Loading />;
+    if (!this.state.galleriesExistInDb) {
+      noDataPlaceholder = <div>There are no galleries to display</div>;
+    }
+    // NOTE: Cover image shown should be controllable
     return (
       <div>
         <Modal
@@ -193,8 +202,8 @@ class GalleryIndex extends Component {
           </Link>
           </div>
         </div>
-        {(!galleriesArr.length)
-          ? <Loading />
+        {galleriesArr.length === 0
+          ? noDataPlaceholder
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
             <ReactTable
               className="blogInd__grid -striped"

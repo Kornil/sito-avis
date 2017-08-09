@@ -1,3 +1,4 @@
+// TODO: Create featured/cover image selection
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import * as firebase from 'firebase';
