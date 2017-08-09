@@ -39,7 +39,7 @@ class GalleryIndex extends Component {
   componentWillUnmount() {
     galleriesRef.off();
   }
-
+  // TODO: Delete photos in storage as well
   onDelete(key) {
     galleriesRef.child(key).remove().then(() => {
       this.setState({

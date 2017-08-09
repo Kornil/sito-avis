@@ -71,34 +71,37 @@ class BlogsIndex extends Component {
         accessor: 'title',
         minWidth: 160,
         Cell: props =>
-        <div className="blogInd__cell">
-          <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
+          <div className="blogInd__cell">
+            <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
       { Header: () => <div className="blogInd__tableHead">Image</div>,
         accessor: 'image',
         minWidth: 30,
         filterable: false,
         Cell: props =>
-        <div className="blogInd__cell center">
-          <img
-            className="blogInd__thumb"
-            src={resize(50, props.original.images.featured.url)}
-            alt={props.original.images.featured.alt}
-          /> </div>},
+          <div className="blogInd__cell center">
+            <img
+              className="blogInd__thumb"
+              src={resize(50, props.original.images.featured.url)}
+              alt={props.original.images.featured.alt}
+            /> </div> },
       { Header: () => <div className="blogInd__tableHead">Date</div>,
-        accessor: 'date', minWidth: 60, filterable: false, Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
+        accessor: 'date',
+        minWidth: 60,
+        filterable: false,
+        Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
       },
       { Header: () => <div className="blogInd__tableHead">Edit</div>,
         accessor: 'edit',
         minWidth: 40,
         filterable: false,
         Cell: props =>
-        <div className="blogInd__cell center">
-          <Link
-            to={`/edit/${props.original.key}`}
-            className=""
-          >
-            <div className="blogInd__icon blogInd__icon--edit" />
-          </Link> </div>},
+          <div className="blogInd__cell center">
+            <Link
+              to={`/edit/${props.original.key}`}
+              className=""
+            >
+              <div className="blogInd__icon blogInd__icon--edit" />
+            </Link> </div> },
       { Header: () => <div className="blogInd__tableHead">Delete</div>,
         accessor: 'delete',
         minWidth: 40,
