@@ -185,6 +185,14 @@ class GalleryIndex extends Component {
             </div>
           </div>
         </Modal>
+        <div className="dash__container">
+          <h2 className="dash__banner">Dashboard</h2>
+          <div className="dash__buttons-cont">
+            <Link to="/createphotogallery" className="dash__button">
+              Create New Photo Gallery
+          </Link>
+          </div>
+        </div>
         {(!galleriesArr.length)
           ? <Loading />
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
