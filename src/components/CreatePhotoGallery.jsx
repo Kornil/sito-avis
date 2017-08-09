@@ -166,7 +166,6 @@ class CreatePhotoGallery extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     // Prevent submit when no images have been selected for upload
     if (this.state.images.length === 0) {
       this.displayMainError('Gallery cannot be empty');
@@ -197,20 +196,19 @@ class CreatePhotoGallery extends Component {
       }
 
       // VALIDATION OK: BEGIN UPLOAD PRCOCESS
+      const newGalleryKey = galleriesRef.push().key;
+
       this.setState({ uploading: true });
       const files = this.state.images;
       const storageRef = firebase.storage().ref();
-      const dateStamp = Date.now();
-
       const dbEntry = {
         images: [],
         title: this.state.galleryName,
         timestamp: timeRef,
         slug: generateSlug(this.state.galleryName),
+        key: newGalleryKey,
       };
       const uploads = files.map((file) => {
-        // TODO: figure out a better way to handle unique ids
-
         const metaData = {
           customMetadata: {
             altText: this.state[file.name],
@@ -219,8 +217,7 @@ class CreatePhotoGallery extends Component {
 
         const task = storageRef
           .child(
-          `images/galleries/${this.state
-            .galleryName} (${dateStamp})/${file.name}`,
+          `images/galleries/${newGalleryKey}/${file.name}`,
         )
           .put(file, metaData);
 
@@ -250,7 +247,7 @@ class CreatePhotoGallery extends Component {
 
       Promise.all(uploads).then(() => {
         galleriesRef
-          .child(`${this.state.galleryName}/`)
+          .child(newGalleryKey)
           .set(dbEntry)
           .then(() => {
             this.props.history.push('/dashboard');
