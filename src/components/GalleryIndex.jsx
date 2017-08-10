@@ -97,6 +97,7 @@ class GalleryIndex extends Component {
         accessor: 'date',
         minWidth: 60,
         filterable: false,
+        defaultSortDesc: true,
         Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
       },
       {
@@ -125,7 +126,7 @@ class GalleryIndex extends Component {
       },
     ];
 
-    const { galleries } = this.state;
+    const galleries = [...this.state.galleries].reverse();
     // let galleriesArr = [];
     // if (galleries.length) {
     //   galleriesArr = galleries.map(gallery => (
