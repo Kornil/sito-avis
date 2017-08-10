@@ -1,6 +1,7 @@
 // TODO: Create featured/cover image selection
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
+import { Link } from 'react-router-dom';
 import * as firebase from 'firebase';
 import FormInput from './FormInput';
 import ErrorMessages from './ErrorMessages';
@@ -352,6 +353,7 @@ class CreatePhotoGallery extends Component {
               >
                 Choose File
               </a>
+              <br />
               <a
                 role="button"
                 tabIndex="0"
@@ -360,6 +362,10 @@ class CreatePhotoGallery extends Component {
               >
                 {!this.state.uploading ? 'Upload Gallery' : 'Uploading'}
               </a>
+              <Link
+                to="/galleryindex"
+                className="newBlog__cancel newBlog__button"
+              >Cancel</Link>
             </div>
             {this.state.uploadProgress.percentProgress > 0 &&
               <span className="newBlog__imgProg">
