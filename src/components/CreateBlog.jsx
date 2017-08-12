@@ -111,6 +111,9 @@ class CreateBlog extends Component {
       const key = this.props.match.params.key;
       blogsRef.child(key).once('value', (snapshot) => {
         const newBlog = snapshot.val();
+        if (!newBlog.tags) {
+          newBlog.tags = [''];
+        }
         this.setState({
           newBlog,
           edit: true,

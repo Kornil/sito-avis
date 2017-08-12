@@ -70,16 +70,16 @@ class BlogsIndex extends Component {
     const tableColumns = [
       { Header: () => <div className="blogInd__tableHead">Title</div>,
         accessor: 'title',
-        minWidth: 160,
+        minWidth: 150,
         Cell: props =>
           <div className="blogInd__cell">
             <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
       { Header: () => <div className="blogInd__tableHead">Tags</div>,
         accessor: 'tags',
-        minWidth: 30,
+        minWidth: 40,
         Cell: props =>
           <div className="blogInd__cell">
-            {props.original.tags ? props.original.tags.map(tag => <span className="blogInd__tag">{tag}</span>,
+            {props.original.tags ? props.original.tags.map(tag => <span className="blogInd__tag" key={`${tag}-${props.original.key}`}>{tag}</span>,
             ) : ''} </div> },
       { Header: () => <div className="blogInd__tableHead">Image</div>,
         accessor: 'image',
