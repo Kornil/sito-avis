@@ -66,85 +66,61 @@ class BlogsIndex extends Component {
   }
 
   render() {
+    const blogs = [...this.state.blogs].reverse();
     const tableColumns = [
       { Header: () => <div className="blogInd__tableHead">Title</div>,
         accessor: 'title',
         minWidth: 160,
         Cell: props =>
-        <div className="blogInd__cell">
-          <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
+          <div className="blogInd__cell">
+            <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
+      { Header: () => <div className="blogInd__tableHead">Tags</div>,
+        accessor: 'tags',
+        minWidth: 30,
+        Cell: props =>
+          <div className="blogInd__cell">
+            {props.original.tags ? props.original.tags.map(tag => <span className="blogInd__tag">{tag}</span>,
+            ) : ''} </div> },
       { Header: () => <div className="blogInd__tableHead">Image</div>,
         accessor: 'image',
         minWidth: 30,
         filterable: false,
         Cell: props =>
-        <div className="blogInd__cell center">
-          <img
-            className="blogInd__thumb"
-            src={resize(50, props.original.images.featured.url)}
-            alt={props.original.images.featured.alt}
-          /> </div>},
+          <div className="blogInd__cell center">
+            {props.original.images && props.original.images.featured &&
+            <img
+              className="blogInd__thumb"
+              src={resize(50, props.original.images.featured.url)}
+              alt={props.original.images.featured.alt}
+            /> }</div> },
       { Header: () => <div className="blogInd__tableHead">Date</div>,
-        accessor: 'date', minWidth: 60, filterable: false, Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
+        accessor: 'date',
+        minWidth: 60,
+        filterable: false,
+        defaultSortDesc: true,
+        Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
       },
       { Header: () => <div className="blogInd__tableHead">Edit</div>,
         accessor: 'edit',
-        minWidth: 40,
+        minWidth: 30,
         filterable: false,
         Cell: props =>
-        <div className="blogInd__cell center">
-          <Link
-            to={`/edit/${props.original.key}`}
-            className=""
-          >
-            <div className="blogInd__icon blogInd__icon--edit" />
-          </Link> </div>},
+          <div className="blogInd__cell center">
+            <Link
+              to={`/edit/${props.original.key}`}
+              className=""
+            >
+              <div className="blogInd__icon blogInd__icon--edit" />
+            </Link> </div> },
       { Header: () => <div className="blogInd__tableHead">Delete</div>,
         accessor: 'delete',
-        minWidth: 40,
+        minWidth: 30,
         filterable: false,
         Cell: props => <div className="blogInd__cell center"> <button
           className="blogInd__icon blogInd__icon--delete"
           onClick={() => this.openModal(props.original['.key'])}
         /></div> },
     ];
-
-    const { blogs } = this.state;
-    let blogsArr = [];
-    if (blogs.length) {
-      blogsArr = blogs.map(blog => (
-        <tr key={blog['.key']} className="blogInd__row" >
-          <td className="blogInd__cell blogInd__title">
-            <Link to={`/blog/${blog.slug}`}>
-              {blog.title}
-            </Link>
-          </td>
-          <td className="blogInd__cell blogInd__imgCont">
-            {blog.images && blog.images.featured &&
-              <img
-                className="blogInd__thumb"
-                src={resize(50, blog.images.featured.url)}
-                alt={blog.images.featured.alt}
-              />}
-          </td>
-          <td className="blogInd__cell blogInd__meta">
-            {formatDate(new Date(blog.timestamp))}</td>
-          <td className="blogInd__cell blogInd__icon-container">
-            <Link
-              to={`/edit/${blog.key}`}
-              className=""
-            >
-              <div className="blogInd__icon blogInd__icon--edit" />
-            </Link>
-          </td>
-          <td className="blogInd__cell blogInd__icon-container" column="Delete">
-            <button
-              className="blogInd__icon blogInd__icon--delete"
-              onClick={() => this.openModal(blog['.key'])}
-            />
-          </td>
-        </tr>));
-    }
 
     return (
       <div className="blogInd__container" id="blogInd">
@@ -190,7 +166,7 @@ class BlogsIndex extends Component {
           </div>
         </Modal>
         {this.state.msg && <div className="blogInd__message">The post was successfully deleted.</div>}
-        {(!blogsArr.length)
+        {(!blogs.length)
           ? <Loading />
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
             <ReactTable
