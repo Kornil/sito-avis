@@ -4,44 +4,48 @@ import Modal from 'react-modal';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-import { formatDate, blogsRef, resize } from '../utils/';
+import { formatDate, resize, galleriesRef } from '../utils/';
 import Loading from './Loading';
 
-class BlogsIndex extends Component {
+class GalleryIndex extends Component {
   constructor() {
     super();
     this.state = {
-      blogs: [],
+      galleries: [],
       msg: false,
-      currentKey: '',
+      // currentKey: '',
       modalOpen: false,
-      filterQuery: '',
+      galleriesExistInDb: false,
+      // filterQuery: '',
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
-    blogsRef.on('value', (snap) => {
-      const blogs = [];
+    galleriesRef.on('value', (snap) => {
+      this.setState({
+        galleriesExistInDb: !!snap.val(),
+      });
+      const galleries = [];
 
       snap.forEach((childSnap) => {
-        const blog = childSnap.val();
-        blog['.key'] = childSnap.key;
-        blogs.push(blog);
+        const gallery = childSnap.val();
+        gallery['.key'] = childSnap.key;
+        galleries.push(gallery);
       });
       this.setState(() => ({
-        blogs,
+        galleries,
       }));
     });
   }
 
   componentWillUnmount() {
-    blogsRef.off();
+    galleriesRef.off();
   }
-
+  // TODO: Delete photos in storage as well
   onDelete(key) {
-    blogsRef.child(key).remove().then(() => {
+    galleriesRef.child(key).remove().then(() => {
       this.setState({
         msg: true,
         modalOpen: false,
@@ -67,13 +71,16 @@ class BlogsIndex extends Component {
 
   render() {
     const tableColumns = [
-      { Header: () => <div className="blogInd__tableHead">Title</div>,
+      {
+        Header: () => <div className="blogInd__tableHead">Title</div>,
         accessor: 'title',
         minWidth: 160,
         Cell: props =>
           <div className="blogInd__cell">
-            <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
-      { Header: () => <div className="blogInd__tableHead">Image</div>,
+            <Link className="blogInd__title" to={`/gallery/${props.original.slug}`}>{props.original.title}</Link></div>,
+      },
+      {
+        Header: () => <div className="blogInd__tableHead">Cover Image</div>,
         accessor: 'image',
         minWidth: 30,
         filterable: false,
@@ -81,76 +88,72 @@ class BlogsIndex extends Component {
           <div className="blogInd__cell center">
             <img
               className="blogInd__thumb"
-              src={resize(50, props.original.images.featured.url)}
-              alt={props.original.images.featured.alt}
-            /> </div> },
-      { Header: () => <div className="blogInd__tableHead">Date</div>,
+              src={resize(50, props.original.images[0].url)}
+              alt={props.original.images[0].alt}
+            /> </div>,
+      },
+      {
+        Header: () => <div className="blogInd__tableHead">Date</div>,
         accessor: 'date',
         minWidth: 60,
         filterable: false,
+        defaultSortDesc: true,
         Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
       },
-      { Header: () => <div className="blogInd__tableHead">Edit</div>,
+      {
+        Header: () => <div className="blogInd__tableHead">Edit</div>,
         accessor: 'edit',
         minWidth: 40,
         filterable: false,
         Cell: props =>
           <div className="blogInd__cell center">
             <Link
-              to={`/edit/${props.original.key}`}
+              to={`/edit-gallery/${props.original.key}`}
               className=""
             >
               <div className="blogInd__icon blogInd__icon--edit" />
-            </Link> </div> },
-      { Header: () => <div className="blogInd__tableHead">Delete</div>,
+            </Link></div>,
+      },
+      {
+        Header: () => <div className="blogInd__tableHead">Delete</div>,
         accessor: 'delete',
         minWidth: 40,
         filterable: false,
         Cell: props => <div className="blogInd__cell center"> <button
           className="blogInd__icon blogInd__icon--delete"
           onClick={() => this.openModal(props.original['.key'])}
-        /></div> },
+        /></div>,
+      },
     ];
 
-    const { blogs } = this.state;
-    let blogsArr = [];
-    if (blogs.length) {
-      blogsArr = blogs.map(blog => (
-        <tr key={blog['.key']} className="blogInd__row" >
-          <td className="blogInd__cell blogInd__title">
-            <Link to={`/blog/${blog.slug}`}>
-              {blog.title}
-            </Link>
-          </td>
-          <td className="blogInd__cell blogInd__imgCont">
-            {blog.images && blog.images.featured &&
-              <img
-                className="blogInd__thumb"
-                src={resize(50, blog.images.featured.url)}
-                alt={blog.images.featured.alt}
-              />}
-          </td>
-          <td className="blogInd__cell blogInd__meta">
-            {formatDate(new Date(blog.timestamp))}</td>
-          <td className="blogInd__cell blogInd__icon-container">
-            <Link
-              to={`/edit/${blog.key}`}
-              className=""
-            >
-              <div className="blogInd__icon blogInd__icon--edit" />
-            </Link>
-          </td>
-          <td className="blogInd__cell blogInd__icon-container" column="Delete">
-            <button
-              className="blogInd__icon blogInd__icon--delete"
-              onClick={() => this.openModal(blog['.key'])}
-            />
-          </td>
-        </tr>));
+    const galleries = [...this.state.galleries].reverse();
+    // let galleriesArr = [];
+    // if (galleries.length) {
+    //   galleriesArr = galleries.map(gallery => (
+    //     <tr key={gallery['.key']} className="blogInd__row" >
+    //       <td className="blogInd__cell blogInd__title">
+    //         <Link to={`/gallery/${gallery.slug}`}>
+    //           {gallery.title}
+    //         </Link>
+    //       </td>
+    //       <td className="galleryInd__cell galleryInd__imgCont">
+    //         {gallery.images &&
+    //           <img
+    //             className="galleryInd__thumb"
+    //             src={resize(50, gallery.images[0].url)}
+    //             alt={gallery.images[0].alt}
+    //           />}
+    //       </td>
+    //     </tr>));
+    // }
+    // TODO: add styling to <div>
+    let noDataPlaceholder = <Loading />;
+    if (!this.state.galleriesExistInDb) {
+      noDataPlaceholder = <div>There are no galleries to display</div>;
     }
-
+    // NOTE: Cover image shown should be controllable
     return (
-      <div className="blogInd__container" id="blogInd">
+      <div>
         <Modal
           isOpen={this.state.modalOpen}
           onAfterOpen={this.afterOpenModal}
@@ -192,23 +195,28 @@ class BlogsIndex extends Component {
             </div>
           </div>
         </Modal>
-        {this.state.msg && <div className="blogInd__message">The post was successfully deleted.</div>}
-        {(!blogsArr.length)
-          ? <Loading />
+        <div className="dash__container">
+          <h2 className="dash__banner">Dashboard</h2>
+          <div className="dash__buttons-cont">
+            <Link to="/createphotogallery" className="dash__button">
+              Create New Photo Gallery
+          </Link>
+          </div>
+        </div>
+        {galleries.length === 0
+          ? noDataPlaceholder
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
             <ReactTable
               className="blogInd__grid -striped"
-              data={blogs}
+              data={galleries}
               columns={tableColumns}
               defaultPageSize={5}
-              filterable
               defaultFilterMethod={(filter, row) =>
-                    row[filter.id].includes(filter.value)}
+                row[filter.id].includes(filter.value)}
             />
           </div>}
       </div>
     );
   }
 }
-
-export default BlogsIndex;
+export default GalleryIndex;

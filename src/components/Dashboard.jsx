@@ -22,8 +22,8 @@ class Dashboard extends Component {
           <Link to="/updatestats" className="dash__button">
             Update Statistics
           </Link>
-          <Link to="/createphotogallery" className="dash__button">
-            New Photo Gallery
+          <Link to="/galleryindex" className="dash__button">
+            Photo Galleries
           </Link>
         </div>
         <div className="blog__container">
