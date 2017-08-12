@@ -79,11 +79,12 @@ class BlogsIndex extends Component {
         filterable: false,
         Cell: props =>
         <div className="blogInd__cell center">
+        {props.original.images && props.original.images.featured &&
           <img
             className="blogInd__thumb"
             src={resize(50, props.original.images.featured.url)}
             alt={props.original.images.featured.alt}
-          /> </div>},
+          /> } </div>},
       { Header: () => <div className="blogInd__tableHead">Date</div>,
         accessor: 'date', minWidth: 60, filterable: false, Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
       },
@@ -110,41 +111,6 @@ class BlogsIndex extends Component {
     ];
 
     const { blogs } = this.state;
-    let blogsArr = [];
-    if (blogs.length) {
-      blogsArr = blogs.map(blog => (
-        <tr key={blog['.key']} className="blogInd__row" >
-          <td className="blogInd__cell blogInd__title">
-            <Link to={`/blog/${blog.slug}`}>
-              {blog.title}
-            </Link>
-          </td>
-          <td className="blogInd__cell blogInd__imgCont">
-            {blog.images && blog.images.featured &&
-              <img
-                className="blogInd__thumb"
-                src={resize(50, blog.images.featured.url)}
-                alt={blog.images.featured.alt}
-              />}
-          </td>
-          <td className="blogInd__cell blogInd__meta">
-            {formatDate(new Date(blog.timestamp))}</td>
-          <td className="blogInd__cell blogInd__icon-container">
-            <Link
-              to={`/edit/${blog.key}`}
-              className=""
-            >
-              <div className="blogInd__icon blogInd__icon--edit" />
-            </Link>
-          </td>
-          <td className="blogInd__cell blogInd__icon-container" column="Delete">
-            <button
-              className="blogInd__icon blogInd__icon--delete"
-              onClick={() => this.openModal(blog['.key'])}
-            />
-          </td>
-        </tr>));
-    }
 
     return (
       <div className="blogInd__container" id="blogInd">
@@ -190,7 +156,7 @@ class BlogsIndex extends Component {
           </div>
         </Modal>
         {this.state.msg && <div className="blogInd__message">The post was successfully deleted.</div>}
-        {(!blogsArr.length)
+        {(!Object.keys(blogs).length)
           ? <Loading />
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
             <ReactTable
