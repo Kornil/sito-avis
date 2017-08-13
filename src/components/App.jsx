@@ -28,12 +28,12 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      title: 'Avis Comunale Rovigo'
+      title: 'Avis Comunale Rovigo',
     };
   }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(fireBaseUser => {
+    firebase.auth().onAuthStateChanged((fireBaseUser) => {
       if (fireBaseUser) {
         console.log('logged in');
         this.props.saveAuth();
@@ -76,11 +76,11 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
-  saveAuth: () => dispatch(saveAuth())
+  saveAuth: () => dispatch(saveAuth()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
