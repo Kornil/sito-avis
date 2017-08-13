@@ -19,6 +19,7 @@
     color: $color_blue;
     line-height: .9;
     font-weight: 300;
+    margin-bottom: 10px;
     @include for-tablet-landscape-up {
     }
   }
