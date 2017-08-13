@@ -20,6 +20,7 @@ import Notizie from './Notizie';
 import Dashboard from './Dashboard';
 import CreatePhotoGallery from './CreatePhotoGallery';
 import GalleryIndex from './GalleryIndex';
+import SingleGalleryDisplay from './SingleGalleryDisplay';
 
 import { saveAuth } from '../actions';
 
@@ -27,12 +28,12 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      title: 'Avis Comunale Rovigo',
+      title: 'Avis Comunale Rovigo'
     };
   }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((fireBaseUser) => {
+    firebase.auth().onAuthStateChanged(fireBaseUser => {
       if (fireBaseUser) {
         console.log('logged in');
         this.props.saveAuth();
@@ -65,6 +66,7 @@ class App extends Component {
             {this.props.auth && <Route path="/edit/:key" component={CreateBlog} />}
 
             <Route path="/blog/:slug" component={SinglePostDisplay} />
+            <Route path="/gallery/:slug" component={SingleGalleryDisplay} />
           </Switch>
         </main>
         <Footer />
@@ -74,11 +76,11 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: state.auth
 });
 
 const mapDispatchToProps = dispatch => ({
-  saveAuth: () => dispatch(saveAuth()),
+  saveAuth: () => dispatch(saveAuth())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
