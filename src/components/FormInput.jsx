@@ -16,6 +16,7 @@ class FormInput extends Component {
   render() {
     return (
       <div className="form__field-group">
+        <label className="sr-only" htmlFor={this.props.name}>{this.props.placeholder}</label>
         <input
           className={this.shouldDisplayError() ? 'form__input form__input--error' : 'form__input'}
           type={this.props.type || 'text'}
@@ -25,6 +26,7 @@ class FormInput extends Component {
           onBlur={this.props.handleBlur}
           onFocus={this.props.handleFocus}
           name={this.props.name}
+          id={this.props.name}
         />
         <ErrorMessages display={this.shouldDisplayError()}>
           <div className="form__error-wrap">

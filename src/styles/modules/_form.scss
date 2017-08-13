@@ -24,6 +24,19 @@
 		}
 	}
 
+	&__checkbox-group {
+		margin-left: -1px;
+	}
+
+	&__checkbox {
+		margin-right: 3px;
+	}
+
+	&__checkbox-label {
+		margin: 0 7px;
+	}
+
+
 	&__error-wrap {
 		padding-left: 5px;
     display: flex;

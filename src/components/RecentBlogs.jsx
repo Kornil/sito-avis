@@ -13,7 +13,7 @@ class RecentBlogs extends Component {
   }
 
   componentDidMount() {
-    blogsRef.orderByChild('id').limitToLast(3).on('value', (snap) => {
+    blogsRef.on('value', (snap) => {
       this.setState({
         blogs: snap.val(),
       });
@@ -22,7 +22,7 @@ class RecentBlogs extends Component {
 
   render() {
     const blogs = this.state.blogs;
-    const recentBlogs = Object.values(blogs).reverse();
+    const recentBlogs = Object.values(blogs).filter(blog => blog.tags && blog.tags.indexOf('Homepage') > -1).reverse().slice(0, 3);
     let blogsArr = [];
     blogsArr = recentBlogs.map(blog => (
       <div className="blog__card" key={shortid.generate()}>

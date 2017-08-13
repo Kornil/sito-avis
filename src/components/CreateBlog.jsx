@@ -8,6 +8,7 @@ import { blogsRef, timeRef, generateSlug, sanitize, resize, fieldValidations, ru
 import Loading from './Loading';
 import ModalGuts from './ModalGuts';
 import FormInput from './FormInput';
+import CheckboxGroup from './CheckboxGroup';
 
 class CreateBlog extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class CreateBlog extends Component {
     this.state = {
       newBlog: {
         title: '',
+        tags: [''],
         images: {
           featured: {
           },
@@ -93,6 +95,7 @@ class CreateBlog extends Component {
     this.handleQuillChange = this.handleQuillChange.bind(this);
     this.handleImgUpload = this.handleImgUpload.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTagSelection = this.handleTagSelection.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.errorFor = this.errorFor.bind(this);
@@ -108,6 +111,9 @@ class CreateBlog extends Component {
       const key = this.props.match.params.key;
       blogsRef.child(key).once('value', (snapshot) => {
         const newBlog = snapshot.val();
+        if (!newBlog.tags) {
+          newBlog.tags = [''];
+        }
         this.setState({
           newBlog,
           edit: true,
@@ -141,7 +147,7 @@ class CreateBlog extends Component {
   }
 
   handleChange(e) {
-    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlog = { ...this.state.newBlog };
     if (e.target.name === 'alt') {
       newBlog.images.current.alt = e.target.value;
     } else {
@@ -149,10 +155,20 @@ class CreateBlog extends Component {
     }
     newBlog.timestamp = timeRef;
     newBlog.slug = generateSlug(newBlog.title);
-    this.setState({
-      newBlog,
-      unsavedChanges: true,
-    });
+    this.setState({ ...this.state, newBlog, unsavedChanges: true });
+  }
+
+  handleTagSelection(e) {
+    const newBlog = { ...this.state.newBlog };
+    const newSelection = e.target.value;
+    let newSelectionArray;
+    if (this.state.newBlog.tags.indexOf(newSelection) > -1) {
+      newSelectionArray = this.state.newBlog.tags.filter(s => s !== newSelection);
+    } else {
+      newSelectionArray = [...this.state.newBlog.tags, newSelection];
+    }
+    newBlog.tags = newSelectionArray;
+    this.setState({ newBlog });
   }
 
   handleBlur(e) {
@@ -331,7 +347,7 @@ class CreateBlog extends Component {
   }
 
   render() {
-    const { title, body, images } = this.state.newBlog;
+    const { title, body, images, tags } = this.state.newBlog;
     const modalStyles = { overlay: { zIndex: 10 } };
     return (
       <div id="cb">
@@ -415,6 +431,14 @@ class CreateBlog extends Component {
                 />
               </ReactQuill>
             </div>
+            <CheckboxGroup
+              title={'Tags'}
+              setName={'tags'}
+              type={'checkbox'}
+              controlFunc={this.handleTagSelection}
+              options={['Homepage', 'FAQ']}
+              selectedOptions={tags}
+            />
             <br />
             <button
               className="newBlog__submit newBlog__button"
