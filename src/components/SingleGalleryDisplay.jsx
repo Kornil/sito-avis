@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { galleriesRef, resize, formatDate } from '../utils/';
 
-const renderImage = (image) => {
-  console.log('here');
-  return (
-    <img
-      className="sg__gallery-image"
-      key={image.url}
-      src={resize(200, image.url)}
-      alt={image.alt}
-    />
-  );
-};
+const renderImage = image =>
+  <img
+    className="sg__gallery-image"
+    key={image.url}
+    src={resize(200, image.url)}
+    alt={image.alt}
+  />;
 
 class SingleGalleryDisplay extends Component {
   constructor(props) {
@@ -22,10 +18,8 @@ class SingleGalleryDisplay extends Component {
   }
   componentDidMount() {
     const slug = this.props.match.params.slug;
-    console.log('slug: ', slug);
     galleriesRef.orderByChild('slug').equalTo(slug).once('value', (snap) => {
       const currentGallery = Object.values(snap.val())[0];
-      console.log(currentGallery);
       this.setState({
         currentGallery,
       });
