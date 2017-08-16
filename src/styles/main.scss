@@ -21,9 +21,9 @@ $fa-font-path: "~font-awesome/fonts";
 @import 'modules/form';
 @import 'modules/create-gallery';
 @import 'modules/faq';
+@import 'modules/_single-gallery';
 
 @import 'quill.snow';
-
 
 * {
   -moz-box-sizing: border-box;
@@ -33,24 +33,25 @@ $fa-font-path: "~font-awesome/fonts";
 }
 
 #app {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 .main {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 300;
-    padding-top: 120px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande",
+    sans-serif;
+  font-weight: 300;
+  padding-top: 120px;
 }
 
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 input[type=text],
@@ -65,7 +66,6 @@ fieldset {
   border-radius: 3px;
   font-family: inherit;
   font-size: 90%;
-
 }
 
 .note {
@@ -105,4 +105,3 @@ input.active:invalid {
 .center {
   text-align: center;
 }
-

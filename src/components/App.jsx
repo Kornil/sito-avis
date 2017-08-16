@@ -20,6 +20,7 @@ import Notizie from './Notizie';
 import Dashboard from './Dashboard';
 import CreatePhotoGallery from './CreatePhotoGallery';
 import GalleryIndex from './GalleryIndex';
+import SingleGalleryDisplay from './SingleGalleryDisplay';
 
 import { saveAuth } from '../actions';
 
@@ -65,6 +66,7 @@ class App extends Component {
             {this.props.auth && <Route path="/edit/:key" component={CreateBlog} />}
 
             <Route path="/blog/:slug" component={SinglePostDisplay} />
+            <Route path="/gallery/:slug" component={SingleGalleryDisplay} />
           </Switch>
         </main>
         <Footer />
