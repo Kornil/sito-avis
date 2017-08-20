@@ -25,6 +25,7 @@
     "react-data-components-2": "https://github.com/rifkegribenes/react-data-components-2/tarball/master",
     "react-dom": "^15.5.4",
     "react-dropzone": "^3.13.3",
+    "react-images": "^0.5.5",
     "react-modal": "^2.0.6",
     "react-packery-component": "^1.0.2",
     "react-quill": "^1.0.0",
