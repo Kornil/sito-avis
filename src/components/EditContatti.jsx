@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import * as firebase from 'firebase';
 import { contattiRef } from '../utils/';
 import Loading from './Loading';
-
-import FormInput from './FormInput';
-
 
 class EditContatti extends Component {
   constructor(props) {
@@ -33,7 +29,6 @@ class EditContatti extends Component {
           contatti,
         });
       });
-
   }
 
   handleChange(e) {
@@ -44,7 +39,6 @@ class EditContatti extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const contatti = { ...this.state.contatti };
     const key = '-Kr6evnjugl529678chul';
     contattiRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
       snapshot.ref.child(key).update(this.state.contatti).then(() => {
@@ -68,7 +62,7 @@ class EditContatti extends Component {
               className="form__input"
               onChange={this.handleChange}
               placeholder="Address"
-              value={this.state.contatti.address}
+              value={address}
               name="address"
             />
             <br />
@@ -77,7 +71,7 @@ class EditContatti extends Component {
               className="form__input"
               onChange={this.handleChange}
               placeholder="Tel"
-              value={this.state.contatti.tel}
+              value={tel}
               name="tel"
             />
             <br />
@@ -86,7 +80,7 @@ class EditContatti extends Component {
               className="form__input"
               onChange={this.handleChange}
               placeholder="Email"
-              value={this.state.contatti.email}
+              value={email}
               name="email"
             />
             <br />
@@ -95,7 +89,7 @@ class EditContatti extends Component {
               className="form__input"
               onChange={this.handleChange}
               placeholder="Codice"
-              value={this.state.contatti.codice}
+              value={codice}
               name="codice"
             />
             <br />
@@ -104,7 +98,7 @@ class EditContatti extends Component {
               className="form__input"
               onChange={this.handleChange}
               placeholder="Orari"
-              value={this.state.contatti.orari}
+              value={orari}
               name="orari"
             />
             <br />

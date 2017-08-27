@@ -48,4 +48,15 @@
 
 	}
 
+	&__label {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: .8em;
+    width: 100%;
+    margin: 10px 0 0 4px;
+    position: relative;
+    top: 4px;
+    color: $color_gray_med;
+  }
+
 }

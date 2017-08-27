@@ -88,7 +88,7 @@ class SingleGalleryDisplay extends Component {
                 alt={image.alt}
               >
                 <img src={resize(200, image.url)} alt={image.alt} className="sg__gallery-image" />
-              </a>
+              </a>,
             )}
 
             <Lightbox
