@@ -381,7 +381,7 @@ class CreateBlog extends Component {
             submit={this.state.submit}
           />
         </Modal>
-        <h2 className="newBlog__banner">{this.state.edit ? 'Update Post' : 'New Blog Post'}</h2>
+        <h2 className="newBlog__banner newBlog__banner--crumbs">{this.state.edit ? 'Update Post' : 'New Blog Post'}</h2>
         {this.state.edit && title === '' && !body ? <Loading /> :
         <div className="newBlog__container">
           <form className="newBlog__form">

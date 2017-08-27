@@ -14,7 +14,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="dash__container">
-        <h2 className="dash__banner">Dashboard</h2>
+        <h2 className="newBlog__banner--crumbs newBlog__banner">Dashboard</h2>
         <div className="dash__buttons-cont">
           <Link to="/createblog" className="dash__button">
             New Blog Post

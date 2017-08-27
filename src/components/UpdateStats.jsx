@@ -52,7 +52,7 @@ class UpdateStats extends Component {
         <div key={shortid.generate()}>
           <h3>Stats updated: {new Date(entry.timestamp).toString()}</h3>
           <div className="stats">
-            <h2 className="stats__banner">Statistiche</h2>
+            <h2 className="newBlog__banner--crumbs newBlog__banner">Statistiche</h2>
             <div className="stats__link-container">
               <Link to="/donazione" className="stats__link">tutte statistiche 2016 &raquo; </Link>
             </div>
