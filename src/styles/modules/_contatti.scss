@@ -79,6 +79,21 @@
       }
     }
   }
+  &__edit {
+    @extend .fa;
+    @extend .fa-pencil;
+    font-size: 1em !important;
+    color: $color_blue;
+
+    &:hover {
+      color: $color_blue-lighter;
+    }
+  }
+
+  &__edit-wrap {
+    float: right;
+    padding-right: 20px;
+  }
   &__space-creator {
     @include for-tablet-landscape-only {
       height: 50px;
