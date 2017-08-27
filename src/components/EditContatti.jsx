@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { contattiRef } from '../utils/';
 import Loading from './Loading';
 
-
 class EditContatti extends Component {
   constructor(props) {
     super(props);
@@ -22,14 +21,14 @@ class EditContatti extends Component {
   }
 
   componentDidMount() {
-    const key = '-Kr6evnjugl529678chul';
-    contattiRef.child(key).once('value', (snapshot) => {
-      const contatti = snapshot.val();
-      console.log('49', contatti);
-      this.setState({
-        contatti,
+      const key = '-Kr6evnjugl529678chul';
+      contattiRef.child(key).once('value', (snapshot) => {
+        const contatti = snapshot.val();
+        console.log(`49`, contatti);
+        this.setState({
+          contatti,
+        });
       });
-    });
   }
 
   handleChange(e) {
