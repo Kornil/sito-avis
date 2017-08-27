@@ -12,6 +12,7 @@ import Associazione from './Associazione';
 import FAQ from './FAQ';
 import Statistiche from './Statistiche';
 import Contatti from './Contatti';
+import EditContatti from './EditContatti';
 import Donazione from './Donazione';
 import Login from './Login';
 import CreateBlog from './CreateBlog';
@@ -63,6 +64,7 @@ class App extends Component {
             <Route path="/notizie" component={Notizie} />
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
+            {this.props.auth && <Route path="/editcontatti" component={EditContatti} />}
             {this.props.auth && <Route path="/createphotogallery" component={CreatePhotoGallery} />}
             {this.props.auth && <Route path="/galleryindex" component={GalleryIndex} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
