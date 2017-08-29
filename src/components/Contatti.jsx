@@ -16,19 +16,18 @@ class Contatti extends Component {
         codice: '',
         orari: '',
       },
-    }
+    };
   }
 
   componentDidMount() {
-      const key = '-Kr6evnjugl529678chul';
-      contattiRef.child(key).once('value', (snapshot) => {
-        const contatti = snapshot.val();
-        console.log(`49`, contatti);
-        this.setState({
-          contatti,
-        });
+    const key = '-Kr6evnjugl529678chul';
+    contattiRef.child(key).once('value', (snapshot) => {
+      const contatti = snapshot.val();
+      console.log('49', contatti);
+      this.setState({
+        contatti,
       });
-
+    });
   }
   render() {
     return (
@@ -39,7 +38,7 @@ class Contatti extends Component {
             <p className="contatti__info-text">La nostra sede
             {this.props.auth &&
               <span className="contatti__edit-wrap">
-                <Link to='/editcontatti'>
+                <Link to="/editcontatti">
                   <span className="contatti__edit" />
                 </Link>
               </span> }

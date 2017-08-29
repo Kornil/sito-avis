@@ -43,7 +43,7 @@ const Associazione = () => (
              fu una stanza di Palazzo Roncale, concessa in affitto dalla Cassa
               di Risparmio, al canone di 1 lira l&rsquo;anno.</p>
       <p>Nel 1953, primo anno di attivit&agrave; dell&rsquo;Avis rodigina, i
-       donatori erano 40 e le donazioni furono 13. I  fondatori non restavano
+       donatori erano 40 e le donazioni furono 13. I fondatori non restavano
         fermi nel capoluogo e per far avvicinare all&rsquo;associazione nuovi
          donatori si adoperavano spostandosi tra  Adria, Badia Polesine,
           Castelmassa e Ariano.</p>
