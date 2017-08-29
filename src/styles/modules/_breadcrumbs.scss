@@ -1,11 +1,13 @@
 .breadcrumbs {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
-  position: absolute;
-  top: 100px;
   z-index: 10;
-  padding: 10px;
-  color: $color_blue;
+  padding: 5px 10px;
+  color: #007DC5;
+  background: white;
+  width: 100%;
+  position: fixed;
+  top: 100px;
 
   &__nav-ul {
   	list-style-type: none;
