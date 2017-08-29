@@ -293,7 +293,7 @@ class CreatePhotoGallery extends Component {
           this.componentRef = ref;
         }}
       >
-        <h2>Create a new photo gallery</h2>
+        <h2 className="newBlog__banner newBlog__banner--crumbs">New photo gallery</h2>
         <div className="newBlog__container">
           <form className="newBlog__form">
             <FormInput

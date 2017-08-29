@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import * as firebase from 'firebase';
 
 import Navbar from './Navbar';
+import AdminBreadcrumbs from './AdminBreadcrumbs';
 import Footer from './Footer';
 
 import Home from './Home';
@@ -48,6 +49,9 @@ class App extends Component {
     return (
       <div>
         <Navbar />
+        {this.props.auth &&
+          <AdminBreadcrumbs />
+        }
         <main className="main">
           <Switch>
             <Route exact path="/" component={Home} />
