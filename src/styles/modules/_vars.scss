@@ -4,6 +4,7 @@ $color_red-lighter: lighten($color_red,15%);
 $color_blue-lighter: lighten($color_blue,15%);
 $color_blue-lightest: lighten($color_blue,50%);
 $color_gray_text: #7a7a7a;
+$color_gray_med: lighten($color_gray_text,20%);
 $color_gray_lighter: lighten($color_gray_text,35%);
 
 
