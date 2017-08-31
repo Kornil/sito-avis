@@ -17,8 +17,10 @@ firebase.initializeApp(config);
 
 export const rootRef = firebase.database().ref().child('avis');
 export const blogsRef = rootRef.child('blogs');
+export const contattiRef = rootRef.child('contatti');
 export const galleriesRef = rootRef.child('galleries');
 export const timeRef = firebase.database.ServerValue.TIMESTAMP;
+export const galleriesDbRef = firebase.storage().ref().child('images/galleries');
 
 // //////////// BLOG POST CREATE FUNCTIONS /////////////////
 

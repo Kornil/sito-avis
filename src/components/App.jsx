@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import * as firebase from 'firebase';
 
 import Navbar from './Navbar';
+import AdminBreadcrumbs from './AdminBreadcrumbs';
 import Footer from './Footer';
 
 import Home from './Home';
@@ -11,6 +12,7 @@ import Associazione from './Associazione';
 import FAQ from './FAQ';
 import Statistiche from './Statistiche';
 import Contatti from './Contatti';
+import EditContatti from './EditContatti';
 import Donazione from './Donazione';
 import Login from './Login';
 import CreateBlog from './CreateBlog';
@@ -47,6 +49,9 @@ class App extends Component {
     return (
       <div>
         <Navbar />
+        {this.props.auth &&
+          <AdminBreadcrumbs />
+        }
         <main className="main">
           <Switch>
             <Route exact path="/" component={Home} />
@@ -59,6 +64,7 @@ class App extends Component {
             <Route path="/notizie" component={Notizie} />
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
+            {this.props.auth && <Route path="/editcontatti" component={EditContatti} />}
             {this.props.auth && <Route path="/createphotogallery" component={CreatePhotoGallery} />}
             {this.props.auth && <Route path="/galleryindex" component={GalleryIndex} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}

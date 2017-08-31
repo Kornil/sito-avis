@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-import { formatDate, resize, galleriesRef } from '../utils/';
+import { formatDate, resize, galleriesRef, galleriesDbRef } from '../utils/';
 import Loading from './Loading';
 
 class GalleryIndex extends Component {
@@ -43,8 +43,17 @@ class GalleryIndex extends Component {
   componentWillUnmount() {
     galleriesRef.off();
   }
-  // TODO: Delete photos in storage as well
   onDelete(key) {
+    // deletes from storage
+    const fileNamesToDelete = this.state.galleries
+      .find(gallery => gallery.key === key).images
+      .map(image => image.fileName);
+    fileNamesToDelete.forEach((fileName) => {
+      galleriesDbRef.child(`${key}/${fileName}`).delete()
+        .catch(err => console.log(`error deleting ${fileName}: ${err}`));
+    });
+
+    // deletes from database
     galleriesRef.child(key).remove().then(() => {
       this.setState({
         msg: true,
@@ -176,7 +185,7 @@ class GalleryIndex extends Component {
                 <h2 className="modal__title" id="modalTitle">Confirm Delete</h2>
               </div>
               <div className="modal__body">
-                <p>Are you sure you want to delete this post? This cannot be undone.</p>
+                <p>Are you sure you want to delete this gallery? This cannot be undone.</p>
               </div>
               <div className="modal__footer">
                 <button
@@ -196,7 +205,7 @@ class GalleryIndex extends Component {
           </div>
         </Modal>
         <div className="dash__container">
-          <h2 className="dash__banner">Dashboard</h2>
+          <h2 className="newBlog__banner--crumbs newBlog__banner">Dashboard</h2>
           <div className="dash__buttons-cont">
             <Link to="/createphotogallery" className="dash__button">
               Create New Photo Gallery
