@@ -1,0 +1,39 @@
+.rg {
+
+  &__container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    font-size: 26px;
+    padding-bottom: 10px;
+    color: #007DC5;
+    line-height: .9;
+    font-weight: 300;
+  }
+  &__image-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    height: auto;
+  }
+
+  &__gallery-image {
+    max-width: 50px;
+    margin: 5px;
+    box-shadow: none;
+  }
+
+  &__meta {
+    text-align: center;
+    padding: 0 0 20px 0;
+    text-transform: uppercase;
+    font-size: .75em;
+    letter-spacing: 1px;
+  }
+}
