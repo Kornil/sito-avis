@@ -35,8 +35,8 @@ class Login extends Component {
         error: e.message,
       });
     });
-    auth.onAuthStateChanged(user => {
-      if(user) {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
         this.props.history.push('/dashboard');
       }
     });
