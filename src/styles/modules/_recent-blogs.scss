@@ -21,6 +21,15 @@
 
 		}
 
+		&__container {
+			width: 100%;
+			max-width: 900px;
+			margin: auto;
+			padding: 20px;
+			display: flex;
+			flex-wrap: wrap;
+		}
+
 		&__link {
 				text-align: right;
 				font-size: 14px;

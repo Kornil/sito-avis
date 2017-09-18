@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 
 import { formatDate, galleriesRef, cropSquare } from '../utils/index';
+import Loading from './Loading';
 
 
 class Gallerie extends Component {
@@ -47,13 +48,14 @@ class Gallerie extends Component {
               <img src={cropSquare(50, image.url)} alt={image.alt} className="rg__gallery-image" key={shortid.generate()} />).slice(0, 4)}
           </div>}
         <div className="blog__meta">{formatDate(new Date(gallery.timestamp))}</div>
+        <Link to={`/gallery/${gallery.slug}`} className="blog__button">Galleria completa</Link>
       </div>));
 
     return (
       <div className="news">
         <h2 className="news__banner">Gallerie</h2>
-        <div className="blog__container">
-          { galleriesArr.reverse() }
+        <div className="news__container">
+          { galleries.length === 0 ? <Loading /> : galleriesArr.reverse() }
         </div>
       </div>
     );

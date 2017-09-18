@@ -44,6 +44,7 @@ class RecentGalleries extends Component {
               <img src={cropSquare(50, image.url)} alt={image.alt} className="rg__gallery-image" key={shortid.generate()} />).slice(0, 4)}
           </div>}
         <div className="blog__meta">{formatDate(new Date(gallery.timestamp))}</div>
+        <Link to={`/gallery/${gallery.slug}`} className="blog__button">Galleria completa</Link>
       </div>))
       .reverse().slice(0, 3);
 

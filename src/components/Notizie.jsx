@@ -3,6 +3,7 @@ import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
 import { formatDate, blogsRef, sanitizeExcerpt, resize, cardWidth } from '../utils/';
+import Loading from './Loading';
 
 class Notizie extends Component {
   constructor() {
@@ -31,7 +32,7 @@ class Notizie extends Component {
           {blog.images && blog.images.featured &&
           <img
             className="blog__img"
-            src={resize(cardWidth, blog.images.featured.url)}
+            src={resize(cardWidth(this), blog.images.featured.url)}
             alt={blog.images.featured.alt}
           />}
         </div>
@@ -45,8 +46,8 @@ class Notizie extends Component {
     return (
       <div className="news">
         <h2 className="news__banner">In evidenza</h2>
-        <div className="blog__container">
-          { blogsArr.reverse() }
+        <div className="news__container">
+          { this.state.blogs.length === 0 ? <Loading /> : blogsArr.reverse() }
         </div>
       </div>
     );
