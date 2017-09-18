@@ -8,7 +8,6 @@ const reducer = (state = initialState, action) => {
     case 'SAVE_AUTH': {
       const updatedState = Object.assign({}, state);
       updatedState.auth = action.payload;
-      this.props.history.push('/dashboard');
       return updatedState;
     }
     default: return state;

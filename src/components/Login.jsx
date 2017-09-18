@@ -35,6 +35,11 @@ class Login extends Component {
         error: e.message,
       });
     });
+    auth.onAuthStateChanged(user => {
+      if(user) {
+        this.props.history.push('/dashboard');
+      }
+    });
   }
 
   render() {
@@ -43,8 +48,8 @@ class Login extends Component {
       <div className="login__container">
         <h2 className="newBlog__banner">Log In</h2>
         <form className="login__form">
-          <input className="form__input login__input" onChange={e => this.handleEmailInput(e)} placeholder="Email" />
-          <input className="form__input login__input" onChange={e => this.handlePassInput(e)} placeholder="Password" />
+          <input className="form__input login__input" type="email" onChange={e => this.handleEmailInput(e)} placeholder="Email" />
+          <input className="form__input login__input" type="password" onChange={e => this.handlePassInput(e)} placeholder="Password" />
           <div className="login__button-wrap">
             <button className="newBlog__submit newBlog__button" onClick={e => this.handleLogin(e)} type="submit">Login</button>
             <button className="newBlog__button" onClick={() => firebase.auth().signOut()}>Logout</button>
