@@ -6,6 +6,8 @@ $color_blue-lightest: lighten($color_blue,50%);
 $color_gray_text: #7a7a7a;
 $color_gray_med: lighten($color_gray_text,20%);
 $color_gray_lighter: lighten($color_gray_text,35%);
+$color_error_text: #a94442;
+$color_error_bkg: #f2dede;
 
 
 $font-size: 16px;

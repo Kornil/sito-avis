@@ -1,5 +1,5 @@
-export const saveAuth = () => (dispatch) => {
+const saveAuth = () => (dispatch) => {
   dispatch({ type: 'SAVE_AUTH', payload: true });
 };
 
-export const test = 'test';
+export default saveAuth;

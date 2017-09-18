@@ -23,6 +23,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import 'modules/faq';
 @import 'modules/_single-gallery';
 @import 'modules/breadcrumbs';
+@import 'modules/login';
 
 @import 'quill.snow';
 
@@ -83,10 +84,20 @@ input.active:invalid {
 }
 
 .error {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-}
+    color: $color_error_text;
+    background-color: $color_error_bkg;
+    font-size: 1.2em;
+    font-weight: 300;
+    margin: 15px auto;
+    border: 1px solid $color_error_text;
+    padding: 7px;
+    transition: opacity .15s linear;
+    text-align: center;
+  }
+
+  input:focus:invalid {
+    border: 1px solid red;
+  }
 
 .uploader {
   -webkit-appearance: none;
@@ -96,7 +107,7 @@ input.active:invalid {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .img_test {

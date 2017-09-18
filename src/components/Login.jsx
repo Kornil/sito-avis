@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as firebase from 'firebase';
 
@@ -9,6 +8,7 @@ class Login extends Component {
     this.state = {
       email: '',
       pass: '',
+      error: null,
     };
   }
 
@@ -30,20 +30,31 @@ class Login extends Component {
     const pass = this.state.pass;
     const auth = firebase.auth();
     const promise = auth.signInWithEmailAndPassword(email, pass);
-    promise.catch(e => console.log(e.message));
+    promise.catch((e) => {
+      this.setState({
+        error: e.message,
+      });
+    });
   }
 
   render() {
+    const formError = this.state.error ? 'error' : 'hidden';
     return (
-      <div>
-        <h2>Log In</h2>
-        <form>
-          <input onChange={e => this.handleEmailInput(e)} placeholder="Email" />
-          <input onChange={e => this.handlePassInput(e)} placeholder="Password" />
-          <button onClick={e => this.handleLogin(e)} type="submit">Login</button>
-          <button onClick={() => firebase.auth().signOut()}>Logout</button>
+      <div className="login__container">
+        <h2 className="newBlog__banner">Log In</h2>
+        <form className="login__form">
+          <input className="form__input login__input" onChange={e => this.handleEmailInput(e)} placeholder="Email" />
+          <input className="form__input login__input" onChange={e => this.handlePassInput(e)} placeholder="Password" />
+          <div className="login__button-wrap">
+            <button className="newBlog__submit newBlog__button" onClick={e => this.handleLogin(e)} type="submit">Login</button>
+            <button className="newBlog__button" onClick={() => firebase.auth().signOut()}>Logout</button>
+          </div>
+          <div className="form__input-group">
+            <div className={formError}>
+              {this.state.error}
+            </div>
+          </div>
         </form>
-        { this.props.auth && <Link to="/dashboard">Admin Dashboard</Link> }&nbsp;
       </div>
     );
   }
