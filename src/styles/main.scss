@@ -118,3 +118,9 @@ input.active:invalid {
 .center {
   text-align: center;
 }
+
+.app-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+}

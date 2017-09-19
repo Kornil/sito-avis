@@ -49,7 +49,7 @@
 
         @include for-tablet-portrait-up {
         display: flex;
-        justify-content: distribute-space;
+        justify-content: center;
         }
 
     }
@@ -65,7 +65,7 @@
         }
 
         @include for-tablet-portrait-up {
-        padding: 0 4vw;
+        padding: 0 4%;
     }
 
 
