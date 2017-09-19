@@ -121,6 +121,24 @@
       padding: 25px 30px;
       width: 30%;
     }
+
+    & a {
+      text-decoration: none;
+      padding-bottom: 5px;
+
+      &:hover {
+        color: $color_blue-lighter;
+        border-bottom: 1px dotted $color_blue;
+      }
+
+    & > .contatti__card-heading {
+
+      // &:hover {
+      //   color: $color_blue-lighter;
+      //   border-bottom: 1px dotted $color_blue;
+      // }
+    }
+  }
     &-heading {
       color: $color_blue;
       font-weight: 600;
@@ -196,10 +214,10 @@
       opacity: .8;
       color: $color_gray_text;
       font-size: 2em;
-      margin-right: 30px;
+      // margin-right: 30px;
       @include for-tablet-landscape-only {
         font-size: 2.3em;
-        margin-right: 40px;
+        // margin-right: 40px;
       }
       &-yt {
         @extend .fa;
@@ -222,4 +240,11 @@
       }
     }
   }
+}
+
+.contatti__card-info li a {
+  margin-right: 30px;
+      @include for-tablet-landscape-only {
+        margin-right: 40px;
+      }
 }
