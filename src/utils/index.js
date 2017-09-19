@@ -74,6 +74,11 @@ export const resize = (width, downloadUrl) => {
   return `http://res.cloudinary.com/avis-rovigo/image/fetch/w_${width},c_scale/${encodedUrl}`;
 };
 
+export const cropSquare = (width, downloadUrl) => {
+  const encodedUrl = encodeURIComponent(downloadUrl).replace(/'/g, '%27').replace(/"/g, '%22');
+  return `http://res.cloudinary.com/avis-rovigo/image/fetch/w_${width},h_${width},c_fill/${encodedUrl}`;
+};
+
 export const cardWidth = () => {
   if (window.innerWidth > 600) {
     return Math.floor(window.innerWidth / 3);
@@ -123,7 +128,7 @@ export const fieldValidations = [
 ];
 
 export const fieldValidationsPhotoGallery = [
-  ruleRunner('galleryName', 'Gallery Name', required),
+  ruleRunner('title', 'Gallery Name', required),
 ];
 
 export const fieldValidationsModal = [

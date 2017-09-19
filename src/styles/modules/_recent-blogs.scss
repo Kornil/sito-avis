@@ -21,6 +21,15 @@
 
 		}
 
+		&__container {
+			width: 100%;
+			max-width: 900px;
+			margin: auto;
+			padding: 20px;
+			display: flex;
+			flex-wrap: wrap;
+		}
+
 		&__link {
 				text-align: right;
 				font-size: 14px;
@@ -69,7 +78,7 @@
 				line-height: .9;
 				font-weight: 300;
 				@include for-tablet-landscape-up {
-				height: 2.5em;
+				// height: 2.5em;
 				}
 
 		}

@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 
 import { formatDate, galleriesRef, cropSquare } from '../utils/index';
+import Loading from './Loading';
 
 
-class RecentGalleries extends Component {
+class Gallerie extends Component {
   constructor() {
     super();
     this.state = {
@@ -28,7 +29,10 @@ class RecentGalleries extends Component {
   }
 
   render() {
-    const galleriesArr = this.state.galleries.map(gallery => (
+    const galleries = this.state.galleries;
+    const recentGalleries = Object.values(galleries);
+    let galleriesArr = [];
+    galleriesArr = recentGalleries.map(gallery => (
       <div className="blog__card" key={gallery.key}>
         {!gallery.title
           ? <div className="sg__loader">Loading...</div>
@@ -45,21 +49,18 @@ class RecentGalleries extends Component {
           </div>}
         <div className="blog__meta">{formatDate(new Date(gallery.timestamp))}</div>
         <Link to={`/gallery/${gallery.slug}`} className="blog__button">Galleria completa</Link>
-      </div>))
-      .reverse().slice(0, 3);
+      </div>));
 
     return (
       <div className="news">
         <h2 className="news__banner">Gallerie</h2>
-        <div className="news__link-container">
-          <Link to="/gallerie" className="stats__link">altre gallerie &raquo; </Link>
-        </div>
-        <div className="rg__container">
-          {galleriesArr}
+        <div className="news__container">
+          { galleries.length === 0 ? <Loading /> : galleriesArr.reverse() }
         </div>
       </div>
     );
   }
+
 }
 
-export default RecentGalleries;
+export default Gallerie;

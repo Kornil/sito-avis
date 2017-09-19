@@ -12,11 +12,10 @@ import {
   required,
   timeRef,
   generateSlug,
+  galleriesRef,
 } from '../utils/index';
 
 const PreviewGrid = require('react-packery-component')(React);
-
-const galleriesRef = firebase.database().ref().child('avis').child('galleries');
 
 const packeryOptions = {
   gutter: 10,
@@ -28,8 +27,12 @@ class CreatePhotoGallery extends Component {
     super(props);
 
     this.state = {
-      galleryName: '',
-      images: [],
+      edit: false,
+      newGallery: {
+        title: '',
+        images: [],
+        key: '',
+      },
       localFieldValidations: [...fieldValidationsPhotoGallery],
       unsavedChanges: false,
       uploadProgress: {
@@ -41,11 +44,11 @@ class CreatePhotoGallery extends Component {
       uploading: false,
       mainErrorDisplay: '',
       showErrors: {
-        galleryName: false,
+        title: false,
       },
       validationErrors: {},
       touched: {
-        galleryName: false,
+        title: false,
       },
       submit: false,
       componentRef: null,
@@ -60,11 +63,25 @@ class CreatePhotoGallery extends Component {
     this.handleFocus = this.handleFocus.bind(this);
   }
 
+  componentWillMount() {
+    if (this.props.match.params.key) {
+      const key = this.props.match.params.key;
+      const newState = { ...this.state };
+      galleriesRef.child(key).once('value', (snapshot) => {
+        const newGallery = snapshot.val();
+        newState.newGallery = { ...newGallery };
+        newState.edit = true;
+        this.setState({ ...newState });
+      });
+    }
+  }
+
   onImageDrop(files) {
+    const newState = { ...this.state };
     // check to ensure file names are unique
     if (
       files.some(file =>
-        this.state.images.some(image => image.name === file.name),
+        newState.newGallery.images.some(image => image.name === file.name),
       )
     ) {
       this.displayMainError('File names must be unique');
@@ -75,12 +92,15 @@ class CreatePhotoGallery extends Component {
       // create a new ruleRunner for each new image
       this.createFieldValidations(file);
 
-      this.setState({
-        images: [...this.state.images, ...files],
-        validationErrors: run(
-          { ...this.state },
+      newState.newGallery.images = [...this.state.newGallery.images, file];
+
+      newState.validationErrors = run(
+          { ...newState.newGallery },
           this.state.localFieldValidations,
-        ),
+        );
+
+      this.setState({
+        ...newState,
       });
     });
   }
@@ -102,23 +122,37 @@ class CreatePhotoGallery extends Component {
   }
 
   handleChange(e) {
+    const newState = { ...this.state };
+    newState.newGallery[e.target.name] = e.target.value;
+    newState.unsavedChanges = true;
     this.setState({
-      [e.target.name]: e.target.value,
-      unsavedChanges: true,
+      ...newState,
+    });
+  }
+
+  handleAltText(e, idx) {
+    const currImg = { ...this.state.newGallery.images[idx] };
+    currImg.alt = e.target.value;
+    const newState = { ...this.state };
+    newState.newGallery.images[idx] = { ...currImg };
+    newState.unsavedChanges = true;
+    this.setState({
+      ...newState,
     });
   }
 
   handleBlur(e) {
     const field = e.target.name;
-    const newState = {
-      validationErrors: run(
-        { ...this.state },
+    const newState = { ...this.state };
+    newState.validationErrors = run(
+        { ...this.state.newGallery },
         this.state.localFieldValidations,
-      ),
-      showErrors: { ...this.state.showErrors, [field]: true },
-      touched: { ...this.state.touched, [field]: true },
-    };
-    this.setState({ ...this.state, ...newState });
+      );
+    if (newState.validationErrors[field]) {
+      newState.showErrors = { ...this.state.showErrors, [field]: true };
+    }
+    newState.touched = { ...this.state.touched, [field]: true };
+    this.setState({ ...newState });
   }
 
   handleFocus(e) {
@@ -169,7 +203,7 @@ class CreatePhotoGallery extends Component {
   handleSubmit(e) {
     e.preventDefault();
     // Prevent submit when no images have been selected for upload
-    if (this.state.images.length === 0) {
+    if (this.state.newGallery.images.length === 0) {
       this.displayMainError('Gallery cannot be empty');
       return;
     }
@@ -178,14 +212,15 @@ class CreatePhotoGallery extends Component {
       ...this.state,
       ...{
         validationErrors: run(
-          { ...this.state },
+          { ...this.state.newGallery },
           this.state.localFieldValidations,
         ),
-        showErrors: { galleryName: true },
+        showErrors: { title: true },
         submit: true,
       },
     };
-    this.state.images.forEach((image) => {
+    console.log(newState);
+    this.state.newGallery.images.forEach((image) => {
       newState.showErrors[image.name] = true;
     });
 
@@ -194,26 +229,42 @@ class CreatePhotoGallery extends Component {
     });
     this.setState({ ...this.state, ...newState }, () => {
       if (Object.keys(this.state.validationErrors).length > 0) {
+        console.log('validation errors');
         return;
       }
 
-      // VALIDATION OK: BEGIN UPLOAD PRCOCESS
+      // VALIDATION OK: BEGIN UPLOAD PROCESS
+      if (this.state.edit) {
+        console.log('edit');
+        const { key } = this.state.newGallery;
+        galleriesRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
+          if (snapshot.val() === null) {
+            console.log('gallery not found');
+            return null;
+          }
+          snapshot.ref.child(key).update(this.state.newGallery).then(() => {
+            this.props.history.push('/galleryindex');
+          });
+          return null;
+        });
+        // return null;
+      }
       const newGalleryKey = galleriesRef.push().key;
 
       this.setState({ uploading: true });
-      const files = this.state.images;
+      const files = [...this.state.newGallery.images];
       const storageRef = firebase.storage().ref();
       const dbEntry = {
         images: [],
-        title: this.state.galleryName,
+        title: this.state.newGallery.title,
         timestamp: timeRef,
-        slug: generateSlug(this.state.galleryName),
+        slug: generateSlug(this.state.newGallery.title),
         key: newGalleryKey,
       };
       const uploads = files.map((file) => {
         const metaData = {
           customMetadata: {
-            altText: this.state[file.name],
+            altText: this.state.newGallery[file.name],
           },
         };
 
@@ -237,7 +288,7 @@ class CreatePhotoGallery extends Component {
               dbEntry.images.push({
                 fileName: file.name,
                 url: task.snapshot.downloadURL,
-                alt: this.state[file.name],
+                alt: this.state.newGallery[file.name],
               });
               resolve();
             },
@@ -263,14 +314,14 @@ class CreatePhotoGallery extends Component {
 
     this.setState(
       {
-        images: this.state.images.filter(img => img.name !== fileName),
+        images: this.state.newGallery.images.filter(img => img.name !== fileName),
       },
       () => {
         // reset field validations
         this.setState({
           localFieldValidations: [...fieldValidationsPhotoGallery],
         });
-        this.state.images.forEach((file) => {
+        this.state.newGallery.images.forEach((file) => {
           this.createFieldValidations(file);
         });
       },
@@ -302,11 +353,11 @@ class CreatePhotoGallery extends Component {
               handleChange={this.handleChange}
               handleBlur={this.handleBlur}
               handleFocus={this.handleFocus}
-              name="galleryName"
-              showError={this.state.showErrors.galleryName}
-              errorText={this.errorFor('galleryName')}
-              touched={this.state.touched.galleryName}
-              text={this.state.galleryName}
+              name="title"
+              showError={this.state.showErrors.title}
+              errorText={this.errorFor('title')}
+              touched={this.state.touched.title}
+              text={this.state.newGallery.title}
             />
             <ErrorMessages display={!!this.state.mainErrorDisplay}>
               <div className="form__error-wrap">
@@ -318,9 +369,9 @@ class CreatePhotoGallery extends Component {
             <Dropzone
               style={{
                 height: '200px',
-                width: '200px',
-                borderStyle: 'dashed',
-                marginLeft: 'auto',
+                width: '100%',
+                borderStyle: 'dotted',
+                marginLeft: '5px',
                 marginRight: 'auto',
                 textAlign: 'center',
                 paddingTop: '20px',
@@ -360,7 +411,7 @@ class CreatePhotoGallery extends Component {
                 className="newBlog__button newBlog__button--featured"
                 onClick={this.handleSubmit}
               >
-                {!this.state.uploading ? 'Upload Gallery' : 'Uploading'}
+                {!this.state.uploading ? 'Save Gallery' : 'Uploading'}
               </a>
               <Link
                 to="/galleryindex"
@@ -378,13 +429,13 @@ class CreatePhotoGallery extends Component {
             <h3 className="newBlog__subhead">Preview</h3>
             <div className="newBlog__wrapper">
               <PreviewGrid options={packeryOptions}>
-                {this.state.images.map(file =>
-                  <div key={file.preview} className="preview-item">
+                {this.state.newGallery.images.map((file, idx) => (
+                  <div key={file.preview || file.fileName} className="preview-item">
                     <div className="image-container">
                       <div>
                         <img
                           className="preview-image"
-                          src={file.preview}
+                          src={this.state.edit ? file.url : file.preview}
                           alt="preview"
                         />
                       </div>
@@ -393,14 +444,11 @@ class CreatePhotoGallery extends Component {
                       <FormInput
                         className="form__input"
                         type="text"
-                        name={file.name}
-                        value={
-                          this.state.images.find(
-                            item => item.name === file.name,
-                          ).altText
-                        }
+                        name={file.name || file.fileName}
+                        text={this.state.newGallery.images[idx].alt}
                         placeholder="Alt text for image"
-                        handleChange={this.handleChange}
+                        handleChange={this.state.edit ?
+                          e => this.handleAltText(e, idx) : this.handleChange}
                         handleBlur={this.handleBlur}
                         handleFocus={this.handleFocus}
                         showError={this.state.showErrors[file.name]}
@@ -419,7 +467,7 @@ class CreatePhotoGallery extends Component {
                         Remove
                       </a>
                     </div>
-                  </div>,
+                  </div>),
                 )}
               </PreviewGrid>
             </div>

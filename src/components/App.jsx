@@ -19,6 +19,7 @@ import CreateBlog from './CreateBlog';
 import UpdateStats from './UpdateStats';
 import SinglePostDisplay from './SinglePostDisplay';
 import Notizie from './Notizie';
+import Gallerie from './Gallerie';
 import Dashboard from './Dashboard';
 import CreatePhotoGallery from './CreatePhotoGallery';
 import GalleryIndex from './GalleryIndex';
@@ -37,10 +38,7 @@ class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((fireBaseUser) => {
       if (fireBaseUser) {
-        console.log('logged in');
         this.props.saveAuth();
-      } else {
-        console.log('not logged in');
       }
     });
   }
@@ -62,6 +60,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/statistiche" component={Statistiche} />
             <Route path="/notizie" component={Notizie} />
+            <Route path="/gallerie" component={Gallerie} />
 
             {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
             {this.props.auth && <Route path="/editcontatti" component={EditContatti} />}
@@ -69,6 +68,7 @@ class App extends Component {
             {this.props.auth && <Route path="/galleryindex" component={GalleryIndex} />}
             {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
             {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
+            {this.props.auth && <Route path="/edit-gallery/:key" component={CreatePhotoGallery} />}
             {this.props.auth && <Route path="/edit/:key" component={CreateBlog} />}
 
             <Route path="/blog/:slug" component={SinglePostDisplay} />

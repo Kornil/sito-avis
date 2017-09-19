@@ -89,7 +89,7 @@ class GalleryIndex extends Component {
             <Link className="blogInd__title" to={`/gallery/${props.original.slug}`}>{props.original.title}</Link></div>,
       },
       {
-        Header: () => <div className="blogInd__tableHead">Cover Image</div>,
+        Header: () => <div className="blogInd__tableHead" />,
         accessor: 'image',
         minWidth: 30,
         filterable: false,
@@ -136,26 +136,7 @@ class GalleryIndex extends Component {
     ];
 
     const galleries = [...this.state.galleries].reverse();
-    // let galleriesArr = [];
-    // if (galleries.length) {
-    //   galleriesArr = galleries.map(gallery => (
-    //     <tr key={gallery['.key']} className="blogInd__row" >
-    //       <td className="blogInd__cell blogInd__title">
-    //         <Link to={`/gallery/${gallery.slug}`}>
-    //           {gallery.title}
-    //         </Link>
-    //       </td>
-    //       <td className="galleryInd__cell galleryInd__imgCont">
-    //         {gallery.images &&
-    //           <img
-    //             className="galleryInd__thumb"
-    //             src={resize(50, gallery.images[0].url)}
-    //             alt={gallery.images[0].alt}
-    //           />}
-    //       </td>
-    //     </tr>));
-    // }
-    // TODO: add styling to <div>
+
     let noDataPlaceholder = <Loading />;
     if (!this.state.galleriesExistInDb) {
       noDataPlaceholder = <div>There are no galleries to display</div>;
