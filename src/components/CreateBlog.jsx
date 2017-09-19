@@ -387,7 +387,6 @@ class CreateBlog extends Component {
           <form className="newBlog__form">
             <h3 className="newBlog__subhead">Input</h3>
             <FormInput
-              className="newBlog__input"
               handleChange={this.handleChange}
               handleBlur={this.handleBlur}
               handleFocus={this.handleFocus}
