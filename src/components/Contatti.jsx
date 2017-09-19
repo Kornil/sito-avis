@@ -62,9 +62,10 @@ class Contatti extends Component {
         <div className="contatti__cards-container">
           {/* 1st Card */}
           <div className="contatti__card">
-            <p className="contatti__card-heading">
+            <a href="https://www.avis.it/" rel="noopener noreferrer"
+                    target="_blank"><span className="contatti__card-heading">
               Avis Sede <br className="break-desktop-only" />Nazionale
-            </p>
+            </span></a>
             <p className="contatti__card-address">
               Via E. Forlanini, 23
               <span className="split-address-tablet-mode" > | </span>
@@ -83,16 +84,16 @@ class Contatti extends Component {
               </li>
               <div className="visible-tablet-mode" />
               <li className="contatti__card-icon-container">
-                <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <a href="https://www.facebook.com/pages/AVIS-Nazionale-Associazione-Volontari-Italiani-Sangue/154932917976132" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                   <div className="contatti__card-icon contatti__card-icon-fb" />
                 </a>
-                <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
+                <a href="http://www.youtube.com/user/avisnazionale" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
                   <div className="contatti__card-icon contatti__card-icon-yt" />
                 </a>
-                <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <a href="https://twitter.com/avisnazionale" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                   <div className="contatti__card-icon contatti__card-icon-tw" />
                 </a>
-                <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <a href="https://www.instagram.com/avisnazionale/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                   <div className="contatti__card-icon contatti__card-icon-it" />
                 </a>
               </li>
@@ -100,9 +101,10 @@ class Contatti extends Component {
           </div>
           {/* 2nd Card */}
           <div className="contatti__card">
-            <div className="contatti__card-heading">
+            <a href="https://www.avisveneto.it/" rel="noopener noreferrer"
+                    target="_blank"><span className="contatti__card-heading">
               Avis Regionale <br className="break-desktop-only" />Veneto
-            </div>
+            </span></a>
             <div className="contatti__card-address">
               Via dell Ospedale, 1
               <span className="split-address-tablet-mode" > | </span>
@@ -120,10 +122,10 @@ class Contatti extends Component {
               </li>
               <div className="visible-tablet-mode" />
               <li className="contatti__card-icon-container">
-                <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <a href="https://www.facebook.com/avis.veneto/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                   <div className="contatti__card-icon contatti__card-icon-fb" />
                 </a>
-                <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
+                <a href="https://www.youtube.com/user/avisveneto" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
                   <div className="contatti__card-icon contatti__card-icon-yt" />
                 </a>
               </li>
@@ -131,9 +133,9 @@ class Contatti extends Component {
           </div>
           {/* 3rd card */}
           <div className="contatti__card">
-            <div className="contatti__card-heading">
+            <a href="http://www.avisprovincialerovigo.it/" rel="noopener noreferrer" target="_blank"><span className="contatti__card-heading">
               Avis Provinciale <br className="break-desktop-only" />Rovigo
-            </div>
+            </span></a>
             <div className="contatti__card-address">
               Via F. Maffei, 5
               <span className="split-address-tablet-mode" > | </span>
@@ -151,7 +153,7 @@ class Contatti extends Component {
               </li>
               <div className="visible-tablet-mode" />
               <li className="contatti__card-icon-container">
-                <a href="/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <a href="https://www.facebook.com/Avis-Provinciale-Rovigo-123533465038437/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                   <div className="contatti__card-icon contatti__card-icon-fb" />
                 </a>
               </li>
