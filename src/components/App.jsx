@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import * as firebase from 'firebase';
 
 import Navbar from './Navbar';
@@ -24,6 +24,7 @@ import Dashboard from './Dashboard';
 import CreatePhotoGallery from './CreatePhotoGallery';
 import GalleryIndex from './GalleryIndex';
 import SingleGalleryDisplay from './SingleGalleryDisplay';
+import ScrollToTop from './ScrollToTop';
 
 import { saveAuth } from '../actions';
 
@@ -45,38 +46,42 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Navbar />
-        {this.props.auth &&
-          <AdminBreadcrumbs />
-        }
-        <main className="main">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/associazione" component={Associazione} />
-            <Route path="/faq" component={FAQ} />
-            <Route path="/contatti" component={Contatti} />
-            <Route path="/donazione" component={Donazione} />
-            <Route path="/login" component={Login} />
-            <Route path="/statistiche" component={Statistiche} />
-            <Route path="/notizie" component={Notizie} />
-            <Route path="/gallerie" component={Gallerie} />
+      <BrowserRouter>
+        <ScrollToTop>
+          <div>
+            <Navbar />
+            {this.props.auth &&
+              <AdminBreadcrumbs />
+            }
+            <main className="main">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route path="/associazione" component={Associazione} />
+                <Route path="/faq" component={FAQ} />
+                <Route path="/contatti" component={Contatti} />
+                <Route path="/donazione" component={Donazione} />
+                <Route path="/login" component={Login} />
+                <Route path="/statistiche" component={Statistiche} />
+                <Route path="/notizie" component={Notizie} />
+                <Route path="/gallerie" component={Gallerie} />
 
-            {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
-            {this.props.auth && <Route path="/editcontatti" component={EditContatti} />}
-            {this.props.auth && <Route path="/createphotogallery" component={CreatePhotoGallery} />}
-            {this.props.auth && <Route path="/galleryindex" component={GalleryIndex} />}
-            {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
-            {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
-            {this.props.auth && <Route path="/edit-gallery/:key" component={CreatePhotoGallery} />}
-            {this.props.auth && <Route path="/edit/:key" component={CreateBlog} />}
+                {this.props.auth && <Route path="/createblog" component={CreateBlog} />}
+                {this.props.auth && <Route path="/editcontatti" component={EditContatti} />}
+                {this.props.auth && <Route path="/createphotogallery" component={CreatePhotoGallery} />}
+                {this.props.auth && <Route path="/galleryindex" component={GalleryIndex} />}
+                {this.props.auth && <Route path="/updatestats" component={UpdateStats} />}
+                {this.props.auth && <Route path="/dashboard" component={Dashboard} />}
+                {this.props.auth && <Route path="/edit-gallery/:key" component={CreatePhotoGallery} />}
+                {this.props.auth && <Route path="/edit/:key" component={CreateBlog} />}
 
-            <Route path="/blog/:slug" component={SinglePostDisplay} />
-            <Route path="/gallery/:slug" component={SingleGalleryDisplay} />
-          </Switch>
-        </main>
-        <Footer />
-      </div>
+                <Route path="/blog/:slug" component={SinglePostDisplay} />
+                <Route path="/gallery/:slug" component={SingleGalleryDisplay} />
+              </Switch>
+            </main>
+            <Footer />
+          </div>
+        </ScrollToTop>
+      </BrowserRouter>
     );
   }
 }
