@@ -118,3 +118,34 @@ input.active:invalid {
 .center {
   text-align: center;
 }
+
+.skip {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    height: 1px;
+    width: 1px;
+    text-align: left;
+    overflow: hidden;
+
+    &:active, &:focus, &:hover {
+      left: 10px;
+      top: 10px;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      padding: 7px 10px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: $color_blue;
+      z-index: 1000;
+      border: 1px solid white;
+      color: white;
+      font-size: 1.2em;
+
+      & i {
+        font-size: .8em;
+      }
+
+    }
+}

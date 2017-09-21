@@ -136,11 +136,18 @@ export const fieldValidationsModal = [
   // ruleRunner("alt", "Alt text", conditionalRequired("alt", "url"))
 ];
 
-
-// ////////// FIREBASE PAGINATION ////////////
-
-// const paginationOptions = {
-//   finite: true,
-//   pageSize: 3,
-// }
-// export const paginator = new FirebasePaginator(blogsRef, paginationOptions);
+// force focus on #main when using skip navigation link
+// (some browsers will only focus form inputs, links, and buttons)
+export const skip = (targetId) => {
+  const removeTabIndex = (e) => {
+    e.target.removeAttribute('tabindex');
+  };
+  const skipTo = document.getElementById(targetId);
+  // Setting 'tabindex' to -1 takes an element out of normal
+  // tab flow but allows it to be focused via javascript
+  skipTo.tabIndex = -1;
+  skipTo.focus(); // focus on the content container
+  // when focus leaves this element,
+  // remove the tabindex attribute
+  skipTo.addEventListener('blur', removeTabIndex);
+};
