@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../images/AvisRovigoLogo.svg';
+import { skip } from '../utils';
 
 class Navbar extends React.Component {
 
@@ -84,6 +85,10 @@ class Navbar extends React.Component {
 
     return (
       <header className="header">
+        <button
+          className="skip"
+          onClick={() => skip('main')}
+        ><span className="skip__text">Skip to content</span> <i className="fa fa-angle-right" /></button>
         <NavLink to="/" onClick={this.homePage} role="link" ><img className="header__image" src={logo} alt="Avis Comunale Rovigo" /></NavLink>
         <button className="header__icon" aria-expanded={classObj[this.state.menu].ariaE} aria-controls="nav" onClick={this.navToggle} >
           <span className="sr-only">Toggle navigation</span>

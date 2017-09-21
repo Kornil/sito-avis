@@ -53,7 +53,7 @@ class App extends Component {
             {this.props.auth &&
               <AdminBreadcrumbs />
             }
-            <main className="main">
+            <main className="main" id="main">
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/associazione" component={Associazione} />

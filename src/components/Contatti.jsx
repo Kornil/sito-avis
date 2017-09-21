@@ -62,8 +62,10 @@ class Contatti extends Component {
         <div className="contatti__cards-container">
           {/* 1st Card */}
           <div className="contatti__card">
-            <a href="https://www.avis.it/" rel="noopener noreferrer"
-                    target="_blank"><span className="contatti__card-heading">
+            <a
+              href="https://www.avis.it/" rel="noopener noreferrer"
+              target="_blank"
+            ><span className="contatti__card-heading">
               Avis Sede <br className="break-desktop-only" />Nazionale
             </span></a>
             <p className="contatti__card-address">
@@ -101,8 +103,10 @@ class Contatti extends Component {
           </div>
           {/* 2nd Card */}
           <div className="contatti__card">
-            <a href="https://www.avisveneto.it/" rel="noopener noreferrer"
-                    target="_blank"><span className="contatti__card-heading">
+            <a
+              href="https://www.avisveneto.it/" rel="noopener noreferrer"
+              target="_blank"
+            ><span className="contatti__card-heading">
               Avis Regionale <br className="break-desktop-only" />Veneto
             </span></a>
             <div className="contatti__card-address">

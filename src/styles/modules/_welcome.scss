@@ -58,24 +58,30 @@
     }
   }
   &__button {
-      color: #FFFFFF;
+    color: #FFFFFF;
     text-transform: uppercase;
+    text-decoration: none;
     letter-spacing: 1px;
     background: $color_red;
     border: 2px solid #FFFFFF;
     font-size: 20px;
-    width: 216px;
-    height: 60px;
+    padding: 20px 30px;
     position: absolute;
     top: 50%;
     left: 50%;
     margin: 0 0 0 -108px;
+    text-align: center;
+    cursor: pointer;
     @include for-tablet-portrait-up {}
     @include for-desktop-up {
       top: 65%;
     }
     &:hover {
       background: $color_red-lighter;
+    }
+
+    &:focus {
+      outline: default;
     }
   }
 }

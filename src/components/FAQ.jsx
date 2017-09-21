@@ -25,7 +25,6 @@ class FAQ extends Component {
   render() {
     const blogs = this.state.blogs;
     const faq = Object.values(blogs).filter(blog => blog.tags && blog.tags.indexOf('FAQ') > -1).reverse();
-    console.log(faq);
     const faqEl = faq.map(el =>
       <div className="faq__card" key={shortid.generate()}>
         <ToggleCard
