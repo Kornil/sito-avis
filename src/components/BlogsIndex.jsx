@@ -5,7 +5,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import { formatDate, blogsRef, resize } from '../utils/';
-import Loading from './Loading';
+import Spinner from './Spinner';
 
 class BlogsIndex extends Component {
   constructor() {
@@ -167,7 +167,7 @@ class BlogsIndex extends Component {
         </Modal>
         {this.state.msg && <div className="blogInd__message">The post was successfully deleted.</div>}
         {(!blogs.length)
-          ? <Loading />
+          ? <Spinner />
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">
             <ReactTable
               className="blogInd__grid -striped"

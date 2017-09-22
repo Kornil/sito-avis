@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { saveAuth } from '../actions';
 import { contattiRef } from '../utils/';
+import Spinner from './Spinner';
 
 class Contatti extends Component {
 
@@ -54,6 +55,7 @@ class Contatti extends Component {
             </div>
           </div>
           <div className="contatti__info-map">
+            <Spinner cssClass="spinner__bkg" />
             <iframe src="https://www.google.com/maps/embed/v1/place?q=Corso%20del%20Popolo%2C%2084%2045100%20Rovigo%20(RO)&key=AIzaSyA_a1Ri7HFM1UxGYg6McMXiOoLR3Gh8qJo&zoom=19">iframe</iframe>
           </div>
         </div>

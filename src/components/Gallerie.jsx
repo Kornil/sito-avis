@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 
 import { formatDate, galleriesRef, cropSquare } from '../utils/index';
-import Loading from './Loading';
+import Spinner from './Spinner';
 
 
 class Gallerie extends Component {
@@ -35,7 +35,7 @@ class Gallerie extends Component {
     galleriesArr = recentGalleries.map(gallery => (
       <div className="blog__card" key={gallery.key}>
         {!gallery.title
-          ? <div className="sg__loader">Loading...</div>
+          ? <Spinner />
           : <div>
             <h3 className="rg__title">
               {gallery.title}
@@ -55,7 +55,7 @@ class Gallerie extends Component {
       <div className="news">
         <h2 className="news__banner">Gallerie</h2>
         <div className="news__container">
-          { galleries.length === 0 ? <Loading /> : galleriesArr.reverse() }
+          { galleries.length === 0 ? <Spinner /> : galleriesArr.reverse() }
         </div>
       </div>
     );
