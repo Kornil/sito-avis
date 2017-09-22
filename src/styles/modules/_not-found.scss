@@ -1,0 +1,32 @@
+.notfound {
+	width: 80vw;
+    height: calc(100vh - 200px);
+    color: $color_gray_text;
+    text-align: center;
+    margin: auto;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &__header {
+	    font-size: 3em;
+	    padding: 0 10px 20px 10px;
+    }
+
+    &__text {
+    	text-align: center;
+        font-size: 1.8em;
+        line-height: 1.5em;
+    }
+
+    &__link {
+        color: $color_blue;
+        text-decoration: none;
+        border-bottom: 1px dotted $color_blue;
+        &:hover, &:active, &:focus {
+            color: $color_blue-lighter;
+        }
+    }
+
+}

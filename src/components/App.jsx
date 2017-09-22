@@ -25,6 +25,7 @@ import CreatePhotoGallery from './CreatePhotoGallery';
 import GalleryIndex from './GalleryIndex';
 import SingleGalleryDisplay from './SingleGalleryDisplay';
 import ScrollToTop from './ScrollToTop';
+import NotFound from './NotFound';
 
 import { saveAuth } from '../actions';
 
@@ -76,6 +77,7 @@ class App extends Component {
 
                 <Route path="/blog/:slug" component={SinglePostDisplay} />
                 <Route path="/gallery/:slug" component={SingleGalleryDisplay} />
+                <Route path="*" component={NotFound} />
               </Switch>
             </main>
             <Footer />
