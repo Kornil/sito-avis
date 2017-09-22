@@ -62,6 +62,8 @@
       margin: 40px 0;
       border: 2px solid $color_blue;
       height: 300px;
+      position: relative;
+
       @include for-tablet-landscape-only {
         width: 400px;
         height: 430px;

@@ -5,7 +5,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import { formatDate, resize, galleriesRef, galleriesDbRef } from '../utils/';
-import Loading from './Loading';
+import Spinner from './Spinner';
 
 class GalleryIndex extends Component {
   constructor() {
@@ -137,7 +137,7 @@ class GalleryIndex extends Component {
 
     const galleries = [...this.state.galleries].reverse();
 
-    let noDataPlaceholder = <Loading />;
+    let noDataPlaceholder = <Spinner />;
     if (!this.state.galleriesExistInDb) {
       noDataPlaceholder = <div>There are no galleries to display</div>;
     }

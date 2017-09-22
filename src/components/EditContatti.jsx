@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { contattiRef } from '../utils/';
-import Loading from './Loading';
+import Spinner from './Spinner';
 
 class EditContatti extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class EditContatti extends Component {
     return (
       <div id="contatti">
         <h2 className="newBlog__banner">Edit Contatti</h2>
-        {!address ? <Loading /> :
+        {!address ? <Spinner /> :
         <div className="newBlog__container">
           <form className="newBlog__form">
             <h3 className="newBlog__subhead">Input</h3>

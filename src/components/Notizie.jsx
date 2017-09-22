@@ -3,7 +3,7 @@ import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
 import { formatDate, blogsRef, sanitizeExcerpt, resize, cardWidth } from '../utils/';
-import Loading from './Loading';
+import Spinner from './Spinner';
 
 class Notizie extends Component {
   constructor() {
@@ -47,7 +47,7 @@ class Notizie extends Component {
       <div className="news">
         <h2 className="news__banner">In evidenza</h2>
         <div className="news__container">
-          { this.state.blogs.length === 0 ? <Loading /> : blogsArr.reverse() }
+          { this.state.blogs.length === 0 ? <Spinner /> : blogsArr.reverse() }
         </div>
       </div>
     );

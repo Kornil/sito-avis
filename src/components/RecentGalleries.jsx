@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import shortid from 'shortid';
 
+import Spinner from './Spinner';
 import { formatDate, galleriesRef, cropSquare } from '../utils/index';
 
 
@@ -31,7 +32,7 @@ class RecentGalleries extends Component {
     const galleriesArr = this.state.galleries.map(gallery => (
       <div className="blog__card" key={gallery.key}>
         {!gallery.title
-          ? <div className="sg__loader">Loading...</div>
+          ? <Spinner />
           : <div>
             <h3 className="rg__title">
               {gallery.title}

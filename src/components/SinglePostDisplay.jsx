@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { formatDate, blogsRef, sanitize, resize } from '../utils/';
+import Spinner from './Spinner';
 
 class SinglePostDisplay extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class SinglePostDisplay extends Component {
     return (
       <div id="imgCont">
         {!title ?
-          <div className="sp__loader">Loading...</div> :
+          <Spinner /> :
           <div className="sp__container">
             <h3 className="sp__title">{title}</h3>
             <div className="sp__img-cont">

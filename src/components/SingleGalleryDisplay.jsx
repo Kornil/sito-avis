@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Lightbox from 'react-images';
 import { galleriesRef, resize, formatDate } from '../utils/';
-import Loading from './Loading';
+import Spinner from './Spinner';
 
 class SingleGalleryDisplay extends Component {
   constructor(props) {
@@ -101,7 +101,7 @@ class SingleGalleryDisplay extends Component {
                 onClickImage={this.handleClickImage}
                 backdropClosesModal
               />
-            </div> : <Loading />}
+            </div> : <Spinner />}
 
       </div>
     );

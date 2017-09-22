@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill';
 
 import * as firebase from 'firebase';
 import { blogsRef, timeRef, generateSlug, sanitize, resize, fieldValidations, run } from '../utils/';
-import Loading from './Loading';
+import Spinner from './Spinner';
 import ModalGuts from './ModalGuts';
 import FormInput from './FormInput';
 import CheckboxGroup from './CheckboxGroup';
@@ -382,7 +382,7 @@ class CreateBlog extends Component {
           />
         </Modal>
         <h2 className="newBlog__banner newBlog__banner--crumbs">{this.state.edit ? 'Update Post' : 'New Blog Post'}</h2>
-        {this.state.edit && title === '' && !body ? <Loading /> :
+        {this.state.edit && title === '' && !body ? <Spinner /> :
         <div className="newBlog__container">
           <form className="newBlog__form">
             <h3 className="newBlog__subhead">Input</h3>
