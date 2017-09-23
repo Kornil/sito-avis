@@ -4,12 +4,12 @@ import { resize, run, fieldValidationsModal, generateSlug } from '../utils/';
 import FormInput from './FormInput';
 
 const handleButtonFocus = () => {
-    document.getElementById('btn-focus').classList.add('fake-focus');
-  }
+  document.getElementById('btn-focus').classList.add('fake-focus');
+};
 
 const handleButtonBlur = () => {
-    document.getElementById('btn-focus').classList.remove('fake-focus');
-  }
+  document.getElementById('btn-focus').classList.remove('fake-focus');
+};
 
 
 // / Custom ImageBlot to add alt text to inline images / ///
@@ -72,13 +72,24 @@ class ModalGuts extends Component {
         this.handleInsertImage(current.url, current.alt);
         this.props.closeModal();
         return null;
+      } else if (this.props.type === 'featured') {
+        this.props.setFeatured();
+        this.props.setAltText(false);
+        this.props.closeModal();
+        return null;
       }
-      this.props.setAltText(false);
-      this.props.closeModal();
       return null;
     };
     this.props.updateValidationErrors(validationErrors, callback);
     return null;
+  }
+
+  handleCancel() {
+    let fileNameClean = null;
+    if (this.props.type === 'inline') {
+      fileNameClean = generateSlug(this.props.images.current.fileName);
+    }
+    this.props.removeImage(this.props.type, fileNameClean);
   }
 
   render() {
@@ -144,7 +155,7 @@ class ModalGuts extends Component {
           <div className="modal__footer">
             <button
               type="button"
-              onClick={this.props.closeModal}
+              onClick={() => this.handleCancel()}
               className="modal__button modal__close--btn"
               data-dismiss="modal"
             >Cancel</button>
