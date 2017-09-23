@@ -3,6 +3,14 @@ import ReactQuill from 'react-quill';
 import { resize, run, fieldValidationsModal, generateSlug } from '../utils/';
 import FormInput from './FormInput';
 
+const handleButtonFocus = () => {
+    document.getElementById('btn-focus').classList.add('fake-focus');
+  }
+
+const handleButtonBlur = () => {
+    document.getElementById('btn-focus').classList.remove('fake-focus');
+  }
+
 
 // / Custom ImageBlot to add alt text to inline images / ///
 
@@ -90,7 +98,7 @@ class ModalGuts extends Component {
             <h2 className="modal__title" id="modalTitle">{this.props.title}</h2>
           </div>
           <div className="modal__body">
-            <div className="newBlog__fileUploadWrap newBlog__button">
+            <div className="newBlog__fileUploadWrap newBlog__button" id="btn-focus">
               <span>Choose File</span>
               <input
                 type="file"
@@ -100,6 +108,8 @@ class ModalGuts extends Component {
                 name="uploadFile"
                 id="uploadFile"
                 onChange={e => this.props.handleImgUpload(e)}
+                onFocus={() => handleButtonFocus()}
+                onBlur={() => handleButtonBlur()}
               />
             </div>
             {this.props.images.current.progress > 0 && !this.props.images.current.success &&
