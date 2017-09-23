@@ -60,7 +60,7 @@ class CreateBlog extends Component {
         ],
         handlers: {
           image: (value) => {
-            const newBlog = Object.assign({}, this.state.newBlog);
+            const newBlog = { ...this.state.newBlog };
             newBlog.images.current = {
               success: '',
               progress: '',
@@ -100,6 +100,8 @@ class CreateBlog extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.errorFor = this.errorFor.bind(this);
     this.setAltText = this.setAltText.bind(this);
+    this.setFeatured = this.setFeatured.bind(this);
+    this.removeImage = this.removeImage.bind(this);
     this.updateValidationErrors = this.updateValidationErrors.bind(this);
     this.updateErrorViz = this.updateErrorViz.bind(this);
   }
@@ -131,18 +133,23 @@ class CreateBlog extends Component {
   }
 
   setAltText(inline, filename) {
-    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlog = { ...this.state.newBlog };
     if (inline) {
-      const inlineImg = Object.assign({}, newBlog.images[filename]);
+      const inlineImg = { ...newBlog.images[filename] };
       inlineImg.alt = newBlog.images.current.alt;
       newBlog.images[filename] = inlineImg;
     } else {
       newBlog.images.featured.alt = newBlog.images.current.alt;
     }
-    this.setState(() => ({ newBlog }), () => {
-      if (filename) {
-        // console.log(this.state.newBlog.images[filename]);
-      }
+    this.setState({ newBlog });
+  }
+
+  setFeatured() {
+    const newBlog = { ...this.state.newBlog };
+    const featuredImage = newBlog.images.current;
+    newBlog.images.featured = featuredImage;
+    this.setState({
+      newBlog,
     });
   }
 
@@ -173,37 +180,33 @@ class CreateBlog extends Component {
 
   handleBlur(e) {
     const field = e.target.name;
-    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlog = { ...this.state.newBlog };
     newBlog[e.target.name] = e.target.value;
     const validationErrors = run(newBlog, fieldValidations);
-    const touched = Object.assign({}, this.state.touched);
+    const touched = { ...this.state.touched };
     touched[field] = true;
     const showErrors = !!(Object.values(validationErrors).length && touched[field]);
     this.setState({
       validationErrors,
       showErrors,
       touched,
-    }, () => {
-      console.log(this.state.validationErrors);
     });
   }
 
   handleFocus(e) {
     const field = e.target.name;
-    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlog = { ...this.state.newBlog };
     const validationErrors = run(newBlog, fieldValidations);
     validationErrors[field] = false;
     const showErrors = false;
     this.setState({
       validationErrors,
       showErrors,
-    }, () => {
-      console.log(this.state.validationErrors);
     });
   }
 
   handleQuillChange(value) {
-    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlog = { ...this.state.newBlog };
     newBlog.body = value;
     this.setState({
       newBlog,
@@ -213,7 +216,7 @@ class CreateBlog extends Component {
 
   handleImgUpload(event) {
     event.preventDefault();
-    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlog = { ...this.state.newBlog };
     const file = event.target.files[0];
     const storageRef = firebase.storage().ref();
     const task = storageRef.child(`images/${file.name}`).put(file);
@@ -225,7 +228,7 @@ class CreateBlog extends Component {
       });
     }, (err) => {
       newBlog.images.current.error = err;
-      console.log(err);
+      console.log(err); // need to add error handling here
       this.setState({
         newBlog,
       });
@@ -237,18 +240,27 @@ class CreateBlog extends Component {
   newBlog.images.current.success = true;
   newBlog.images.current.fileName = fileName;
   if (this.state.newBlog.images.current.inline) {
-    const inlineImage = Object.assign({}, newBlog.images.current);
+    const inlineImage = { ...newBlog.images.current };
     const fileNameClean = generateSlug(fileName);
     newBlog.images[fileNameClean] = inlineImage;
-  } else {
-    const featuredImage = Object.assign({}, newBlog.images.current);
-    newBlog.images.featured = featuredImage;
   }
-  this.setState(() => ({
+  this.setState({
     newBlog,
-  }),
-);
+  });
 });
+  }
+
+  removeImage(type, filename) {
+    const newBlog = { ...this.state.newBlog };
+    newBlog.images.current = {};
+    if (type === 'inline') {
+      delete newBlog.images[filename];
+    } else {
+      newBlog.featured = {};
+    }
+    this.setState({
+      newBlog,
+    }, () => this.closeModal());
   }
 
   errorFor(field) {
@@ -276,7 +288,7 @@ class CreateBlog extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({ showErrors: true, submit: true });
-    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlog = { ...this.state.newBlog };
     const validationErrors = run(newBlog, fieldValidations);
     this.setState({
       validationErrors,
@@ -288,7 +300,7 @@ class CreateBlog extends Component {
         const { key } = this.state.newBlog;
         blogsRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
           if (snapshot.val() === null) {
-            console.log('post not found');
+            console.log('post not found'); // add error handling
             return null;
           }
           snapshot.ref.child(key).update(this.state.newBlog).then(() => {
@@ -317,7 +329,7 @@ class CreateBlog extends Component {
   }
 
   openModal(type, title, confirm, danger, url) {
-    const newBlog = Object.assign({}, this.state.newBlog);
+    const newBlog = { ...this.state.newBlog };
     newBlog.images.current = {
       success: '',
       progress: '',
@@ -341,8 +353,6 @@ class CreateBlog extends Component {
     this.setState({
       showErrors: true,
       submit: true,
-    }, () => {
-      // console.log(this.state.showErrors, this.state.submit);
     });
   }
 
@@ -379,6 +389,8 @@ class CreateBlog extends Component {
             updateValidationErrors={this.updateValidationErrors}
             updateErrorViz={this.updateErrorViz}
             submit={this.state.submit}
+            removeImage={this.removeImage}
+            setFeatured={this.setFeatured}
           />
         </Modal>
         <h2 className="newBlog__banner newBlog__banner--crumbs">{this.state.edit ? 'Update Post' : 'New Blog Post'}</h2>
@@ -454,7 +466,7 @@ class CreateBlog extends Component {
             <div className="newBlog__wrapper">
               <h3 className="newBlog__title">{title}</h3>
               <div id="imgCont">
-                {images.featured && images.featured.url &&
+                {images && images.featured && images.featured.url &&
                 <img
                   className="newBlog__img"
                   src={resize(document.getElementById('imgCont').offsetWidth, images.featured.url)}
