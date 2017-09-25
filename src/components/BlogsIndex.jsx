@@ -73,7 +73,16 @@ class BlogsIndex extends Component {
         minWidth: 150,
         Cell: props =>
           <div className="blogInd__cell">
-            <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
+            <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div>,
+        Filter: ({ filter, onChange }) =>
+          <input
+            type="text"
+            placeholder="Search posts"
+            onChange={e => onChange(e.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : ''}
+          />
+      },
       { Header: () => <div className="blogInd__tableHead">Tags</div>,
         accessor: 'tags',
         minWidth: 40,
@@ -86,9 +95,8 @@ class BlogsIndex extends Component {
             return row[filter.id].indexOf('Homepage') > -1;
           } else if (filter.value === 'faq') {
             return row[filter.id].indexOf('FAQ') > -1;
-          } else {
-            return true;
           }
+          return true;
         },
         Filter: ({ filter, onChange }) =>
           <select
