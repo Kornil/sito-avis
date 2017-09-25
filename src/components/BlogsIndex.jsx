@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import ReactTable from 'react-table';
+import matchSorter from 'match-sorter';
 import 'react-table/react-table.css';
 
 import { formatDate, blogsRef, resize } from '../utils/';
@@ -81,7 +82,10 @@ class BlogsIndex extends Component {
             onChange={e => onChange(e.target.value)}
             style={{ width: '100%' }}
             value={filter ? filter.value : ''}
-          />
+          />,
+        filterMethod: (filter, rows) =>
+          matchSorter(rows, filter.value, { keys: ["title"] }),
+        filterAll: true
       },
       { Header: () => <div className="blogInd__tableHead">Tags</div>,
         accessor: 'tags',
