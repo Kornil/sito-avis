@@ -80,7 +80,27 @@ class BlogsIndex extends Component {
         Cell: props =>
           <div className="blogInd__cell">
             {props.original.tags ? props.original.tags.map(tag => <span className="blogInd__tag" key={`${tag}-${props.original.key}`}>{tag}</span>,
-            ) : ''} </div> },
+            ) : ''} </div>,
+        filterMethod: (filter, row) => {
+          if (filter.value === 'homepage') {
+            return row[filter.id].indexOf('Homepage') > -1;
+          } else if (filter.value === 'faq') {
+            return row[filter.id].indexOf('FAQ') > -1;
+          } else {
+            return true;
+          }
+        },
+        Filter: ({ filter, onChange }) =>
+          <select
+            onChange={e => onChange(e.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : 'all'}
+          >
+            <option value="all">Show All</option>
+            <option value="homepage">Homepage</option>
+            <option value="faq">FAQ</option>
+          </select>,
+      },
       { Header: () => <div className="blogInd__tableHead">Image</div>,
         accessor: 'image',
         minWidth: 30,
