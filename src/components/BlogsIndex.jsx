@@ -84,8 +84,8 @@ class BlogsIndex extends Component {
             value={filter ? filter.value : ''}
           />,
         filterMethod: (filter, rows) =>
-          matchSorter(rows, filter.value, { keys: ["title"] }),
-        filterAll: true
+          matchSorter(rows, filter.value, { keys: ['title'] }),
+        filterAll: true,
       },
       { Header: () => <div className="blogInd__tableHead">Tags</div>,
         accessor: 'tags',
@@ -104,6 +104,7 @@ class BlogsIndex extends Component {
         },
         Filter: ({ filter, onChange }) =>
           <select
+            className="blogInd__select"
             onChange={e => onChange(e.target.value)}
             style={{ width: '100%' }}
             value={filter ? filter.value : 'all'}
