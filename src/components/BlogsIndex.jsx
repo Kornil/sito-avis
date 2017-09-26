@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import ReactTable from 'react-table';
+import matchSorter from 'match-sorter';
 import 'react-table/react-table.css';
 
 import { formatDate, blogsRef, resize } from '../utils/';
@@ -73,14 +74,46 @@ class BlogsIndex extends Component {
         minWidth: 150,
         Cell: props =>
           <div className="blogInd__cell">
-            <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div> },
+            <Link className="blogInd__title" to={`/blog/${props.original.slug}`}>{props.original.title}</Link> </div>,
+        Filter: ({ filter, onChange }) =>
+          <input
+            type="text"
+            placeholder="Search posts"
+            onChange={e => onChange(e.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : ''}
+          />,
+        filterMethod: (filter, rows) =>
+          matchSorter(rows, filter.value, { keys: ['title'] }),
+        filterAll: true,
+      },
       { Header: () => <div className="blogInd__tableHead">Tags</div>,
         accessor: 'tags',
         minWidth: 40,
         Cell: props =>
           <div className="blogInd__cell">
             {props.original.tags ? props.original.tags.map(tag => <span className="blogInd__tag" key={`${tag}-${props.original.key}`}>{tag}</span>,
-            ) : ''} </div> },
+            ) : ''} </div>,
+        filterMethod: (filter, row) => {
+          if (filter.value === 'homepage') {
+            return row[filter.id].indexOf('Homepage') > -1;
+          } else if (filter.value === 'faq') {
+            return row[filter.id].indexOf('FAQ') > -1;
+          }
+          return true;
+        },
+        Filter: ({ filter, onChange }) =>
+          <select
+            className="blogInd__select"
+            onChange={e => onChange(e.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : 'all'}
+          >
+            <option value="all">Show All</option>
+            <option value="homepage">Homepage</option>
+            <option value="faq">FAQ</option>
+          </select>,
+      },
       { Header: () => <div className="blogInd__tableHead">Image</div>,
         accessor: 'image',
         minWidth: 30,
