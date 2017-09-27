@@ -13,6 +13,7 @@ class RecentBlogs extends Component {
   }
 
   componentDidMount() {
+    // fetch posts from firebase
     blogsRef.on('value', (snap) => {
       this.setState({
         blogs: snap.val(),
@@ -22,6 +23,8 @@ class RecentBlogs extends Component {
 
   render() {
     const blogs = this.state.blogs;
+    // render only the 3 most recent blogs tagged 'homepage',
+    // in reverse order by date
     const recentBlogs = Object.values(blogs).filter(blog => blog.tags && blog.tags.indexOf('Homepage') > -1).reverse().slice(0, 3);
     let blogsArr = [];
     blogsArr = recentBlogs.map(blog => (

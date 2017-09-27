@@ -9,6 +9,7 @@ class FormInput extends Component {
   }
 
   shouldDisplayError() {
+    // determine whether field should display error message
     return this.props.showError && this.props.errorText &&
 (this.props.touched || this.props.submit);
   }

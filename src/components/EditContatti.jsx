@@ -21,10 +21,10 @@ class EditContatti extends Component {
   }
 
   componentDidMount() {
+    // fetch specific post from firebase with contatti data
     const key = '-Kr6evnjugl529678chul';
     contattiRef.child(key).once('value', (snapshot) => {
       const contatti = snapshot.val();
-      console.log('49', contatti);
       this.setState({
         contatti,
       });
@@ -32,6 +32,7 @@ class EditContatti extends Component {
   }
 
   handleChange(e) {
+    // handle user input to contatti fields
     const contatti = { ...this.state.contatti };
     contatti[e.target.name] = e.target.value;
     this.setState({ ...this.state, contatti });
@@ -39,6 +40,7 @@ class EditContatti extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    // write new data to firebase
     const key = '-Kr6evnjugl529678chul';
     contattiRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
       snapshot.ref.child(key).update(this.state.contatti).then(() => {

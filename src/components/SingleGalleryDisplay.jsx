@@ -21,6 +21,7 @@ class SingleGalleryDisplay extends Component {
   }
 
   componentDidMount() {
+    // fetch specific gallery from firebase by slug
     const slug = this.props.match.params.slug;
     galleriesRef.orderByChild('slug').equalTo(slug).once('value', (snap) => {
       const currentGallery = Object.values(snap.val())[0];

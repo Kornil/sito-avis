@@ -18,6 +18,7 @@ class UpdateStats extends Component {
   }
 
   componentDidMount() {
+    // fetch stats from firebase
     const rootRef = firebase.database().ref().child('avis');
     const statsRef = rootRef.child('stats');
     statsRef.on('value', (snap) => {
@@ -27,9 +28,10 @@ class UpdateStats extends Component {
     });
   }
 
-  handleChange(event) {
-    const newStats = Object.assign({}, this.state.newStats);
-    newStats[event.target.name] = event.target.value;
+  handleChange(e) {
+    // handle user input and timestamp submission
+    const newStats = { ...this.state.newStats};
+    newStats[e.target.name] = e.target.value;
     newStats.timestamp = firebase.database.ServerValue.TIMESTAMP;
     this.setState({
       newStats,
@@ -37,8 +39,9 @@ class UpdateStats extends Component {
   }
 
   handleCreate(event) {
+    // create new stats object and write to firebase
     event.preventDefault();
-    const stats = Object.assign([], this.state.stats);
+    const stats = [ ...this.state.stats];
     stats.push(this.state.newStats);
 
     firebase.database().ref('avis').update({

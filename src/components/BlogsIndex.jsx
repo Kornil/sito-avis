@@ -25,12 +25,13 @@ class BlogsIndex extends Component {
   componentDidMount() {
     blogsRef.on('value', (snap) => {
       const blogs = [];
-
+      // fetch array of blog posts from firebase
       snap.forEach((childSnap) => {
         const blog = childSnap.val();
         blog['.key'] = childSnap.key;
         blogs.push(blog);
       });
+      // save to local state
       this.setState(() => ({
         blogs,
       }));
@@ -38,10 +39,14 @@ class BlogsIndex extends Component {
   }
 
   componentWillUnmount() {
+    // remove firebase database reference
     blogsRef.off();
   }
 
   onDelete(key) {
+    // remove deleted post from firebase,
+    // display delete success message,
+    // close modal after timeout
     blogsRef.child(key).remove().then(() => {
       this.setState({
         msg: true,
@@ -62,12 +67,16 @@ class BlogsIndex extends Component {
     this.setState(() => ({ modalOpen: false }));
   }
 
+  // pass in post key to delete posts
   openModal(key) {
     this.setState(() => ({ modalOpen: true, deleteKey: key }));
   }
 
   render() {
+    // initial sort in reverse order by date created
     const blogs = [...this.state.blogs].reverse();
+
+    // custom filter options for table of blog posts
     const tableColumns = [
       { Header: () => <div className="blogInd__tableHead">Title</div>,
         accessor: 'title',
@@ -83,6 +92,7 @@ class BlogsIndex extends Component {
             style={{ width: '100%' }}
             value={filter ? filter.value : ''}
           />,
+        // filter array of titles by query string, sort potential matches by relevance
         filterMethod: (filter, rows) =>
           matchSorter(rows, filter.value, { keys: ['title'] }),
         filterAll: true,
@@ -94,6 +104,7 @@ class BlogsIndex extends Component {
           <div className="blogInd__cell">
             {props.original.tags ? props.original.tags.map(tag => <span className="blogInd__tag" key={`${tag}-${props.original.key}`}>{tag}</span>,
             ) : ''} </div>,
+        // filter array of tags by select value
         filterMethod: (filter, row) => {
           if (filter.value === 'homepage') {
             return row[filter.id].indexOf('Homepage') > -1;
@@ -114,6 +125,7 @@ class BlogsIndex extends Component {
             <option value="faq">FAQ</option>
           </select>,
       },
+      // image column is not filterable
       { Header: () => <div className="blogInd__tableHead">Image</div>,
         accessor: 'image',
         minWidth: 30,
@@ -126,6 +138,7 @@ class BlogsIndex extends Component {
               src={resize(50, props.original.images.featured.url)}
               alt={props.original.images.featured.alt}
             /> }</div> },
+      // date column is not filterable
       { Header: () => <div className="blogInd__tableHead">Date</div>,
         accessor: 'date',
         minWidth: 60,
@@ -133,6 +146,7 @@ class BlogsIndex extends Component {
         defaultSortDesc: true,
         Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
       },
+      // edit column is not filterable
       { Header: () => <div className="blogInd__tableHead">Edit</div>,
         accessor: 'edit',
         minWidth: 30,
@@ -145,6 +159,7 @@ class BlogsIndex extends Component {
             >
               <div className="blogInd__icon blogInd__icon--edit" />
             </Link> </div> },
+      // delete column is not filterable
       { Header: () => <div className="blogInd__tableHead">Delete</div>,
         accessor: 'delete',
         minWidth: 30,
@@ -191,14 +206,14 @@ class BlogsIndex extends Component {
                 <button
                   type="button"
                   onClick={() => this.onDelete(this.state.deleteKey)}
-                  className="modal__button modal__confirm"
+                  className="modal__button modal__confirm modal__confirm--danger"
                   data-dismiss="modal"
                 >Delete</button>
               </div>
             </div>
           </div>
         </Modal>
-        {this.state.msg && <div className="blogInd__message">The post was successfully deleted.</div>}
+        {this.state.msg && <div className="blogInd__msg">Post successfully deleted.</div>}
         {(!blogs.length)
           ? <Spinner />
           : <div ref={(ref) => { this.componentRef = ref; }} className="blogInd__table-cont">

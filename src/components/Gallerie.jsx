@@ -15,6 +15,7 @@ class Gallerie extends Component {
   }
 
   componentDidMount() {
+    // fetch all photo galleries from firebase and save to local state
     galleriesRef.on('value', (snap) => {
       const galleries = [];
       snap.forEach((childSnap) => {

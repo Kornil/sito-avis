@@ -20,6 +20,7 @@ class Navbar extends React.Component {
   }
 
   componentWillMount() {
+    // check for viewport width changes
     this.updateDimensions();
   }
   componentDidMount() {
@@ -30,6 +31,7 @@ class Navbar extends React.Component {
   }
 
   updateDimensions() {
+    // close menu if window resized while open
     this.setState({ width: window.innerWidth });
     if (this.state.width > 910 && this.state.menu === 'open') {
       this.setState({ menu: 'closed' });
@@ -37,12 +39,14 @@ class Navbar extends React.Component {
   }
 
   homePage() {
+    // close menu if navigate to homepage
     if (this.state.menu === 'open') {
       this.setState({ menu: 'closed' });
     }
   }
 
   navToggle() {
+    // toggle menu visibility
     if (this.state.width < 910) {
       if (this.state.menu === 'closed') {
         this.setState({ menu: 'open' });
