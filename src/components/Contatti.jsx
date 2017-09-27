@@ -21,6 +21,7 @@ class Contatti extends Component {
   }
 
   componentDidMount() {
+    // load the specific post that containes office hours information from firebase
     const key = '-Kr6evnjugl529678chul';
     contattiRef.child(key).once('value', (snapshot) => {
       const contatti = snapshot.val();

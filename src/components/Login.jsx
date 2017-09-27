@@ -14,22 +14,17 @@ class Login extends Component {
     };
   }
 
-  handleEmailInput(event) {
+  handleInput(e) {
+    const newState = { ...this.state };
+    newState[e.target.name] = e.target.value;
     this.setState({
-      email: event.target.value,
-    });
-  }
-
-  handlePassInput(event) {
-    this.setState({
-      pass: event.target.value,
+      newState,
     });
   }
 
   handleLogin(event) {
     event.preventDefault();
-    const email = this.state.email;
-    const pass = this.state.pass;
+    const { email, pass } = this.state;
     const auth = firebase.auth();
     const newState = { ...this.state };
     newState.submit = true;
@@ -64,8 +59,8 @@ class Login extends Component {
         <div className="login__container">
           <h2 className="newBlog__banner">Log In</h2>
           <form className="login__form">
-            <input className="form__input login__input" type="email" onChange={e => this.handleEmailInput(e)} placeholder="Email" />
-            <input className="form__input login__input" type="password" onChange={e => this.handlePassInput(e)} placeholder="Password" />
+            <input className="form__input login__input" type="email" name="email" onChange={e => this.handleInput(e)} placeholder="Email" />
+            <input className="form__input login__input" type="password" name="pass" onChange={e => this.handleInput(e)} placeholder="Password" />
             <div className="login__button-wrap">
               <button className="newBlog__submit newBlog__button" onClick={e => this.handleLogin(e)} type="submit">Login</button>
               <button className="newBlog__button" onClick={() => this.handleLogout()}>Logout</button>

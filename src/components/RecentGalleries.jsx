@@ -15,6 +15,7 @@ class RecentGalleries extends Component {
   }
 
   componentDidMount() {
+    // fetch galleries from firebase
     galleriesRef.on('value', (snap) => {
       const galleries = [];
       snap.forEach((childSnap) => {
@@ -48,6 +49,7 @@ class RecentGalleries extends Component {
         <Link to={`/gallery/${gallery.slug}`} className="blog__button">Galleria completa</Link>
       </div>))
       .reverse().slice(0, 3);
+      // render only 3 most recent galleries, in reverse order by date
 
     return (
       <div className="news">

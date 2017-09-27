@@ -17,6 +17,7 @@ class Stats extends Component {
   }
 
   componentDidMount() {
+    // fetch most recent set of stats from firebase
     const rootRef = firebase.database().ref().child('avis');
     const statsRef = rootRef.child('stats');
     statsRef.on('value', (snap) => {

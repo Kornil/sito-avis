@@ -3,6 +3,8 @@ import { NavLink, withRouter } from 'react-router-dom';
 
 const AdminBreadcrumbs = withRouter(props => <Breadcrumbs {...props} />);
 
+// Breadcrumbs navigation for getting around the admin dashboard
+
 const Breadcrumbs = (props) => {
   const { pathname } = props.location;
   let name;

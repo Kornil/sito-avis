@@ -11,6 +11,7 @@ class SinglePostDisplay extends Component {
   }
 
   componentDidMount() {
+    // fetch specific post from firebase by slug
     const slug = this.props.match.params.slug;
     blogsRef.orderByChild('slug').equalTo(slug).once('value', (snap) => {
       const posts = snap.val();

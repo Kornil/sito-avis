@@ -38,6 +38,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // check login status
     firebase.auth().onAuthStateChanged((fireBaseUser) => {
       if (fireBaseUser) {
         this.props.saveAuth();

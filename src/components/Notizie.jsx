@@ -14,6 +14,7 @@ class Notizie extends Component {
   }
 
   componentDidMount() {
+    // fetch all posts from firebase
     blogsRef.on('value', (snap) => {
       this.setState({
         blogs: snap.val(),
@@ -23,6 +24,7 @@ class Notizie extends Component {
 
   render() {
     const blogs = this.state.blogs;
+    // render only posts tagged 'homepage'
     const recentBlogs = Object.values(blogs).filter(blog => blog.tags && blog.tags.indexOf('Homepage') > -1);
     let blogsArr = [];
     blogsArr = recentBlogs.map(blog => (

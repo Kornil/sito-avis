@@ -34,7 +34,6 @@ class CreatePhotoGallery extends Component {
         key: '',
       },
       localFieldValidations: [...fieldValidationsPhotoGallery],
-      unsavedChanges: false,
       uploadProgress: {
         files: [],
         totalBytes: 0,
@@ -64,10 +63,12 @@ class CreatePhotoGallery extends Component {
   }
 
   componentWillMount() {
+    // check to see if editing existing gallery
     if (this.props.match.params.key) {
       const key = this.props.match.params.key;
       const newState = { ...this.state };
       galleriesRef.child(key).once('value', (snapshot) => {
+        // fetch existing gallery from firebase and save to local state
         const newGallery = snapshot.val();
         newState.newGallery = { ...newGallery };
         newState.edit = true;
@@ -106,6 +107,7 @@ class CreatePhotoGallery extends Component {
   }
 
   createFieldValidations(file) {
+    // set validation rule for alt text field on each image upload
     this.setState({
       localFieldValidations: [
         ...this.state.localFieldValidations,
@@ -115,6 +117,7 @@ class CreatePhotoGallery extends Component {
   }
 
   errorFor(field) {
+    // return error for each field
     if (this.state.validationErrors[field]) {
       return this.state.validationErrors[field] || '';
     }
@@ -122,40 +125,49 @@ class CreatePhotoGallery extends Component {
   }
 
   handleChange(e) {
+    // handle input for gallery title, and for alt text for NEW galleries
     const newState = { ...this.state };
     newState.newGallery[e.target.name] = e.target.value;
-    newState.unsavedChanges = true;
     this.setState({
       ...newState,
     });
   }
 
   handleAltText(e, idx) {
+    // handle input for alt text for existing galleries
+    // these galleries already have alt text stored in firebase
+    // so need to use controlled inputs and store input in local state
     const currImg = { ...this.state.newGallery.images[idx] };
     currImg.alt = e.target.value;
     const newState = { ...this.state };
+    // for each image in gallery, get alt text from input on
+    // current image object
     newState.newGallery.images[idx] = { ...currImg };
-    newState.unsavedChanges = true;
     this.setState({
       ...newState,
     });
   }
 
   handleBlur(e) {
+    // display validation errors onBlur
     const field = e.target.name;
     const newState = { ...this.state };
+    // run validation rule for each field
     newState.validationErrors = run(
         { ...this.state.newGallery },
         this.state.localFieldValidations,
       );
+    // display errors
     if (newState.validationErrors[field]) {
       newState.showErrors = { ...this.state.showErrors, [field]: true };
     }
+    // set field state to touched
     newState.touched = { ...this.state.touched, [field]: true };
     this.setState({ ...newState });
   }
 
   handleFocus(e) {
+    // hide validation errors for field with focus
     const field = e.target.name;
     const newState = {
       validationErrors: run(
@@ -169,6 +181,7 @@ class CreatePhotoGallery extends Component {
   }
 
   _updateProgress(snap, fileName) {
+    // display image upload progress
     let totalBytes = this.state.uploadProgress.totalBytes;
     const files = [...this.state.uploadProgress.files];
     const fileIndex = files.findIndex(f => Object.keys(f)[0] === fileName);
@@ -192,6 +205,7 @@ class CreatePhotoGallery extends Component {
   }
 
   displayMainError(errorMsg) {
+    // error handling for gallery submit
     this.setState({ mainErrorDisplay: errorMsg });
     setTimeout(() => {
       if (this.componentRef) {
@@ -219,7 +233,7 @@ class CreatePhotoGallery extends Component {
         submit: true,
       },
     };
-    console.log(newState);
+    // display validation errors for each image
     this.state.newGallery.images.forEach((image) => {
       newState.showErrors[image.name] = true;
     });
@@ -235,25 +249,28 @@ class CreatePhotoGallery extends Component {
 
       // VALIDATION OK: BEGIN UPLOAD PROCESS
       if (this.state.edit) {
-        console.log('edit');
+        // if editing an existing gallery, find it in firebase by key
         const { key } = this.state.newGallery;
         galleriesRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
           if (snapshot.val() === null) {
             console.log('gallery not found');
             return null;
           }
+          // update firebase data with new input
           snapshot.ref.child(key).update(this.state.newGallery).then(() => {
+            // then redirect to gallery list
             this.props.history.push('/galleryindex');
           });
           return null;
         });
-        // return null;
       }
+      // if new gallery, generate key in firebase
       const newGalleryKey = galleriesRef.push().key;
 
       this.setState({ uploading: true });
       const files = [...this.state.newGallery.images];
       const storageRef = firebase.storage().ref();
+      // populate database entry
       const dbEntry = {
         images: [],
         title: this.state.newGallery.title,
@@ -261,13 +278,15 @@ class CreatePhotoGallery extends Component {
         slug: generateSlug(this.state.newGallery.title),
         key: newGalleryKey,
       };
+      // for each image file...
       const uploads = files.map((file) => {
+        // attach metadata (alt text)
         const metaData = {
           customMetadata: {
             altText: this.state.newGallery[file.name],
           },
         };
-
+        // write the file and metadata to firebase storage
         const task = storageRef
           .child(
           `images/galleries/${newGalleryKey}/${file.name}`,
@@ -285,6 +304,7 @@ class CreatePhotoGallery extends Component {
               reject();
             },
             () => {
+              // on success, save filename, url, and alt to db entry
               dbEntry.images.push({
                 fileName: file.name,
                 url: task.snapshot.downloadURL,
@@ -299,6 +319,8 @@ class CreatePhotoGallery extends Component {
       });
 
       Promise.all(uploads).then(() => {
+        // after all image files have been saved to storage, then
+        // save reference in database
         galleriesRef
           .child(newGalleryKey)
           .set(dbEntry)
@@ -310,6 +332,7 @@ class CreatePhotoGallery extends Component {
   }
 
   removeFile(e) {
+    // delete image from storage and delete reference from database
     const fileName = e.target.name;
 
     this.setState(
@@ -326,14 +349,6 @@ class CreatePhotoGallery extends Component {
         });
       },
     );
-  }
-
-  unsavedChanges(e) {
-    if (this.state.unsavedChanges) {
-      e.returnValue = 'Unsaved Changes!';
-      return 'Unsaved Changes!';
-    }
-    return null;
   }
 
   render() {

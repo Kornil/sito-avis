@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import ReactTable from 'react-table';
+import matchSorter from 'match-sorter';
 import 'react-table/react-table.css';
 
 import { formatDate, resize, galleriesRef, galleriesDbRef } from '../utils/';
@@ -13,16 +14,15 @@ class GalleryIndex extends Component {
     this.state = {
       galleries: [],
       msg: false,
-      // currentKey: '',
       modalOpen: false,
       galleriesExistInDb: false,
-      // filterQuery: '',
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
+    // fetch galleries from firebase
     galleriesRef.on('value', (snap) => {
       this.setState({
         galleriesExistInDb: !!snap.val(),
@@ -43,6 +43,7 @@ class GalleryIndex extends Component {
   componentWillUnmount() {
     galleriesRef.off();
   }
+
   onDelete(key) {
     // deletes from storage
     const fileNamesToDelete = this.state.galleries
@@ -87,7 +88,20 @@ class GalleryIndex extends Component {
         Cell: props =>
           <div className="blogInd__cell">
             <Link className="blogInd__title" to={`/gallery/${props.original.slug}`}>{props.original.title}</Link></div>,
+        Filter: ({ filter, onChange }) =>
+          <input
+            type="text"
+            placeholder="Search galleries"
+            onChange={e => onChange(e.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : ''}
+          />,
+        // filter array of titles by query string, sort potential matches by relevance
+        filterMethod: (filter, rows) =>
+          matchSorter(rows, filter.value, { keys: ['title'] }),
+        filterAll: true,
       },
+      // image column is not filterable
       {
         Header: () => <div className="blogInd__tableHead" />,
         accessor: 'image',
@@ -101,6 +115,7 @@ class GalleryIndex extends Component {
               alt={props.original.images[0].alt}
             /> </div>,
       },
+      // date column is not filterable
       {
         Header: () => <div className="blogInd__tableHead">Date</div>,
         accessor: 'date',
@@ -109,6 +124,7 @@ class GalleryIndex extends Component {
         defaultSortDesc: true,
         Cell: props => <div className="blogInd__cell center"> {formatDate(new Date(props.original.timestamp))}</div>,
       },
+      // edit column is not filterable
       {
         Header: () => <div className="blogInd__tableHead">Edit</div>,
         accessor: 'edit',
@@ -123,6 +139,7 @@ class GalleryIndex extends Component {
               <div className="blogInd__icon blogInd__icon--edit" />
             </Link></div>,
       },
+      // delete column is not filterable
       {
         Header: () => <div className="blogInd__tableHead">Delete</div>,
         accessor: 'delete',
@@ -141,7 +158,6 @@ class GalleryIndex extends Component {
     if (!this.state.galleriesExistInDb) {
       noDataPlaceholder = <div>There are no galleries to display</div>;
     }
-    // NOTE: Cover image shown should be controllable
     return (
       <div>
         <Modal

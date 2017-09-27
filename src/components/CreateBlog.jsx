@@ -16,7 +16,7 @@ class CreateBlog extends Component {
     this.state = {
       newBlog: {
         title: '',
-        tags: [''],
+        tags: ['Homepage'],
         images: {
           featured: {
           },
@@ -31,7 +31,6 @@ class CreateBlog extends Component {
         },
         body: '<br/>',
       },
-      unsavedChanges: false,
       edit: '',
       modal: {
         open: false,
@@ -52,12 +51,14 @@ class CreateBlog extends Component {
       submit: false,
     };
 
+    // custom configuration for quill (rich text editor)
     this.modules = {
       toolbar: {
         container: [[{ header: [3, 4, false] }], ['bold', 'italic', 'underline', 'strike', 'blockquote',
 { color: ['#007DC5', '#ED1C24', '#7a7a7a'] }],
 [{ list: 'ordered' }, { list: 'bullet' }, { indent: '+1' }, { indent: '-1' }, 'link', 'image', 'clean'],
         ],
+        // custom image handler stores image file in firebase and renders alt text for inline images
         handlers: {
           image: (value) => {
             const newBlog = { ...this.state.newBlog };
@@ -73,6 +74,7 @@ class CreateBlog extends Component {
             const title = 'Choose image';
             const confirm = 'Insert image';
             const danger = false;
+            // open inline image upload modal
             this.setState({ modal: { open: true, type, title, confirm, danger, value }, newBlog });
           },
         },
@@ -107,15 +109,20 @@ class CreateBlog extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this.unsavedChanges);
+    // attach ref to Quill
+    // this is necessary to give focus to the editor
+    // when inserting inline images
     this.attachQuillRefs();
+    // check to see if user is editing existing post or creating new post
     if (this.props.match.params.key) {
       const key = this.props.match.params.key;
+      // if editing existing post, fetch it from firebase
       blogsRef.child(key).once('value', (snapshot) => {
         const newBlog = snapshot.val();
         if (!newBlog.tags) {
           newBlog.tags = [''];
         }
+        // save post data to local state
         this.setState({
           newBlog,
           edit: true,
@@ -128,16 +135,17 @@ class CreateBlog extends Component {
     this.attachQuillRefs();
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.unsavedChanges);
-  }
-
   setAltText(inline, filename) {
+    // alt text is first stored in 'current image' object on file upload,
+    // then copied either to 'featured' or 'images.filename'
     const newBlog = { ...this.state.newBlog };
+    // for inline images, create a new key in the images object
+    // for the filename, and store alt text there
     if (inline) {
       const inlineImg = { ...newBlog.images[filename] };
       inlineImg.alt = newBlog.images.current.alt;
       newBlog.images[filename] = inlineImg;
+    // otherwise store alt text in the featured image object
     } else {
       newBlog.images.featured.alt = newBlog.images.current.alt;
     }
@@ -145,6 +153,7 @@ class CreateBlog extends Component {
   }
 
   setFeatured() {
+    // copy current image to featured image object
     const newBlog = { ...this.state.newBlog };
     const featuredImage = newBlog.images.current;
     newBlog.images.featured = featuredImage;
@@ -155,17 +164,22 @@ class CreateBlog extends Component {
 
   handleChange(e) {
     const newBlog = { ...this.state.newBlog };
+    // alt text is stored in newBlog.images.current
     if (e.target.name === 'alt') {
       newBlog.images.current.alt = e.target.value;
     } else {
+    // for all other fields, set value on newBlog object
       newBlog[e.target.name] = e.target.value;
     }
+    // get timestamp from firebase and store in newBlog
     newBlog.timestamp = timeRef;
+    // generate url slug from title string
     newBlog.slug = generateSlug(newBlog.title);
-    this.setState({ ...this.state, newBlog, unsavedChanges: true });
+    this.setState({ ...this.state, newBlog });
   }
 
   handleTagSelection(e) {
+    // handle change on checkbox input for post tags, allow multiple selection
     const newBlog = { ...this.state.newBlog };
     const newSelection = e.target.value;
     let newSelectionArray;
@@ -179,12 +193,16 @@ class CreateBlog extends Component {
   }
 
   handleBlur(e) {
+    // field validation
     const field = e.target.name;
     const newBlog = { ...this.state.newBlog };
     newBlog[e.target.name] = e.target.value;
+    // run fieldValidations on fields in newBlog object
     const validationErrors = run(newBlog, fieldValidations);
+    // track which fields have been touched by user
     const touched = { ...this.state.touched };
     touched[field] = true;
+    // show errors for touched fields with validation errors
     const showErrors = !!(Object.values(validationErrors).length && touched[field]);
     this.setState({
       validationErrors,
@@ -194,6 +212,7 @@ class CreateBlog extends Component {
   }
 
   handleFocus(e) {
+    // hide validation errors for field with focus
     const field = e.target.name;
     const newBlog = { ...this.state.newBlog };
     const validationErrors = run(newBlog, fieldValidations);
@@ -206,20 +225,23 @@ class CreateBlog extends Component {
   }
 
   handleQuillChange(value) {
+    // save quill value to local state
     const newBlog = { ...this.state.newBlog };
     newBlog.body = value;
     this.setState({
       newBlog,
-      unsavedChanges: true,
     });
   }
 
   handleImgUpload(event) {
+    // handle image upload to firebase storage, save url to blog post object
     event.preventDefault();
     const newBlog = { ...this.state.newBlog };
     const file = event.target.files[0];
     const storageRef = firebase.storage().ref();
+    // put uploaded file to firebase storage
     const task = storageRef.child(`images/${file.name}`).put(file);
+    // display upload progress
     task.on('state_changed', (snap) => {
       const percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
       newBlog.images.current.progress = percentage;
@@ -228,18 +250,23 @@ class CreateBlog extends Component {
       });
     }, (err) => {
       newBlog.images.current.error = err;
-      console.log(err); // need to add error handling here
+      console.log(err);
       this.setState({
         newBlog,
       });
     },
 () => {
+  // after upload, get download url from firebase storage
   const url = task.snapshot.downloadURL;
   const fileName = file.name;
+  // store download url in current image object
   newBlog.images.current.url = url;
+  // log image success
   newBlog.images.current.success = true;
+  // store filename in current image object
   newBlog.images.current.fileName = fileName;
   if (this.state.newBlog.images.current.inline) {
+    // for inline images, clean filename, then add new key to newBlog.images
     const inlineImage = { ...newBlog.images.current };
     const fileNameClean = generateSlug(fileName);
     newBlog.images[fileNameClean] = inlineImage;
@@ -252,10 +279,13 @@ class CreateBlog extends Component {
 
   removeImage(type, filename) {
     const newBlog = { ...this.state.newBlog };
+    // clear current image object
     newBlog.images.current = {};
     if (type === 'inline') {
+      // for inline images, remove key from newBlog.images
       delete newBlog.images[filename];
     } else {
+      // for featured images, clear featured object
       newBlog.featured = {};
     }
     this.setState({
@@ -264,21 +294,16 @@ class CreateBlog extends Component {
   }
 
   errorFor(field) {
+    // run validation check and return error(s) for this field
     if (this.state.validationErrors) {
       return this.state.validationErrors[field] || '';
     }
     return null;
   }
 
-  unsavedChanges(e) {
-    if (this.state.unsavedChanges) {
-      e.returnValue = 'Unsaved Changes!';
-      return 'Unsaved Changes!';
-    }
-    return null;
-  }
-
   attachQuillRefs() {
+    // need this ref in order to give focus to editor
+    // when inserting inline images
     if (typeof this.reactQuillRef.getEditor !== 'function') return;
     if (this.quillRef != null) return;
     const quillRef = this.reactQuillRef.getEditor();
@@ -286,34 +311,44 @@ class CreateBlog extends Component {
   }
 
   handleSubmit(e) {
+    // submit blog post to firebase
     e.preventDefault();
+    // show validation errors
     this.setState({ showErrors: true, submit: true });
     const newBlog = { ...this.state.newBlog };
     const validationErrors = run(newBlog, fieldValidations);
     this.setState({
       validationErrors,
     }, () => {
+      // can't submit a post without a title
       if (validationErrors.title) {
         return null;
       }
       if (this.state.edit) {
+        // if user is editing a previously-created post
         const { key } = this.state.newBlog;
+        // find the post in firebase by key
         blogsRef.orderByChild('key').equalTo(key).once('value', (snapshot) => {
           if (snapshot.val() === null) {
-            console.log('post not found'); // add error handling
+            console.log('post not found');
             return null;
           }
+          // update existing post with new data
           snapshot.ref.child(key).update(this.state.newBlog).then(() => {
+            // then return to admin dashboard
             this.props.history.push('/dashboard');
           });
           return null;
         });
         return null;
       }
+      // if it's a new post, get a key from firebase
+      // and store it in newBlog object
       const newBlogKey = blogsRef.push().key;
       newBlog.key = newBlogKey;
       const updates = {};
       updates[newBlogKey] = newBlog;
+      // store key in firebase
       blogsRef.update(updates).then(() => {
         this.setState({ showErrors: true });
         this.props.history.push('/dashboard');
@@ -329,6 +364,7 @@ class CreateBlog extends Component {
   }
 
   openModal(type, title, confirm, danger, url) {
+    // render image upload modal
     const newBlog = { ...this.state.newBlog };
     newBlog.images.current = {
       success: '',
@@ -342,6 +378,7 @@ class CreateBlog extends Component {
   }
 
   updateValidationErrors(validationErrors, callback) {
+    // save validation errors to local state
     this.setState({
       validationErrors,
     }, () => {
@@ -350,6 +387,7 @@ class CreateBlog extends Component {
   }
 
   updateErrorViz() {
+    // show errors on submit
     this.setState({
       showErrors: true,
       submit: true,

@@ -4,15 +4,17 @@ import { resize, run, fieldValidationsModal, generateSlug } from '../utils/';
 import FormInput from './FormInput';
 
 const handleButtonFocus = () => {
+  // add visible focus class to the div covering the file upload button
   document.getElementById('btn-focus').classList.add('fake-focus');
 };
 
 const handleButtonBlur = () => {
+  // and remove it onBlur
   document.getElementById('btn-focus').classList.remove('fake-focus');
 };
 
 
-// / Custom ImageBlot to add alt text to inline images / ///
+// Custom ImageBlot to add alt text to inline images
 
 const Quill = ReactQuill.Quill;
 const BlockEmbed = Quill.import('blots/block/embed');
@@ -45,35 +47,50 @@ class ModalGuts extends Component {
   }
 
   handleInsertImage(url, alt) {
+    // insert inline image into quill editor contents
     if (url) {
+      // resize image to max width 600px
       const resized = resize(600, url);
+      // pass focus to editor
       this.props.quillRef.focus();
+      // get range of selected characters to find insertion point for image
       const range = this.props.quillRef.getSelection();
+      // insert a new line before the image
       this.props.quillRef.insertText(range.index, '\n', 'user');
+      // insert the image with alt text
       this.props.quillRef.insertEmbed(range.index + 1, 'image', {
         alt,
         url: resized,
       }, 'user');
+      // move the insertion point to just past the image
       this.props.quillRef.setSelection(range.index + 2, 'silent');
       this.props.closeModal();
     }
   }
 
   handleModalSubmit() {
+    // display any unresolved errors
     this.props.updateErrorViz();
+    // check for new errors
     const validationErrors = run(this.props.images.current, fieldValidationsModal);
     const callback = () => {
+      // don't submit if there are errors
       if (validationErrors.alt || validationErrors.file) {
         return null;
       } else if (this.props.type === 'inline') {
+        // for inline images, generate a clean slug from the filename
         const fileNameClean = generateSlug(this.props.images.current.fileName);
+        // attach the alt text to the correct inline image object
         this.props.setAltText(true, fileNameClean);
         const current = this.props.images.current;
+        // insert the current image
         this.handleInsertImage(current.url, current.alt);
         this.props.closeModal();
         return null;
       } else if (this.props.type === 'featured') {
+        // copy the current image object to the featured object
         this.props.setFeatured();
+        // set the alt text for featured
         this.props.setAltText(false);
         this.props.closeModal();
         return null;
@@ -89,6 +106,8 @@ class ModalGuts extends Component {
     if (this.props.type === 'inline') {
       fileNameClean = generateSlug(this.props.images.current.fileName);
     }
+    // if user cancels operation after image is uploaded but before confirming,
+    // remove the image from local state and from the database
     this.props.removeImage(this.props.type, fileNameClean);
   }
 

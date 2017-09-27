@@ -13,6 +13,7 @@ class FAQ extends Component {
   }
 
   componentDidMount() {
+    // fetch blog posts from firebase
     blogsRef.on('value', (snap) => {
       this.setState({
         blogs: snap.val(),
@@ -20,10 +21,10 @@ class FAQ extends Component {
     });
   }
 
-  // cards have to be child components with own toggle method sorry 2 say...
-
   render() {
     const blogs = this.state.blogs;
+    // filter array by tag, return tag list includes 'faq',
+    // sort reverse order by date
     const faq = Object.values(blogs).filter(blog => blog.tags && blog.tags.indexOf('FAQ') > -1).reverse();
     const faqEl = faq.map(el =>
       <div className="faq__card" key={shortid.generate()}>

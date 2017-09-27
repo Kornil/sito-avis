@@ -15,6 +15,7 @@ class ToggleCard extends Component {
   }
 
   toggleCard() {
+    // toggle faq card open and shut
     let open = this.state.open;
     open = !open;
     this.setState({ open });

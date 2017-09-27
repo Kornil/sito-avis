@@ -82,6 +82,35 @@
 
 			}
 
+		&__msg {
+				padding-top: 42px;
+				overflow-x: hidden;
+				overflow-y: hidden;
+				opacity: 1;
+				position: fixed;
+				top: 50%;
+			  left: 50%;
+			  right: auto;
+			  bottom: auto;
+			  margin-right: -50%;
+			  transform: translate(-50%, -50%);
+				z-index: 1075;
+				-webkit-overflow-scrolling: touch;
+				outline: 0;
+				-webkit-transition: opacity .15s linear;
+				-o-transition: opacity .15s linear;
+				transition: opacity .15s linear;
+		    width: 320px;
+		    max-width: 95vw;
+		    margin: 30px auto;
+		    height: 100px;
+		    max-height: 90vh;
+		    border: 1px solid $color_blue;
+		    box-shadow: 0 10px 10px rgba(0,0,0,.4);
+		    text-align: center;
+		    background: white;
+		}
+
 	}
 
 .ReactTable select, .ReactTable input {
