@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack-dev-server --content-base dist",
     "test": "eslint src --ext .jsx,.js --fix",
-    "build": "webpack -p"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -50,6 +50,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "compression-webpack-plugin": "^1.0.0",
     "css-loader": "^0.28.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
@@ -63,7 +64,9 @@
     "pre-commit": "^1.2.2",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.17.0",
+    "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^2.4.1",
+    "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.4.5"
   }
 }
