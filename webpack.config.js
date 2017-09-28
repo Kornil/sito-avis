@@ -12,7 +12,9 @@ const config = {
   entry: APP_DIR + '/index.jsx',
   output: {
     path: DIST_DIR,
-    filename: 'bundle.js',
+    filename: '[name].[hash:8].js',
+    sourceMapFilename: '[name].[hash:8].map',
+    chunkFilename: '[id].[hash:8].js',
     publicPath: '/',
   },
   resolve: {
@@ -47,6 +49,7 @@ const config = {
     }),
     new BundleAnalyzerPlugin({
       defaultSizes: 'parsed',
+      analyzerMode: 'static',
     }),
     new webpack.DefinePlugin({
       'process.env': {

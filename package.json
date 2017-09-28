@@ -11,14 +11,16 @@
     "type": "git",
     "url": "git+https://github.com/Kornil/sito-avis.git"
   },
-  "author": "Robert Pemberton, Mahaveer Sharma, Sarah Schneider",
+  "author": "Sarah Schneider, Jay Ullman, Robert Pemberton, Mahaveer Sharma",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Kornil/sito-avis/issues"
   },
   "homepage": "https://github.com/Kornil/sito-avis#readme",
   "dependencies": {
+    "bundle-loader": "^0.5.5",
     "draggabilly": "^2.1.1",
+    "entities": "^1.1.1",
     "firebase": "^3.9.0",
     "match-sorter": "^2.0.2",
     "prop-types": "^15.5.10",
@@ -57,7 +59,6 @@
     "eslint-plugin-react": "^6.10.3",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
-    "font-awesome": "^4.7.0",
     "node-sass": "^4.5.2",
     "pre-commit": "^1.2.2",
     "sass-loader": "^6.0.3",

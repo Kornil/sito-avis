@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import NavLink from 'react-router-dom/NavLink';
+import withRouter from 'react-router-dom/withRouter';
 
 const AdminBreadcrumbs = withRouter(props => <Breadcrumbs {...props} />);
 
