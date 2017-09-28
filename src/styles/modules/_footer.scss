@@ -37,14 +37,6 @@
         opacity: .6;
         color: white;
         font-size: 2em;
-        &-env {
-            @extend .fa;
-            @extend .fa-envelope-o;
-        }
-        &-fb {
-            @extend .fa;
-            @extend .fa-facebook-official;
-        }
         &:hover {
             opacity: 1;
         }

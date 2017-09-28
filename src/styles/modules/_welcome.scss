@@ -6,35 +6,34 @@
 
   &__image {
     height: calc(100vh - 100px);
-    /* temporary fix to accommodate fake nav */
-      background: url(../images/BloodDonorServices2_600.jpg) no-repeat top center fixed;
+      background: url(http://res.cloudinary.com/avis-rovigo/image/fetch/w_600,c_scale/https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Favis-website-dac6e.appspot.com%2Fo%2Fimages%252Fstatic%2520images%252FBloodDonorServices2_3000.jpg%3Falt%3Dmedia%26token%3D0b11b296-a89e-4aec-8de1-04b08d816edb) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
     @include for-tablet-portrait-up {
-      background: url(../images/BloodDonorServices2_900.jpg) no-repeat top center fixed;
+      background: url(http://res.cloudinary.com/avis-rovigo/image/fetch/w_900,c_scale/https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Favis-website-dac6e.appspot.com%2Fo%2Fimages%252Fstatic%2520images%252FBloodDonorServices2_3000.jpg%3Falt%3Dmedia%26token%3D0b11b296-a89e-4aec-8de1-04b08d816edb) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
     }
     @include for-tablet-landscape-up {
-      background: url(../images/BloodDonorServices2_1200.jpg) no-repeat top center fixed;
+      background: url(http://res.cloudinary.com/avis-rovigo/image/fetch/w_1200,c_scale/https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Favis-website-dac6e.appspot.com%2Fo%2Fimages%252Fstatic%2520images%252FBloodDonorServices2_3000.jpg%3Falt%3Dmedia%26token%3D0b11b296-a89e-4aec-8de1-04b08d816edb) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
     }
     @include for-desktop-up {
-      background: url(../images/BloodDonorServices2_1800.jpg) no-repeat top center fixed;
+      background: url(http://res.cloudinary.com/avis-rovigo/image/fetch/w_1800,c_scale/https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Favis-website-dac6e.appspot.com%2Fo%2Fimages%252Fstatic%2520images%252FBloodDonorServices2_3000.jpg%3Falt%3Dmedia%26token%3D0b11b296-a89e-4aec-8de1-04b08d816edb) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
     }
     @include for-big-desktop-up {
-      background: url(../images/BloodDonorServices2_1920.jpg) no-repeat top center fixed;
+      background: url(http://res.cloudinary.com/avis-rovigo/image/fetch/w_1920,c_scale/https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Favis-website-dac6e.appspot.com%2Fo%2Fimages%252Fstatic%2520images%252FBloodDonorServices2_3000.jpg%3Falt%3Dmedia%26token%3D0b11b296-a89e-4aec-8de1-04b08d816edb) no-repeat top center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;

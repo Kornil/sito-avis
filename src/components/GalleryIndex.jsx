@@ -136,7 +136,7 @@ class GalleryIndex extends Component {
               to={`/edit-gallery/${props.original.key}`}
               className=""
             >
-              <div className="blogInd__icon blogInd__icon--edit" />
+              <i className="fa fa-pencil blogInd__icon blogInd__icon--edit" />
             </Link></div>,
       },
       // delete column is not filterable
@@ -146,7 +146,7 @@ class GalleryIndex extends Component {
         minWidth: 40,
         filterable: false,
         Cell: props => <div className="blogInd__cell center"> <button
-          className="blogInd__icon blogInd__icon--delete"
+          className="fa fa-trash blogInd__icon blogInd__icon--delete"
           onClick={() => this.openModal(props.original['.key'])}
         /></div>,
       },
@@ -159,7 +159,7 @@ class GalleryIndex extends Component {
       noDataPlaceholder = <div>There are no galleries to display</div>;
     }
     return (
-      <div>
+      <div className="blogInd__container" id="blogInd">
         <Modal
           isOpen={this.state.modalOpen}
           onAfterOpen={this.afterOpenModal}
@@ -201,8 +201,8 @@ class GalleryIndex extends Component {
             </div>
           </div>
         </Modal>
+        {this.state.msg && <div className="blogInd__msg">Gallery successfully deleted.</div>}
         <div className="dash__container">
-          <h2 className="newBlog__banner--crumbs newBlog__banner">Dashboard</h2>
           <div className="dash__buttons-cont">
             <Link to="/createphotogallery" className="dash__button">
               Create New Photo Gallery

@@ -78,8 +78,6 @@
 }
 
         &--new-member {
-            @extend .fa;
-            @extend .fa-user-plus;
             color: $color_red;
             font-size: 30vw;
 
@@ -91,8 +89,6 @@
         }
 
         &--members {
-            @extend .fa;
-            @extend .fa-group;
             color: $color_red;
             font-size: 30vw;
 

@@ -1,12 +1,11 @@
 import React from 'react';
-import storia from '../images/storia3.jpg';
 
 const Associazione = () => (
   <div className="sp__container">
     <h2 className="sp__title">Avis Rovigo, dal 1953 solidariet&agrave; e
      impegno: sempre, ovunque, subito</h2>
     <div className="sp__img-cont">
-      <img className="sp__img" src={storia} alt="storia" />
+      <img className="sp__img" src="https://firebasestorage.googleapis.com/v0/b/avis-website-dac6e.appspot.com/o/images%2Fstatic%20images%2Fb277f1410e16b8d2c6137701e86b1d8e.jpg?alt=media&token=25def281-d5ce-4e20-b90a-097e4a0ae0e8" alt="storia" />
     </div>
     <h3 className="sp__subhead">Donatori Avis e chi riceve il sangue camminano
      insieme da pi&ugrave; di 60 anni a Rovigo, con la gratitudine che non ha

@@ -30,7 +30,7 @@ class UpdateStats extends Component {
 
   handleChange(e) {
     // handle user input and timestamp submission
-    const newStats = { ...this.state.newStats};
+    const newStats = { ...this.state.newStats };
     newStats[e.target.name] = e.target.value;
     newStats.timestamp = firebase.database.ServerValue.TIMESTAMP;
     this.setState({
@@ -41,7 +41,7 @@ class UpdateStats extends Component {
   handleCreate(event) {
     // create new stats object and write to firebase
     event.preventDefault();
-    const stats = [ ...this.state.stats];
+    const stats = [...this.state.stats];
     stats.push(this.state.newStats);
 
     firebase.database().ref('avis').update({

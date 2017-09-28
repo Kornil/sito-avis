@@ -23,15 +23,6 @@
 		padding: 15px;
 	}
 
-	// &__row, .rt-tr {
-	// 	border: 1px solid $color_gray_lighter;
-
-	// }
-
-	// &__row:nth-of-type(odd) {
-	//   background-color: rgba(0,0,0,.05);
-	// }
-
 	&__cell {
 		padding: 15px;
 	}
@@ -61,8 +52,6 @@
 				background: none;
 
 				&--edit {
-					@extend .fa;
-					@extend .fa-pencil;
 
 					&:hover {
 					opacity: 1;
@@ -71,8 +60,6 @@
 
 				}
 				&--delete {
-					@extend .fa;
-					@extend .fa-trash;
 
 					&:hover {
 					opacity: 1;

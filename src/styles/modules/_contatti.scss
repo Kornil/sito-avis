@@ -40,8 +40,6 @@
         line-height: 43px;
       }
       .icon-fb {
-        @extend .fa;
-        @extend .fa-facebook-official;
         opacity: .8;
         font-size: 2em;
         @include for-phone-landscape-up{
@@ -82,8 +80,6 @@
     }
   }
   &__edit {
-    @extend .fa;
-    @extend .fa-pencil;
     font-size: 1em !important;
     color: $color_blue;
 
@@ -216,26 +212,10 @@
       opacity: .8;
       color: $color_gray_text;
       font-size: 2em;
-      // margin-right: 30px;
+
       @include for-tablet-landscape-only {
         font-size: 2.3em;
-        // margin-right: 40px;
-      }
-      &-yt {
-        @extend .fa;
-        @extend .fa-youtube-play;
-      }
-      &-fb {
-        @extend .fa;
-        @extend .fa-facebook-official;
-      }
-      &-tw {
-        @extend .fa;
-        @extend .fa-twitter-square;
-      }
-      &-it {
-        @extend .fa;
-        @extend .fa-instagram;
+
       }
       &:hover {
         opacity: 1;
