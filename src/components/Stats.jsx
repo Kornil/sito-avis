@@ -48,12 +48,12 @@ class Stats extends Component {
                   <div className="stats__label">Donazioni totali</div>
                 </div>
                 <div className="stats__card">
-                  <div className="stats__icon stats__icon--new-member" />
+                  <div className="fa fa-user-plus stats__icon stats__icon--new-member" />
                   <div className="stats__number">{newStats.nuoviMembri}</div>
                   <div className="stats__label">nuovi membri</div>
                 </div>
                 <div className="stats__card">
-                  <div className="stats__icon stats__icon--members" />
+                  <div className="fa fa-group stats__icon stats__icon--members" />
                   <div className="stats__number">{newStats.membriTotali}</div>
                   <div className="stats__label">membri totali</div>
                 </div>

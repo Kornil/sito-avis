@@ -25,7 +25,7 @@ class ToggleCard extends Component {
     return (
       <div>
         <button
-          className={this.state.open ? 'faq__toggle--open' : 'faq__toggle'}
+          className={this.state.open ? 'fa fa-chevron-circle-up faq__toggle--open' : 'fa fa-chevron-circle-down faq__toggle'}
           onClick={() => this.toggleCard()}
         />
         <h3 className="faq__title">{this.props.title}</h3>

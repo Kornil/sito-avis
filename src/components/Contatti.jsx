@@ -41,7 +41,7 @@ class Contatti extends Component {
             {this.props.auth &&
               <span className="contatti__edit-wrap">
                 <Link to="/editcontatti">
-                  <span className="contatti__edit" />
+                  <span className="fa fa-pencil contatti__edit" />
                 </Link>
               </span> }
             </p>
@@ -90,16 +90,16 @@ class Contatti extends Component {
               <div className="visible-tablet-mode" />
               <li className="contatti__card-icon-container">
                 <a href="https://www.facebook.com/pages/AVIS-Nazionale-Associazione-Volontari-Italiani-Sangue/154932917976132" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                  <div className="contatti__card-icon contatti__card-icon-fb" />
+                  <div className="fa fa-facebook official contatti__card-icon" />
                 </a>
                 <a href="http://www.youtube.com/user/avisnazionale" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
-                  <div className="contatti__card-icon contatti__card-icon-yt" />
+                  <div className="fa fa-youtube-play contatti__card-icon" />
                 </a>
                 <a href="https://twitter.com/avisnazionale" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                  <div className="contatti__card-icon contatti__card-icon-tw" />
+                  <div className="fa fa-twitter-square contatti__card-icon" />
                 </a>
                 <a href="https://www.instagram.com/avisnazionale/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                  <div className="contatti__card-icon contatti__card-icon-it" />
+                  <div className="fa fa-instagram contatti__card-icon" />
                 </a>
               </li>
             </ul>
@@ -130,10 +130,10 @@ class Contatti extends Component {
               <div className="visible-tablet-mode" />
               <li className="contatti__card-icon-container">
                 <a href="https://www.facebook.com/avis.veneto/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                  <div className="contatti__card-icon contatti__card-icon-fb" />
+                  <div className="fa fa-facebook-official contatti__card-icon" />
                 </a>
                 <a href="https://www.youtube.com/user/avisveneto" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
-                  <div className="contatti__card-icon contatti__card-icon-yt" />
+                  <div className="fa fa-youtube-play contatti__card-icon" />
                 </a>
               </li>
             </ul>
@@ -161,7 +161,7 @@ class Contatti extends Component {
               <div className="visible-tablet-mode" />
               <li className="contatti__card-icon-container">
                 <a href="https://www.facebook.com/Avis-Provinciale-Rovigo-123533465038437/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                  <div className="contatti__card-icon contatti__card-icon-fb" />
+                  <div className="fa fa-facebook-official contatti__card-icon" />
                 </a>
               </li>
             </ul>

@@ -72,10 +72,6 @@
       border-radius: 50%;
       padding: 0 1px;
 
-      @extend .fa;
-      @extend .fa-chevron-circle-down;
-
-
       &:hover, &:active, &:focus {
       	color: $color_red-lighter;
       	font-size: 2em;
@@ -89,9 +85,6 @@
 	      appearance: none;
 	      border: 2px solid #7AACFE !important;
   			border: 2px auto -webkit-focus-ring-color !important;
-
-      	@extend .fa;
-      	@extend .fa-chevron-circle-down;
       }
 
       &--open {
@@ -111,9 +104,6 @@
 	      appearance: none;
 	      border-radius: 50%;
       	padding: 0 1px;
-
-				@extend .fa;
-     		@extend .fa-chevron-circle-up;
 
      		&:hover, &:active, &:focus {
 		      border: none;

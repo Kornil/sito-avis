@@ -157,7 +157,7 @@ class BlogsIndex extends Component {
               to={`/edit/${props.original.key}`}
               className=""
             >
-              <div className="blogInd__icon blogInd__icon--edit" />
+              <i className="fa fa-pencil blogInd__icon blogInd__icon--edit" />
             </Link> </div> },
       // delete column is not filterable
       { Header: () => <div className="blogInd__tableHead">Delete</div>,
@@ -165,7 +165,7 @@ class BlogsIndex extends Component {
         minWidth: 30,
         filterable: false,
         Cell: props => <div className="blogInd__cell center"> <button
-          className="blogInd__icon blogInd__icon--delete"
+          className="fa fa-trash blogInd__icon blogInd__icon--delete"
           onClick={() => this.openModal(props.original['.key'])}
         /></div> },
     ];
