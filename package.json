@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/Kornil/sito-avis.git"
   },
-  "author": "Robert Pemberton, Mahaveer Sharma, Sarah Schneider",
+  "author": "Sarah Schneider, Jay Ullman, Robert Pemberton, Mahaveer Sharma",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Kornil/sito-avis/issues"
@@ -20,6 +20,7 @@
   "dependencies": {
     "draggabilly": "^2.1.1",
     "firebase": "^3.9.0",
+    "html-webpack-plugin": "^2.30.1",
     "match-sorter": "^2.0.2",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",

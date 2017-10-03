@@ -3,16 +3,23 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 const APP_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
 
 const config = {
-  entry: APP_DIR + '/index.jsx',
+  entry: {
+     main: APP_DIR + '/index.jsx',
+     vendor: [
+       'react', 'react-dom', 'firebase'
+     ]
+   },
   output: {
     path: DIST_DIR,
-    filename: 'bundle.js',
+    filename: '[name].[hash:8].js',
+    chunkFilename: '[id].[hash:8].js',
     publicPath: '/',
   },
   resolve: {
@@ -34,7 +41,7 @@ const config = {
         loaders: ['style-loader?sourceMap', 'css-loader', 'sass-loader']
       },
       {
-        test:/\.(jpg|png|gif|bmp|svg|woff|woff2|ttf|eot)$/,
+        test:/\.(jpg|png|gif|bmp|svg)$/,
         loader: require.resolve("file-loader")
       }
     ],
@@ -48,6 +55,9 @@ const config = {
     new BundleAnalyzerPlugin({
       defaultSizes: 'parsed',
     }),
+    new HtmlWebpackPlugin({
+       title: 'Caching'
+      }),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
@@ -55,6 +65,12 @@ const config = {
     }),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+       name: 'vendor'
+     }),
+    new webpack.optimize.CommonsChunkPlugin({
+       name: 'runtime'
+     }),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",
