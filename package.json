@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Kornil/sito-avis#readme",
   "dependencies": {
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "draggabilly": "^2.1.1",
     "firebase": "^3.9.0",
     "match-sorter": "^2.0.2",
@@ -26,6 +27,7 @@
     "react-dom": "^15.5.4",
     "react-dropzone": "^3.13.3",
     "react-images": "^0.5.5",
+    "react-loadable": "^4.0.5",
     "react-modal": "^2.0.6",
     "react-packery-component": "^1.0.2",
     "react-quill": "^1.0.0",
