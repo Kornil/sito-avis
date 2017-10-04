@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import * as firebase from 'firebase';
+import { saveAuth } from '../actions';
 
 import Navbar from './Navbar';
 import AdminBreadcrumbs from './AdminBreadcrumbs';
@@ -9,25 +10,37 @@ import Footer from './Footer';
 
 import Home from './Home';
 import Associazione from './Associazione';
+import Donazione from './Donazione';
 import FAQ from './FAQ';
 import Statistiche from './Statistiche';
 import Contatti from './Contatti';
-import EditContatti from './EditContatti';
-import Donazione from './Donazione';
-import Login from './Login';
-import CreateBlog from './CreateBlog';
-import UpdateStats from './UpdateStats';
-import SinglePostDisplay from './SinglePostDisplay';
 import Notizie from './Notizie';
+import SinglePostDisplay from './SinglePostDisplay';
 import Gallerie from './Gallerie';
-import Dashboard from './Dashboard';
-import CreatePhotoGallery from './CreatePhotoGallery';
-import GalleryIndex from './GalleryIndex';
 import SingleGalleryDisplay from './SingleGalleryDisplay';
 import ScrollToTop from './ScrollToTop';
 import NotFound from './NotFound';
 
-import { saveAuth } from '../actions';
+// Lazy load admin components
+import asyncComponent from './asyncComponent';
+
+const Login = asyncComponent(() => import('./Login')
+  .then(module => module.default), { name: 'Login' });
+const CreateBlog = asyncComponent(() => import('./CreateBlog')
+  .then(module => module.default), { name: 'CreateBlog' });
+const UpdateStats = asyncComponent(() => import('./UpdateStats')
+  .then(module => module.default), { name: 'UpdateStats' });
+const Dashboard = asyncComponent(() => import('./Dashboard')
+  .then(module => module.default), { name: 'Dashboard' });
+const CreatePhotoGallery = asyncComponent(() => import('./CreatePhotoGallery')
+  .then(module => module.default), { name: 'CreatePhotoGallery' });
+const GalleryIndex = asyncComponent(() => import('./GalleryIndex')
+  .then(module => module.default), { name: 'GalleryIndex' });
+const EditContatti = asyncComponent(() => import('./EditContatti')
+  .then(module => module.default), { name: 'EditContatti' });
+
+
+
 
 class App extends Component {
   constructor() {
