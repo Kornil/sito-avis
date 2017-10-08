@@ -45,7 +45,7 @@ class GalleryIndex extends Component {
   }
 
   onDelete(key) {
-    // deletes from storage
+    // delete from storage
     const fileNamesToDelete = this.state.galleries
       .find(gallery => gallery.key === key).images
       .map(image => image.fileName);
@@ -54,7 +54,7 @@ class GalleryIndex extends Component {
         .catch(err => console.log(`error deleting ${fileName}: ${err}`));
     });
 
-    // deletes from database
+    // delete from database
     galleriesRef.child(key).remove().then(() => {
       this.setState({
         msg: true,
@@ -135,6 +135,7 @@ class GalleryIndex extends Component {
             <Link
               to={`/edit-gallery/${props.original.key}`}
               className=""
+              title="Edit"
             >
               <i className="fa fa-pencil blogInd__icon blogInd__icon--edit" />
             </Link></div>,
@@ -147,6 +148,7 @@ class GalleryIndex extends Component {
         filterable: false,
         Cell: props => <div className="blogInd__cell center"> <button
           className="fa fa-trash blogInd__icon blogInd__icon--delete"
+          aria-label="Delete"
           onClick={() => this.openModal(props.original['.key'])}
         /></div>,
       },

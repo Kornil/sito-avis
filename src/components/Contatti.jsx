@@ -40,7 +40,7 @@ class Contatti extends Component {
             <p className="contatti__info-text">La nostra sede
             {this.props.auth &&
               <span className="contatti__edit-wrap">
-                <Link to="/editcontatti">
+                <Link to="/editcontatti" title="Edit">
                   <span className="fa fa-pencil contatti__edit" />
                 </Link>
               </span> }

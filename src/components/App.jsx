@@ -4,24 +4,29 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import * as firebase from 'firebase';
 import { saveAuth } from '../actions';
 
+// homepage
 import Navbar from './Navbar';
-import AdminBreadcrumbs from './AdminBreadcrumbs';
+import Home from './Home';
 import Footer from './Footer';
 
-import Home from './Home';
+// static public views
 import Associazione from './Associazione';
 import Donazione from './Donazione';
 import FAQ from './FAQ';
-import Statistiche from './Statistiche';
 import Contatti from './Contatti';
+
+// dynamic public views, should also be lazy loaded...
 import Notizie from './Notizie';
 import SinglePostDisplay from './SinglePostDisplay';
 import Gallerie from './Gallerie';
 import SingleGalleryDisplay from './SingleGalleryDisplay';
+
+// misc
+import AdminBreadcrumbs from './AdminBreadcrumbs';
 import ScrollToTop from './ScrollToTop';
 import NotFound from './NotFound';
 
-// Lazy load admin components
+// admin views (lazy load)
 import asyncComponent from './asyncComponent';
 
 const Login = asyncComponent(() => import('./Login')
@@ -38,8 +43,6 @@ const GalleryIndex = asyncComponent(() => import('./GalleryIndex')
   .then(module => module.default), { name: 'GalleryIndex' });
 const EditContatti = asyncComponent(() => import('./EditContatti')
   .then(module => module.default), { name: 'EditContatti' });
-
-
 
 
 class App extends Component {
@@ -76,7 +79,6 @@ class App extends Component {
                 <Route path="/contatti" component={Contatti} />
                 <Route path="/donazione" component={Donazione} />
                 <Route path="/login" component={Login} />
-                <Route path="/statistiche" component={Statistiche} />
                 <Route path="/notizie" component={Notizie} />
                 <Route path="/gallerie" component={Gallerie} />
 
