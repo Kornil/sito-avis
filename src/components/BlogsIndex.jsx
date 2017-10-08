@@ -156,6 +156,7 @@ class BlogsIndex extends Component {
             <Link
               to={`/edit/${props.original.key}`}
               className=""
+              aria-label="edit"
             >
               <i className="fa fa-pencil blogInd__icon blogInd__icon--edit" />
             </Link> </div> },
@@ -166,6 +167,7 @@ class BlogsIndex extends Component {
         filterable: false,
         Cell: props => <div className="blogInd__cell center"> <button
           className="fa fa-trash blogInd__icon blogInd__icon--delete"
+          aria-label="delete"
           onClick={() => this.openModal(props.original['.key'])}
         /></div> },
     ];

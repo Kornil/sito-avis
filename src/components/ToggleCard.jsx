@@ -27,6 +27,7 @@ class ToggleCard extends Component {
         <button
           className={this.state.open ? 'fa fa-chevron-circle-up faq__toggle--open' : 'fa fa-chevron-circle-down faq__toggle'}
           onClick={() => this.toggleCard()}
+          aria-label={this.state.open ? 'Close' : 'Open'}
         />
         <h3 className="faq__title">{this.props.title}</h3>
         {this.state.open &&
